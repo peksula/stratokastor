@@ -1,13 +1,13 @@
-#!/bin/env node
-//  OpenShift sample Node application
 var express = require('express');
-var fs      = require('fs');
+var upload  = require('./upload');
+require( './db' );
+var route = require( './models/route' );
 
 
 /**
- *  Define the sample application.
+ *  Define the application.
  */
-var SampleApp = function() {
+var Kastor = function() {
 
     //  Scope.
     var self = this;
@@ -33,29 +33,7 @@ var SampleApp = function() {
         };
     };
 
-
     /**
-     *  Populate the cache.
-     */
-    self.populateCache = function() {
-        if (typeof self.zcache === "undefined") {
-            self.zcache = { 'index.html': '' };
-        }
-
-        //  Local cache for static content.
-        self.zcache['index.html'] = fs.readFileSync('./index.html');
-    };
-
-
-    /**
-     *  Retrieve entry (content) from cache.
-     *  @param {string} key  Key identifying content to retrieve from cache.
-     */
-    self.cache_get = function(key) { return self.zcache[key]; };
-
-
-    /**
-     *  terminator === the termination handler
      *  Terminate server on receipt of the specified signal.
      *  @param {string} sig  Signal to terminate on.
      */
@@ -94,18 +72,81 @@ var SampleApp = function() {
      */
     self.createRoutes = function() {
         self.routes = { };
-
-        self.routes['/asciimo'] = function(req, res) {
-            var link = "http://i.imgur.com/kmbjB.png";
-            res.send("<html><body><img src='" + link + "'></body></html>");
-        };
+        self.postRoutes = { };
 
         self.routes['/'] = function(req, res) {
-            res.setHeader('Content-Type', 'text/html');
-            res.send(self.cache_get('index.html') );
+            res.sendfile('./public/index.html');
         };
     };
+    
+    self.file_uploader = function(req, res, next) {
+        upload.process_form(req, res, next);
+    };
+    
+    self.database_save = function(req, res, next) {
+        console.log('Saving to database.', res.locals.title);
+        route.create({
+            title: res.locals.title,
+            comment: res.locals.comment,
+            original_xml: res.locals.uploaded_content
+        }, function(err, _route) {
+            if (err) {
+                console.log('Error creating database entry %s', err);
+                res.send(err);
+            }
+        });
+        
+        //next();
+        res.redirect('/');
+    };
 
+    self.database_delete = function(req, res, next) {
+        console.log('Removing from database.');
+		route.remove({
+			_id : req.params.id
+		}, function(err, _route) {
+			if (err) {
+                console.log('Error removing database entry %s', err);
+				res.send(err);
+            }
+		});
+        next();
+	};
+
+    self.database_update = function(req, res, next) {
+        console.log('Updating %s.', req);
+		route.findByIdAndUpdate(
+            req.params.id,
+            { title: req.params.title, comment: req.params.comment },
+            function(err, _route) {
+			if (err) {
+                console.log('Error removing database entry %s', err);
+				res.send(err);
+            }
+		});
+        next();
+	};
+     
+    self.database_get_details = function(req, res, next) {
+		route.findById(req.params.id, function(err, route) {
+			if (err) {
+                console.log('Error occurred when getting a detailed route from database %s', err);
+				res.send(err);
+            }
+			res.json(route);
+		});
+	};
+    
+    self.database_get_list = function(req, res, next) {
+		route.find({}, 'title', function(err, routes) {
+			if (err) {
+                console.log('Error occurred when getting list from database %s', err);
+				res.send(err);
+            }
+			res.json(routes);
+		});
+	};
+    
 
     /**
      *  Initialize the server (express) and create the routes and register
@@ -113,47 +154,51 @@ var SampleApp = function() {
      */
     self.initializeServer = function() {
         self.createRoutes();
-        self.app = express.createServer();
+        self.app = express();
+        self.app.use(express.static('public'));
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
         }
+        
+        // Chained route for uploading a file and saving it to db
+        self.app.post('/routes', self.file_uploader, self.database_save);
+        self.app.get('/routes', self.database_get_list);
+        self.app.get('/routes/:id', self.database_get_details);
+        self.app.delete('/routes/:id', self.database_delete, self.database_get_list);
+        self.app.put('/routes/:id', self.database_update, self.database_get_details);
     };
-
-
+    
     /**
-     *  Initializes the sample application.
+     *  Initializes the application.
      */
     self.initialize = function() {
         self.setupVariables();
-        self.populateCache();
         self.setupTerminationHandlers();
 
         // Create the express server and routes.
         self.initializeServer();
     };
-
-
+    
     /**
-     *  Start the server (starts up the sample application).
+     *  Start the server.
      */
     self.start = function() {
-        //  Start the app on the specific interface (and port).
-        self.app.listen(self.port, self.ipaddress, function() {
-            console.log('%s: Node server started on %s:%d ...',
-                        Date(Date.now() ), self.ipaddress, self.port);
+        self.app.set('port', self.port);
+        self.app.set('ip', self.ipaddress);        
+        
+       //  Start the app on the specific interface (and port).
+        self.app.listen(self.app.get('port'), self.app.get('ip'), function() {
+            console.log('%s: Node server started on %s:%d', Date(Date.now() ), self.app.get('ip'), self.app.get('port'));
         });
     };
 
-};   /*  Sample Application.  */
-
-
+};   /*  Application.  */
 
 /**
  *  main():  Main code.
  */
-var zapp = new SampleApp();
-zapp.initialize();
-zapp.start();
-
+var app = new Kastor();
+app.initialize();
+app.start();

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app="kastor">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="controller.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body ng-controller="mainController">
+    <img src="logo_1934209_web.jpg">
+    <div id="controls">
+        <h2>Display a route</h2>
+        There are {{ routes.length }} routes in the database.
+        <p>
+        <div id="route-list" class="row">
+            <!-- LOOP OVER $scope.routes -->
+            <div ng-repeat="route in routes">
+            {{ route.title }}
+            <button ng-click="showRoute(route._id)">view</button>
+            <button ng-click="deleteRoute(route._id)">delete</button>
+            </div>
+        </div>
+        </p>
+        
+        <h2>Upload a new route</h2>
+        
+        <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
+            <input type="file" name="route_file">
+            <p>
+            <input type="text" name="title" value="Insert title">
+            <p>
+            <textarea name="comment" cols="40" rows="4" form="upload_form">Insert comment</textarea>
+            <p>
+            <input type="submit" value="Submit">    
+        </form>
+        <p>
+        NB. Everything you upload is visible to everybody. Your data is not guaranteed to retain.
+        </p>
+        
+    </div>        
+    
+    <div id="nonmap-canvas">
+        {{ route.original_xml }}
+    </div>
+    <p>
+    <div id="route-title">
+        <input type="text" name="saved-title" ng-model="route.title">
+    </div>
+    <p>
+    <div id="route-comment">
+        <textarea name="saved-comment" cols="40" rows="4" ng-model="route.comment"></textarea>    
+    </div>
+    <button ng-click="updateRoute(route._id)">Save changes</button>
+    <p>
+    </p>
+  </body>
