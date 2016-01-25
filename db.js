@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
+if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
     connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
     process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
     process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +

@@ -68,15 +68,17 @@ var Kastor = function() {
     /*  ================================================================  */
 
     /**
-     *  Create the routing table entries + handlers for the application.
+     *  Create the routing table entries.
      */
     self.createRoutes = function() {
-        self.routes = { };
-        self.postRoutes = { };
-
-        self.routes['/'] = function(req, res) {
+        self.app.get('/', function(req, res) {
             res.sendfile('./public/index.html');
-        };
+        });
+        self.app.post('/routes', self.file_uploader, self.database_save);
+        self.app.get('/routes', self.database_get_list);
+        self.app.get('/routes/:id', self.database_get_details);
+        self.app.delete('/routes/:id', self.database_delete, self.database_get_list);
+        self.app.put('/routes/:id', self.database_update, self.database_get_details);
     };
     
     self.file_uploader = function(req, res, next) {
@@ -84,7 +86,6 @@ var Kastor = function() {
     };
     
     self.database_save = function(req, res, next) {
-        console.log('Saving to database.', res.locals.title);
         route.create({
             title: res.locals.title,
             comment: res.locals.comment,
@@ -96,15 +97,13 @@ var Kastor = function() {
             }
         });
         
-        //next();
         res.redirect('/');
     };
 
     self.database_delete = function(req, res, next) {
-        console.log('Removing from database.');
 		route.remove({
 			_id : req.params.id
-		}, function(err, _route) {
+		}, function(err, route) {
 			if (err) {
                 console.log('Error removing database entry %s', err);
 				res.send(err);
@@ -118,7 +117,7 @@ var Kastor = function() {
 		route.findByIdAndUpdate(
             req.params.id,
             { title: req.params.title, comment: req.params.comment },
-            function(err, _route) {
+            function(err, route) {
 			if (err) {
                 console.log('Error removing database entry %s', err);
 				res.send(err);
@@ -153,21 +152,14 @@ var Kastor = function() {
      *  the handlers.
      */
     self.initializeServer = function() {
-        self.createRoutes();
         self.app = express();
         self.app.use(express.static('public'));
+        self.createRoutes();
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
         }
-        
-        // Chained route for uploading a file and saving it to db
-        self.app.post('/routes', self.file_uploader, self.database_save);
-        self.app.get('/routes', self.database_get_list);
-        self.app.get('/routes/:id', self.database_get_details);
-        self.app.delete('/routes/:id', self.database_delete, self.database_get_list);
-        self.app.put('/routes/:id', self.database_update, self.database_get_details);
     };
     
     /**
