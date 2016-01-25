@@ -39,11 +39,10 @@ var Kastor = function() {
      */
     self.terminator = function(sig){
         if (typeof sig === "string") {
-           console.log('%s: Received %s - terminating sample app ...',
-                       Date(Date.now()), sig);
+           console.log('Received %s - terminating application.', sig);
            process.exit(1);
         }
-        console.log('%s: Node server stopped.', Date(Date.now()) );
+        console.log('Node server stopped.');
     };
 
 
@@ -177,12 +176,8 @@ var Kastor = function() {
      *  Start the server.
      */
     self.start = function() {
-        self.app.set('port', self.port);
-        self.app.set('ip', self.ipaddress);        
-        
-       //  Start the app on the specific interface (and port).
-        self.app.listen(self.app.get('port'), self.app.get('ip'), function() {
-            console.log('%s: Node server started on %s:%d', Date(Date.now() ), self.app.get('ip'), self.app.get('port'));
+        self.app.listen(self.port, self.ipaddress, function() {
+            console.log('Node server started on %s:%d', self.ipaddress, self.port);
         });
     };
 
