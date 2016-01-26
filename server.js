@@ -88,7 +88,7 @@ var Kastor = function() {
         route.create({
             title: res.locals.title,
             comment: res.locals.comment,
-            original_xml: res.locals.uploaded_content
+            route: res.locals.route
         }, function(err, _route) {
             if (err) {
                 console.log('Error creating database entry %s', err);

@@ -6,13 +6,11 @@ describe("Route", function() {
     var resLocals = {};
     fieldsArray.title = "My Route";
     fieldsArray.comment = "My Comment";
-    fieldsArray.content = "<My Content>";
     
     parser.formToResLocals(fieldsArray, resLocals);
     
     expect(resLocals["title"]).toBe("My Route");
     expect(resLocals["comment"]).toBe("My Comment");
-    expect(resLocals["content"]).toBe("<My Content>");
   });
 
 });
