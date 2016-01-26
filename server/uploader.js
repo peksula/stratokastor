@@ -24,7 +24,7 @@ exports.process_form = function (req, res, next) {
     
     busboy.on('finish', function () {
         parser.formToResLocals(fieldsArray, res.locals);
-        res.locals.route = uploaded_content; // the uploaded file is not part of form fields
+        res.locals.original_data = uploaded_content; // the uploaded file is not part of form fields
         next();
     });
     

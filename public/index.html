@@ -28,6 +28,8 @@
             <p>
             <input type="text" name="title" value="Insert title">
             <p>
+            <input type="text" name="weather" value="Weather description">
+            <p>
             <textarea name="comment" cols="40" rows="4" form="upload_form">Insert comment</textarea>
             <p>
             <input type="submit" value="Submit">    
@@ -44,6 +46,9 @@
     <p>
     <div id="route-title">
         <input type="text" name="saved-title" ng-model="route.title">
+    </div>
+    <div id="route-weather">
+        <input type="text" name="saved-weather" ng-model="route.weather">
     </div>
     <p>
     <div id="route-comment">

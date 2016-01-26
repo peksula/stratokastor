@@ -88,7 +88,8 @@ var Kastor = function() {
         route.create({
             title: res.locals.title,
             comment: res.locals.comment,
-            route: res.locals.route
+            weather: res.locals.weather,
+            original_data: res.locals.original_data
         }, function(err, _route) {
             if (err) {
                 console.log('Error creating database entry %s', err);
