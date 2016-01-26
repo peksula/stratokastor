@@ -1,7 +1,7 @@
 var express = require('express');
-var upload  = require('./upload');
-require( './db' );
-var route = require( './models/route' );
+var uploader  = require('./server/uploader');
+require( './server/db' );
+var route = require( './server/routeModel' );
 
 
 /**
@@ -81,7 +81,7 @@ var Kastor = function() {
     };
     
     self.file_uploader = function(req, res, next) {
-        upload.process_form(req, res, next);
+        uploader.process_form(req, res, next);
     };
     
     self.database_save = function(req, res, next) {

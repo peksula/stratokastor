@@ -1,5 +1,5 @@
-describe("Route", function() {
-  var Route = require('../models/route');
+describe("RouteModel", function() {
+  var Route = require('../server/routeModel');
   var mongoose = require('mongoose');
 
   it("should contain one model", function() {
