@@ -1,74 +1,105 @@
 var kastor = angular.module('kastor', []);
 
-kastor.service('RouteService', ['$http', function(){
-    this.routeHello = function(){
-        return "Hello from RouteService.";
+kastor.service('RouteService', ['$http', function($http){
+
+/*    this.getAll = function(successCallback, errorCallback) {
+        $http({
+            method: 'GET',
+            url: '/routes'
+        }).then(successCallback(response), errorCallback(response))
+    };*/
+
+    this.getAll = function(successCallback, errorCallback) {
+        $http({
+            method: 'GET',
+            url: '/routes'
+        }).then(successCallback(response), errorCallback(response));
     };
-    
-    this.getRoute = function(id) {
+
+    this.get = function(id) {
         $http({
             method: 'GET',
             url: '/routes/' + id
         }).then(function successCallback(response) {
-            return response;
+            return {
+                data: response,
+                statusText: "Route loaded successfully."
+            };
         }, function errorCallback(response) {
-            console.log('Error: ' + response);
-            return response;
+            return {
+                statusText: "Loading of the route failed. "  + response
+            };
+        });        
+    };
+
+    this.update = function(id, title, comment, weather) {
+        $http({
+            method: 'POST',
+            url: '/routes/' + id,
+            data: {
+                title: title,
+                comment: comment,
+                weather: weather
+                }
+        }).then(function successCallback(response) {
+            return {
+                data: response,
+                statusText: "Route updated successfully."
+            };
+        }, function errorCallback(response) {
+            return {
+                statusText: "Updating of the route failed. " + response
+            };
+        });        
+    };
+    
+    this.delete = function(id) {
+        $http({
+            method: 'DELETE',
+            url: '/routes/' + id,
+        }).then(function successCallback(response) {
+            return {
+                data: response,
+                statusText: "Route deleted successfully."
+            };
+        }, function errorCallback(response) {
+            return {
+                statusText: "Deleting the route failed. " + response
+            };
         });        
     };
 }]);    
     
-kastor.controller('mainController', ['$scope', '$http', 'RouteService', function($scope, $http, RouteService){
-  //$scope.test = RouteService.routeHello();
+kastor.controller('mainController', ['$scope', 'RouteService', function($scope, RouteService){
 
-    $http.get('/routes')
-        .success(function(data) {
-            console.log('Data: ' + data);
-            $scope.routes = data;
-        })
-        .error(function(data) {
-            console.log('Error: ' + data);
-        });
-    
+    RouteService.getAll(
+        function successCallback(response) {
+            alert("success");
+            //$scope.routes = response.data;
+            //$scope.status.text = "Routes loaded successfully.";
+            },
+        function errorCallback(response) {
+            alert("error");
+            //$scope.status.text = "Failed to load routes.";
+            }
+        );
+
     $scope.showRoute = function(id) {
-        $scope.route = RouteService.getRoute();
-        /*
-        $http.get('/routes/' + id)
-            .success(function(data) {
-                $scope.route = data;
-            })
-            .error(function(data) {
-                console.log('Error: ' + data);
-            });*/
+        var response = RouteService.get(id);
+        $scope.route = response.data;
+        $scope.status.text = response.statusText;
 	};    
 
     $scope.deleteRoute = function(id) {
-		$http.delete('/routes/' + id)
-			.success(function(data) { // TODO: Success and Error have been deprecated
-				$scope.routes = data;
-			})
-			.error(function(data) {
-				console.log('Error: ' + data);
-			});
+        var response = RouteService.delete(id);
+        $scope.routes = response.data;
+        $scope.status.text = response.statusText;
 	};
     
     $scope.updateRoute = function(id){
-        $http({
-            method: 'PUT',
-            url: '/routes/' + id,
-            data: { "title": 'hardcoded' }
-        }).then(function successCallback(response) {
-            $scope.route = response;
-        }, function errorCallback(response) {
-            console.log('Error: ' + response);
-        });        
-        /*
-        var data = {
-            title: "hardcoded",
-            comment: $scope.route.comment
-        }*/
+        var response = RouteService.update(id, $scope.route.title, $scope.route.comment, $scope.route.weather);
+        $scope.route = response.data;
+        $scope.status.text = response.statusText;
     };
-    
-    
 
 }]);

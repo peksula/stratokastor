@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var uploader  = require('./server/uploader');
 require( './server/db' );
 var route = require( './server/routeModel' );
@@ -74,10 +75,10 @@ var Kastor = function() {
             res.sendfile('./public/index.html');
         });
         self.app.post('/routes', self.file_uploader, self.database_save);
+        self.app.post('/routes/:id', self.database_update, self.database_get_details);
         self.app.get('/routes', self.database_get_list);
         self.app.get('/routes/:id', self.database_get_details);
         self.app.delete('/routes/:id', self.database_delete, self.database_get_list);
-        self.app.put('/routes/:id', self.database_update, self.database_get_details);
     };
     
     self.file_uploader = function(req, res, next) {
@@ -113,11 +114,13 @@ var Kastor = function() {
 	};
 
     self.database_update = function(req, res, next) {
-        var updated_route = req.body;
-        console.log('Updating %s.', updated_route.title);
+        var title = req.body.title;
+        var comment = req.body.comment;
+        var weather = req.body.weather;        
+        console.log('Updating %s %s %s.', title, comment, weather);
 		route.findByIdAndUpdate(
             req.params.id,
-            { title: req.params.title, comment: req.params.comment },
+            { title: title, comment: comment, weather: weather },
             function(err, route) {
 			if (err) {
                 console.log('Error updating database entry %s', err);
@@ -155,6 +158,9 @@ var Kastor = function() {
     self.initializeServer = function() {
         self.app = express();
         self.app.use(express.static('public'));
+        self.app.use(bodyParser.json());
+        self.app.use(bodyParser.urlencoded({ extended: true }));
+        
         self.createRoutes();
 
         //  Add handlers for the app (from the routes).

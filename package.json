@@ -23,13 +23,14 @@
     "npm": ">= 1.0.0"
   },
   "dependencies": {
+    "body-parser": "^1.14.2",
     "busboy": "^0.2.12",
     "express": "^3.4.8",
     "mongodb": "^2.0.52",
     "mongoose": "^4.3.3"
   },
   "scripts": {
-     "start": "node server.js"
+    "start": "node server.js"
   },
   "devDependencies": {},
   "bundleDependencies": [],
