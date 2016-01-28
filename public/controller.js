@@ -50,9 +50,10 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
 
     RouteService.getAll(
         function successCallback(response) {
-            $scope.routes = response;
-            $scope.status = {text : "Routes loaded successfully."};
-            $scope.$apply();
+            $scope.$apply(function() {
+                $scope.routes = response;
+                $scope.status = {text : "Routes loaded successfully."};
+            });
         },
         function errorCallback(response) {
             $scope.status = {text : "Failed to load routes."};
