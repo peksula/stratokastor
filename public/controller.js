@@ -54,14 +54,17 @@ kastor.service('RouteService', ['$http', function($http){
 
 }]);    
     
-kastor.controller('mainController', ['$scope', 'RouteService', function($scope, RouteService){
+kastor.controller('mainController', ['$scope', '$http', 'RouteService', function($scope, $http, RouteService){
 /*        function successCallback(response) {
             $scope.$apply(function() {
                 $scope.routes = response;
                 $scope.status = {text : "Routes loaded successfully."};
             });*/
 
-    RouteService.getAll().then(
+    $http({
+        method: 'GET',
+        url: '/routes'
+    }).then(
         function(response) {
             $scope.routes = response;
             $scope.status = {text : "Routes loaded successfully."};
