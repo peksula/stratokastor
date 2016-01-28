@@ -11,7 +11,7 @@ kastor.service('RouteService', ['$http', function($http){
     };
     */
     this.getAll = function() {
-        $http({
+        return $http({
             method: 'GET',
             url: '/routes'
         });
@@ -62,13 +62,12 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
             });*/
 
     RouteService.getAll().then(
-        function successCallback(response) {
+        function(response) {
             $scope.routes = response;
             $scope.status = {text : "Routes loaded successfully."};
         },
-        function errorCallback(response) {
+        function(response) {
             $scope.status = {text : "Failed to load routes."};
-            $scope.$apply();
         }
     );
 
