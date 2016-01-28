@@ -4,6 +4,7 @@ var RouteSchema = new mongoose.Schema({
     title           : String,
     comment         : String,
     weather         : String,
+    updated_at:     { type: Date, default: Date.now },
     original_data   : String/*
     date       : Date
     trackpoints : [

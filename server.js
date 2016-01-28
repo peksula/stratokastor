@@ -113,13 +113,14 @@ var Kastor = function() {
 	};
 
     self.database_update = function(req, res, next) {
-        console.log('Updating %s.', req);
+        var updated_route = req.body;
+        console.log('Updating %s.', updated_route.title);
 		route.findByIdAndUpdate(
             req.params.id,
             { title: req.params.title, comment: req.params.comment },
             function(err, route) {
 			if (err) {
-                console.log('Error removing database entry %s', err);
+                console.log('Error updating database entry %s', err);
 				res.send(err);
             }
 		});

@@ -1,17 +1,22 @@
 var kastor = angular.module('kastor', []);
 
-// Todo remove, not used
-kastor.service('RouteService', function(){
+kastor.service('RouteService', ['$http', function(){
     this.routeHello = function(){
         return "Hello from RouteService.";
     };
     
     this.getRoute = function(id) {
-        return $http.get('/routes/' + id).then(function(res){
-            return res.data;
-        });
+        $http({
+            method: 'GET',
+            url: '/routes/' + id
+        }).then(function successCallback(response) {
+            return response;
+        }, function errorCallback(response) {
+            console.log('Error: ' + response);
+            return response;
+        });        
     };
-});    
+}]);    
     
 kastor.controller('mainController', ['$scope', '$http', 'RouteService', function($scope, $http, RouteService){
   //$scope.test = RouteService.routeHello();
@@ -26,13 +31,15 @@ kastor.controller('mainController', ['$scope', '$http', 'RouteService', function
         });
     
     $scope.showRoute = function(id) {
+        $scope.route = RouteService.getRoute();
+        /*
         $http.get('/routes/' + id)
             .success(function(data) {
                 $scope.route = data;
             })
             .error(function(data) {
                 console.log('Error: ' + data);
-            });
+            });*/
 	};    
 
     $scope.deleteRoute = function(id) {
@@ -49,7 +56,7 @@ kastor.controller('mainController', ['$scope', '$http', 'RouteService', function
         $http({
             method: 'PUT',
             url: '/routes/' + id,
-            data: { title: 'hardcoded' }
+            data: { "title": 'hardcoded' }
         }).then(function successCallback(response) {
             $scope.route = response;
         }, function errorCallback(response) {
