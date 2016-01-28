@@ -151,8 +151,7 @@ var Kastor = function() {
     
 
     /**
-     *  Initialize the server (express) and create the routes and register
-     *  the handlers.
+     *  Initialize the server (express) and create the routes.
      */
     self.initializeServer = function() {
         self.app = express();

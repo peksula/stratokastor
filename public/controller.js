@@ -50,6 +50,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
 
     RouteService.getAll(
         function successCallback(response) {
+            alert (response);
             $scope.routes = response;
             $scope.status = {text : "Routes loaded successfully."};
         },
