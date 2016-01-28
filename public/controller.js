@@ -61,7 +61,9 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         $scope.status = {text : "An error occurred."};
     }
 
-    RouteService.getAll(updateRoutes, genericError);
+    $scope.init = function() {
+        RouteService.getAll(updateRoutes, genericError);
+    };
 
     $scope.showRoute = function(id) {
         RouteService.get(
