@@ -2,11 +2,19 @@ var kastor = angular.module('kastor', []);
 
 kastor.service('RouteService', ['$http', function($http){
 
+/*    
     this.getAll = function(successCallback, errorCallback) {
         $http({
             method: 'GET',
             url: '/routes'
         }).then(successCallback, errorCallback);
+    };
+    */
+    this.getAll = function() {
+        $http({
+            method: 'GET',
+            url: '/routes'
+        });
     };
 
     this.get = function(id) {
@@ -47,16 +55,15 @@ kastor.service('RouteService', ['$http', function($http){
 }]);    
     
 kastor.controller('mainController', ['$scope', 'RouteService', function($scope, RouteService){
-
-    RouteService.getAll(
 /*        function successCallback(response) {
             $scope.$apply(function() {
                 $scope.routes = response;
                 $scope.status = {text : "Routes loaded successfully."};
             });*/
+
+    RouteService.getAll().then(
         function successCallback(response) {
             $scope.routes = response;
-            alert ($scope.routes);
             $scope.status = {text : "Routes loaded successfully."};
         },
         function errorCallback(response) {
