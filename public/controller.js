@@ -50,7 +50,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
 
     RouteService.getAll(
         function successCallback(response) {
-            $scope.routes = response.data;
+            $scope.routes = response;
             $scope.status = {text : "Routes loaded successfully."};
         },
         function errorCallback(response) {
@@ -62,7 +62,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         RouteService.get(
             id,
             function successCallback(response) {
-                $scope.route = response.data;
+                $scope.route = response;
                 $scope.status = {text : "Route loaded successfully."};
              },
             function errorCallback(response) {
@@ -75,7 +75,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         RouteService.del(
             id,
             function successCallback(response) {
-                $scope.routes = response.data;
+                $scope.routes = response;
                 $scope.status = {text : "Route deleted successfully."};
              },
             function errorCallback(response) {

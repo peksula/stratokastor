@@ -106,7 +106,6 @@ var Kastor = function() {
 			_id : req.params.id
 		}, function(err, route) {
 			if (err) {
-                console.log('Error removing database entry %s', err);
 				res.send(err);
             }
 		});
