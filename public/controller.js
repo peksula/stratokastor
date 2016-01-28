@@ -2,19 +2,11 @@ var kastor = angular.module('kastor', []);
 
 kastor.service('RouteService', ['$http', function($http){
 
-/*    
     this.getAll = function(successCallback, errorCallback) {
         $http({
             method: 'GET',
             url: '/routes'
         }).then(successCallback, errorCallback);
-    };
-    */
-    this.getAll = function() {
-        return $http({
-            method: 'GET',
-            url: '/routes'
-        });
     };
 
     this.get = function(id) {
@@ -54,25 +46,22 @@ kastor.service('RouteService', ['$http', function($http){
 
 }]);    
     
-kastor.controller('mainController', ['$scope', '$http', 'RouteService', function($scope, $http, RouteService){
+kastor.controller('mainController', ['$scope', 'RouteService', function($scope, RouteService){
 /*        function successCallback(response) {
             $scope.$apply(function() {
                 $scope.routes = response;
                 $scope.status = {text : "Routes loaded successfully."};
             });*/
+            
+    var updateRoutes = function(response) {
+        $scope.routes = response;
+        $scope.status = {text : "Routes loaded successfully."};
+    }
+    var genericError = function(response) {
+        $scope.status = {text : "An error occurred."};
+    }
 
-    $http({
-        method: 'GET',
-        url: '/routes'
-    }).then(
-        function(response) {
-            $scope.routes = response;
-            $scope.status = {text : "Routes loaded successfully."};
-        },
-        function(response) {
-            $scope.status = {text : "Failed to load routes."};
-        }
-    );
+    RouteService.getAll(updateRoutes, genericError);
 
     $scope.showRoute = function(id) {
         RouteService.get(
