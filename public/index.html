@@ -13,7 +13,7 @@
         <p>
         <div id="route-list" class="row">
             <!-- LOOP OVER $scope.routes -->
-            <div ng-repeat="route in routes">
+            <div ng-repeat="route in routes track by $index">
             {{ route.title }}
             <button ng-click="showRoute(route._id)">view</button>
             <button ng-click="deleteRoute(route._id)">delete</button>
