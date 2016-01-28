@@ -60,6 +60,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
 
     $scope.showRoute = function(id) {
         RouteService.get(
+            id,
             function successCallback(response) {
                 $scope.route = response.data;
                 $scope.status = {text : "Route loaded successfully."};
@@ -72,6 +73,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
 
     $scope.deleteRoute = function(id) {
         RouteService.del(
+            id,
             function successCallback(response) {
                 $scope.routes = response.data;
                 $scope.status = {text : "Route deleted successfully."};
