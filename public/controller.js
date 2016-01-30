@@ -25,16 +25,7 @@ kastor.service('RouteService', ['$http', function($http){
                 comment: comment,
                 weather: weather
                 }
-        }).then(function successCallback(response) {
-            return {
-                data: response,
-                statusText: "Route updated successfully."
-            };
-        }, function errorCallback(response) {
-            return {
-                statusText: "Updating of the route failed. " + response
-            };
-        });        
+        }).then(successCallback, errorCallback);
     };
     
     this.del = function(id) {
@@ -47,32 +38,34 @@ kastor.service('RouteService', ['$http', function($http){
 }]);    
     
 kastor.controller('mainController', ['$scope', 'RouteService', function($scope, RouteService){
-/*        function successCallback(response) {
-            $scope.$apply(function() {
-                $scope.routes = response;
-                $scope.status = {text : "Routes loaded successfully."};
-            });*/
-    //$scope.routes = [{"title":"Insert title","_id":"56aa76b63fd07003b005f52e"},{"title":"Insert title","_id":"56aa8c686a974baac727ddda"}];
-    
     var updateRoutes = function(response) {
         $scope.routes = response.data;
         console.log($scope.routes);
-        $scope.status = {text : "Routes loaded successfully."};
     }
-    var genericError = function(response) {
-        console.log("An error occurred: %s.", response);
-        $scope.status = {text : "An error occurred."};
+    
+    var updateRoute = function(response) {
+        $scope.route = response.data;
+        console.log($scope.route);
     }
 
     $scope.init = function() {
-        RouteService.getAll(updateRoutes, genericError);
+        RouteService.getAll(
+            function successCallback(response) {
+                updateRoutes(response);
+                $scope.status = {text : "Route deleted successfully."};
+             },
+            function errorCallback(response) {
+                console.log("Failed to load routes. %s.", response);
+                $scope.status = {text : "Failed to load routes."};
+            }
+        );
     };
 
     $scope.showRoute = function(id) {
         RouteService.get(
             id,
             function successCallback(response) {
-                $scope.route = response;
+                updateRoute(response);
                 $scope.status = {text : "Route loaded successfully."};
              },
             function errorCallback(response) {
@@ -85,19 +78,31 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         RouteService.del(
             id,
             function successCallback(response) {
-                $scope.routes = response;
+                updateRoutes(response);
                 $scope.status = {text : "Route deleted successfully."};
              },
             function errorCallback(response) {
+                console.log("Failed to delete the route. %s.", response);
                 $scope.status = {text : "Failed to delete the route."};
             }
         );
 	};
     
     $scope.updateRoute = function(id){
-        var response = RouteService.update(id, $scope.route.title, $scope.route.comment, $scope.route.weather);
-        $scope.route = response.data;
-        $scope.status.text = response.statusText;
+        RouteService.update(
+            id,
+            $scope.route.title,
+            $scope.route.comment,
+            $scope.route.weather,
+            function successCallback(response) {
+                updateRoute(response);
+                $scope.status = {text : "Route updated successfully."};
+             },
+            function errorCallback(response) {
+                console.log("Failed to update the route. %s.", response);
+                $scope.status = {text : "Failed to update the route."};
+            }
+        );
     };
 
 }]);
