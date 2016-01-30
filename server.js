@@ -156,6 +156,7 @@ var Kastor = function() {
     self.initializeServer = function() {
         self.app = express();
         self.app.use(express.static('public'));
+        self.app.use(express.static('bower_components'));
         self.app.use(bodyParser.json());
         self.app.use(bodyParser.urlencoded({ extended: true }));
         

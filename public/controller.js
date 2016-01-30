@@ -1,4 +1,4 @@
-var kastor = angular.module('kastor', []);
+var kastor = angular.module('kastor', ['ngMap']);
 
 kastor.service('RouteService', ['$http', function($http){
 
@@ -106,4 +106,12 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         );
     };
 
+}]);
+
+kastor.controller('mapController', [function(NgMap){
+    NgMap.getMap().then(function(map) {
+        console.log(map.getCenter());
+        console.log('markers', map.markers);
+        console.log('shapes', map.shapes);
+    });
 }]);

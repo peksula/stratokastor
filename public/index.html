@@ -3,6 +3,7 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="http://maps.google.com/maps/api/js"></script>
+    <script src="ngmap/build/scripts/ng-map.min.js"></script>
     <script src="controller.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
@@ -41,9 +42,10 @@
         
     </div>        
     
-    <div id="nonmap-canvas">
-        {{ route.original_data }}
-    </div>
+    <div id="map-canvas" map-lazy-load="https://maps.google.com/maps/api/js">
+        <ng-map center="60.6, 24.85" zoom="8" style="width:1000px;height:600px;"></ng-map>
+    </div>    
+    
     <div id="route-title">
         <input type="text" name="saved-title" ng-model="route.title">
     </div>
