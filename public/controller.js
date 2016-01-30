@@ -55,7 +55,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
     //$scope.routes = [{"title":"Insert title","_id":"56aa76b63fd07003b005f52e"},{"title":"Insert title","_id":"56aa8c686a974baac727ddda"}];
     
     var updateRoutes = function(response) {
-        $scope.routes = response;
+        $scope.routes = response.data;
         console.log($scope.routes);
         $scope.status = {text : "Routes loaded successfully."};
     }
