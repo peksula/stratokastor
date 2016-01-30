@@ -79,6 +79,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
             id,
             function successCallback(response) {
                 updateRoutes(response);
+                $scope.route = "";
                 $scope.status = {text : "Route deleted successfully."};
              },
             function errorCallback(response) {
