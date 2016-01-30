@@ -52,12 +52,15 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
                 $scope.routes = response;
                 $scope.status = {text : "Routes loaded successfully."};
             });*/
-            
+    //$scope.routes = [{"title":"Insert title","_id":"56aa76b63fd07003b005f52e"},{"title":"Insert title","_id":"56aa8c686a974baac727ddda"}];
+    
     var updateRoutes = function(response) {
         $scope.routes = response;
+        console.log($scope.routes);
         $scope.status = {text : "Routes loaded successfully."};
     }
     var genericError = function(response) {
+        console.log("An error occurred: %s.", response);
         $scope.status = {text : "An error occurred."};
     }
 
