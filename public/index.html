@@ -41,9 +41,25 @@
         </p>
         
     </div>        
-    
+    <!--
     <div id="map-canvas" map-lazy-load="https://maps.google.com/maps/api/js">
         <ng-map center="60.6, 24.85" zoom="8" style="width:1000px;height:600px;"></ng-map>
+    </div>
+    -->
+    <div ng-controller="routeAnimationController as vm" id="map-canvas" map-lazy-load="https://maps.google.com/maps/api/js">
+        <ng-map zoom="16" center="60.18615917364756, 25.056412513057392" map-type-id="TERRAIN" style="width:1000px;height:600px;">
+            <shape name="polyline" id="routeShape"
+                icons="[{
+                    icon: {
+                        path: 'CIRCLE',
+                        scale: 8,
+                        strokeColor: '#393'
+                    },
+                    offset: '0%'
+                }]"
+                path="[{lat: 60.18615917364756, lng: 25.056412513057392}, {lat: 60.183821371623445, lng: 25.060743740626744}, {lat: 60.18367540836334, lng: 25.059920651572092}]">
+            </shape>
+        </ng-map>
     </div>    
     
     <div id="route-title">

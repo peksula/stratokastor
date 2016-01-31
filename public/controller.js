@@ -105,13 +105,27 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
             }
         );
     };
-
+    
 }]);
 
-kastor.controller('mapController', [function(NgMap){
+kastor.controller('routeAnimationController', function(NgMap, $scope, $interval, $timeout) {
+    var vm = this;
+    var count = 0;
+    var _timeout = 20;
+    
     NgMap.getMap().then(function(map) {
-        console.log(map.getCenter());
-        console.log('markers', map.markers);
-        console.log('shapes', map.shapes);
+        var shape = map.shapes.routeShape;
+        
+        var step = function() {
+            count = (count + 1) % 200;
+            var icons = shape.get('icons');
+            icons[0].offset = (count / 2) + '%';
+            shape.set('icons', icons);
+            _timeout = _timeout +1;
+            $timeout(step, _timeout);
+        }
+        
+        $timeout(step, 20);
     });
-}]);
+
+});
