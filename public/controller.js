@@ -122,7 +122,8 @@ kastor.controller('routeAnimationController', function(NgMap, $scope, $interval,
             icons[0].offset = (count / 2) + '%';
             shape.set('icons', icons);
             _timeout = _timeout +1;
-            $timeout(step, _timeout);
+            //$timeout(step, _timeout);
+            $timeout(step, 20);
         }
         
         $timeout(step, 20);
