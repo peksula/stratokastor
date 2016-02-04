@@ -1,0 +1,23 @@
+[ ] Kehitysympäristön pystytys
+[ ] Reittitiedoston upload
+[ ] Reitin tallentaminen tietokantaan 
+[ ] Lista tallennetuista reiteistä    
+[ ] Reitin poistainen tietokannasta
+[ ] Reitin metatietojen muokkaus
+[o] Reitin näyttäminen (tcx-formaatti)
+[ ] Real-time animaatio reitin suorituksesta
+[ ] Syketietojen visualisointi
+[ ] Korkeustietojen visualisointi
+
+[ ] Mitä muita laitteita tiedostoformaatteja kannattaisi tukea
+[ ] Tuki valituille formaateille
+
+[ ] MAASTOKARTTA-tabi karttaan. Iso työ?
+[ ] Autentikointi ("login with google")
+[ ] Private- ja public reitit
+[ ] Reittien kommentointi
+[ ] Reittien geo-annotointi
+
+[ ] Suora synkronisointi fitbit palvelun kanssa (poistaa tarpeen uploadata reittejä)
+
+[ ] SUUNNISTUSKARTTA-tabi karttaan... täysin auki.
