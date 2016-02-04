@@ -1,9 +1,9 @@
-[ ] Kehitysympäristön pystytys
-[ ] Reittitiedoston upload
-[ ] Reitin tallentaminen tietokantaan 
-[ ] Lista tallennetuista reiteistä    
-[ ] Reitin poistainen tietokannasta
-[ ] Reitin metatietojen muokkaus
+[x] Kehitysympäristön pystytys
+[x] Reittitiedoston upload
+[x] Reitin tallentaminen tietokantaan 
+[x] Lista tallennetuista reiteistä    
+[x] Reitin poistainen tietokannasta
+[x] Reitin metatietojen muokkaus
 [o] Reitin näyttäminen (tcx-formaatti)
 [ ] Real-time animaatio reitin suorituksesta
 [ ] Syketietojen visualisointi
