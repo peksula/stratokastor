@@ -24,7 +24,7 @@ exports.converterFactory = function (data) {
                     timeStamp: trackPoint.Time,
                     altitude: trackPoint.AltitudeMeters,
                     distance: trackPoint.DistanceMeters,
-                    heartRate: trackPoint.HeartRateBpm,
+                    heartRate: trackPoint.HeartRateBpm.Value,
                     lat: trackPoint.Position.LatitudeDegrees,
                     lng: trackPoint.Position.LongitudeDegrees
                     };
