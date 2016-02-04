@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var uploader  = require('./server/uploader');
+var dataConverter = require ('./server/dataConverter');
 require( './server/db' );
 var route = require( './server/routeModel' );
 
@@ -135,6 +136,7 @@ var Kastor = function() {
                 console.log('Error occurred when getting a detailed route from database %s', err);
 				res.send(err);
             }
+            route.route = dataConverter.converterFactory(route.original_xml).dataConverter(route.original_xml);
 			res.json(route);
 		});
 	};
