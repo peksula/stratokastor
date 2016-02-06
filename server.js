@@ -137,7 +137,7 @@ var Kastor = function() {
 				res.send(err);
             }
             var converter = dataConverter.converterFactory(route.original_data);
-            //route.data = dataConverter(route.original_data);
+            route.data = dataConverter(route.original_data);
 			res.json(route);
 		});
 	};
