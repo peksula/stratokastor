@@ -96,7 +96,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
             $scope.route.comment,
             $scope.route.weather,
             function successCallback(response) {
-                refreshRoute(response);
+                refreshRoutes(response);
                 $scope.status = {text : "Route updated successfully."};
              },
             function errorCallback(response) {
