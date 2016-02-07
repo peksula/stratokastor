@@ -38,12 +38,12 @@ kastor.service('RouteService', ['$http', function($http){
 }]);    
     
 kastor.controller('mainController', ['$scope', 'RouteService', function($scope, RouteService){
-    var updateRoutes = function(response) {
+    var refreshRoutes = function(response) {
         $scope.routes = response.data;
         console.log($scope.routes);
     }
     
-    var updateRoute = function(response) {
+    var refreshRoute = function(response) {
         $scope.route = angular.fromJson(response.data);
         console.log($scope.route);
     }
@@ -51,7 +51,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
     $scope.init = function() {
         RouteService.getAll(
             function successCallback(response) {
-                updateRoutes(response);
+                refreshRoutes(response);
                 $scope.status = {text : "Routes loaded successfully."};
              },
             function errorCallback(response) {
@@ -65,7 +65,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         RouteService.get(
             id,
             function successCallback(response) {
-                updateRoute(response);
+                refreshRoute(response);
                 $scope.status = {text : "Route loaded successfully."};
              },
             function errorCallback(response) {
@@ -78,7 +78,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         RouteService.del(
             id,
             function successCallback(response) {
-                updateRoutes(response);
+                refreshRoutes(response);
                 $scope.route = "";
                 $scope.status = {text : "Route deleted successfully."};
              },
@@ -96,7 +96,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
             $scope.route.comment,
             $scope.route.weather,
             function successCallback(response) {
-                updateRoute(response);
+                refreshRoute(response);
                 $scope.status = {text : "Route updated successfully."};
              },
             function errorCallback(response) {
