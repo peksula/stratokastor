@@ -54,10 +54,15 @@
                         path: 'CIRCLE',
                         scale: 8,
                         strokeColor: '#393'
+                        
                     },
                     offset: '0%'
                 }]"
-                path = "{{ route.data.trackPoints }}">
+                path = "{{ route.data.trackPoints }}"
+                geodesic = "true"
+                strokeColor = "#990000"
+                strokeOpacity = "1.0"
+                strokeWeight = "2">
             </shape>
         </ng-map>
     </div>    

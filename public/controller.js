@@ -111,7 +111,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
 kastor.controller('routeAnimationController', function(NgMap, $scope, $interval, $timeout) {
     var vm = this;
     var count = 0;
-    var _timeout = 20;
+    var _timeout = 200;
     
     NgMap.getMap().then(function(map) {
         var shape = map.shapes.routeShape;
@@ -123,10 +123,10 @@ kastor.controller('routeAnimationController', function(NgMap, $scope, $interval,
             shape.set('icons', icons);
             _timeout = _timeout +1;
             //$timeout(step, _timeout);
-            $timeout(step, 20);
+            $timeout(step, 200);
         }
         
-        $timeout(step, 20);
+        $timeout(step, 20+);
     });
 
 });
