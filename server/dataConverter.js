@@ -15,7 +15,6 @@ exports.createConverter = function (data) {
     var tcx2ConverterFn = function (data) {
         var text = parser.toJson(data);
         var json = JSON.parse(text);
-        //console.log(JSON.stringify(json));
         var trackPoints = [];
         
         json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
