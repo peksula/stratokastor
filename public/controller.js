@@ -126,7 +126,7 @@ kastor.controller('routeAnimationController', function(NgMap, $scope, $interval,
             $timeout(step, 200);
         }
         
-        $timeout(step, 20+);
+        $timeout(step, 200);
     });
 
 });
