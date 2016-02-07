@@ -71,7 +71,7 @@
         <textarea name="saved-comment" cols="40" rows="4" ng-model="route.comment"></textarea>    
     </div>
     Last updated: {{ route.updated }}<br>
-    <button ng-click="updateRoute(route._id)">Save changes</button>
+    <button ng-click="updateRoute(route._id)">Save changes {{ route._id }}</button>
     
     <div id="status-bar">
         {{ status.text }}
