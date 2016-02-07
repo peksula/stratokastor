@@ -137,9 +137,10 @@ var Kastor = function() {
 				res.send(err);
             }
             var converter = dataConverter.createConverter(route.original_data);
-            route.data = converter.convert(route.original_data); // Send the converted data structure
-            delete route.original_data; // Do not send the original device data
-			res.json(route);
+            var response = route;
+            delete response.original_data; // Do not send the original device data
+            response.data = converter.convert(route.original_data); // Send the converted data structure
+			res.json(response);
 		});
 	};
     
