@@ -84,8 +84,8 @@ describe("Tcx2Converter", function() {
         var relativePath = 'data/993568829.tcx';
         var buffer = readFileAsString(relativePath);
         var route = converter.createConverter(buffer).convert(buffer);
-        expect(route.trackPoints[2498].lat).toBe("60.18599021434784");
-        expect(route.trackPoints[2498].lng).toBe("25.05650023619334");
+        expect(route.trackPoints[2498].lat).toBe(60.18599021434784);
+        expect(route.trackPoints[2498].lng).toBe(25.05650023619334);
     });
     
 });
