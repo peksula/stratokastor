@@ -20,10 +20,11 @@ exports.process_form = function (req, res, next) {
     // Listen for event when Busboy finds a non-file field.
     busboy.on('field', function (fieldname, val) {
         fieldsArray[fieldname] = val; // todo: res.locals[fieldname] = val?
+        res.locals[fieldname] = val;
     });
     
     busboy.on('finish', function () {
-        parser.formToResLocals(fieldsArray, res.locals); // todo: redundant?
+        //parser.formToResLocals(fieldsArray, res.locals); // todo: redundant?
         res.locals.original_data = uploaded_content; // the uploaded file is not part of form fields
         next();
     });
