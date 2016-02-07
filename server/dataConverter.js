@@ -1,9 +1,9 @@
 var parser = require('xml2json');
 
-exports.converterFactory = function (data) {
+exports.createConverter = function (data) {
     function converter(name, converterFunction) {
         this.name = name;
-        this.dataConverter = converterFunction;
+        this.convert = converterFunction;
     }
     
     function route(startTime, device, trackPoints) {

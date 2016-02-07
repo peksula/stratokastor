@@ -136,8 +136,9 @@ var Kastor = function() {
                 console.log('Error occurred when getting a detailed route from database %s', err);
 				res.send(err);
             }
-            var converter = dataConverter.converterFactory(route.original_data);
-            route.data = converter.dataConverter(route.original_data);
+            var converter = dataConverter.createConverter(route.original_data);
+            route.data = converter.convert(route.original_data); // Send the converted data structure
+            delete route.original_data; // Do not send the original device data
 			res.json(route);
 		});
 	};
