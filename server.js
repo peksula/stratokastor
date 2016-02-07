@@ -76,7 +76,7 @@ var Kastor = function() {
             res.sendfile('./public/index.html');
         });
         self.app.post('/routes', self.file_uploader, self.database_save);
-        self.app.post('/routes/:id', self.database_update, self.database_get_details);
+        self.app.post('/routes/:id', self.database_update, self.database_get_list);
         self.app.get('/routes', self.database_get_list);
         self.app.get('/routes/:id', self.database_get_details);
         self.app.delete('/routes/:id', self.database_delete, self.database_get_list);
