@@ -20,10 +20,10 @@ exports.createConverter = function (data) {
         json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
             elem.Track.Trackpoint.forEach(function(trackPoint) {
                 var point = {
-                    timeStamp: trackPoint.Time,
-                    altitude: trackPoint.AltitudeMeters,
-                    distance: trackPoint.DistanceMeters,
-                    heartRate: trackPoint.HeartRateBpm.Value,
+                    //timeStamp: trackPoint.Time,
+                    //altitude: trackPoint.AltitudeMeters,
+                    //distance: trackPoint.DistanceMeters,
+                    //heartRate: trackPoint.HeartRateBpm.Value,
                     lat: trackPoint.Position.LatitudeDegrees,
                     lng: trackPoint.Position.LongitudeDegrees
                     };
