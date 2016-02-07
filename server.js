@@ -136,14 +136,12 @@ var Kastor = function() {
                 console.log('Error occurred when getting a detailed route from database %s', err);
 				res.send(err);
             }
-            var response = {
-                title: route.title
-            };
             var converter = dataConverter.createConverter(route.original_data);
-            //response.data = converter.convert(route.original_data); // Send the converted data structure
-            //delete route.original_data; // Do not send the original device data
             var response = {
                 title: route.title,
+                comment: route.comment,
+                weather: route.weather,
+                updated: route.updated_at,
                 data: converter.convert(route.original_data)
             };
 			res.json(response);

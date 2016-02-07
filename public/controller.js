@@ -52,7 +52,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         RouteService.getAll(
             function successCallback(response) {
                 updateRoutes(response);
-                $scope.status = {text : "Route deleted successfully."};
+                $scope.status = {text : "Routes loaded successfully."};
              },
             function errorCallback(response) {
                 console.log("Failed to load routes. %s.", response);
