@@ -44,8 +44,8 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
     }
     
     var updateRoute = function(response) {
+        $scope.route = response.data;
         console.log($scope.route);
-        $scope.route = JSON.parse(response.data);
     }
 
     $scope.init = function() {
