@@ -138,6 +138,7 @@ var Kastor = function() {
             }
             var converter = dataConverter.createConverter(route.original_data);
             var response = {
+                _id: route._id,
                 title: route.title,
                 comment: route.comment,
                 weather: route.weather,
