@@ -88,7 +88,7 @@ var Kastor = function() {
     
     self.database_save = function(req, res, next) {
         var converter = dataConverter.createConverter(res.locals.original_data);
-        var data = converter.convert(route.original_data);
+        var data = converter.convert(res.locals.original_data);
         route.create({
             title: res.locals.title,
             comment: res.locals.comment,
