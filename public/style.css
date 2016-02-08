@@ -45,6 +45,7 @@
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
+    font: 12px verdana, sans-serif;
 }
 #view-details-button {
     background-color: #4CAF50;
