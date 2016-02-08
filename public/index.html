@@ -60,8 +60,19 @@
                 stroke-weight = "2">
             </shape>
         </ng-map>
-    </div>    
-    
+    <div id="route-data">
+        <div id="route-data-details">
+        Start time: {{ route.data.startTime }}<br>
+        Device: {{ route.data.device }}<br>
+        Amount of track points: {{ route.data.trackPoints.length }}
+        </div>
+        <div id="route-data-hr">
+        </div>
+        <div id="route-data-altitude">
+        </div>
+    </div>
+    </div>
+    <p>
     <div id="route-title">
         <input type="text" name="saved-title" ng-model="route.title">
     </div>
