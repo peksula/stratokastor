@@ -93,7 +93,7 @@ var Kastor = function() {
             title: res.locals.title,
             comment: res.locals.comment,
             weather: res.locals.weather,
-            date: data.route.startTime,
+            date: new Date(data.route.startTime),
             original_data: res.locals.original_data
         }, function(err, _route) {
             if (err) {
