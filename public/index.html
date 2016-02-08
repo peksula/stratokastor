@@ -63,8 +63,9 @@
     <div id="route-data">
         <div id="route-data-details">
         Start time: {{ route.data.startTime }}<br>
+        End time: {{ route.data.trackPoints[route.data.trackPoints.length-1].timeStamp }}<br>
+        Length: {{ route.data.trackPoints[route.data.trackPoints.length-1].distance }}<br>
         Device: {{ route.data.device }}<br>
-        Amount of track points: {{ route.data.trackPoints.length }}
         </div>
         <div id="route-data-hr">
         </div>
