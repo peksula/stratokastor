@@ -62,14 +62,16 @@
         </ng-map>
     <div id="route-data">
         <div id="route-data-details">
-        Start time: {{ route.data.startTime }}<br>
-        End time: {{ route.data.trackPoints[route.data.trackPoints.length-1].timeStamp }}<br>
-        Length: {{ route.data.trackPoints[route.data.trackPoints.length-1].distance }}<br>
-        Device: {{ route.data.device }}<br>
-        </div>
         <div id="route-data-hr">
+            HR <span id="bpm">{{ cursor.bpm }}</span>
         </div>
         <div id="route-data-altitude">
+            Alt <span id="altitude">{{ cursor.altitude }}</span>
+        </div>
+        Start time: {{ route.data.startTime }}<br>
+        End time: {{ route.data.trackPoints[route.data.trackPoints.length-1].timeStamp }}<br>
+        Length: {{ route.data.trackPoints[route.data.trackPoints.length-1].distance }} meters<br>
+        Device: {{ route.data.device }}<br>
         </div>
     </div>
     </div>
