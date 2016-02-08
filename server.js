@@ -87,10 +87,13 @@ var Kastor = function() {
     };
     
     self.database_save = function(req, res, next) {
+        var converter = dataConverter.createConverter(res.locals.original_data);
+        var data = converter.convert(route.original_data);
         route.create({
             title: res.locals.title,
             comment: res.locals.comment,
             weather: res.locals.weather,
+            date: data.route.startTime,
             original_data: res.locals.original_data
         }, function(err, _route) {
             if (err) {
@@ -150,7 +153,7 @@ var Kastor = function() {
 	};
     
     self.database_get_list = function(req, res, next) {
-		route.find({}, 'title', function(err, routes) {
+		route.find({}, 'title date comment', function(err, routes) {
 			if (err) {
                 console.log('Error occurred when getting list from database %s', err);
 				res.send(err);
