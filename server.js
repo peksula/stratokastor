@@ -123,7 +123,12 @@ var Kastor = function() {
         console.log('Updating %s %s %s.', title, comment, weather);
 		route.findByIdAndUpdate(
             req.params.id,
-            { title: title, comment: comment, weather: weather },
+            {
+                title: title,
+                comment: comment,
+                weather: weather,
+                updated_at: Date.now
+            },
             function(err, route) {
 			if (err) {
                 console.log('Error updating database entry %s', err);
