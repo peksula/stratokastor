@@ -127,7 +127,7 @@ var Kastor = function() {
                 title: title,
                 comment: comment,
                 weather: weather,
-                updated_at: Date.now
+                updated_at: new Date()
             },
             function(err, route) {
 			if (err) {
