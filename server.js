@@ -89,12 +89,15 @@ var Kastor = function() {
     self.database_save = function(req, res, next) {
         var converter = dataConverter.createConverter(res.locals.original_data);
         var data = converter.convert(res.locals.original_data);
+        var dateExecuted = new Date();
+        if (data.startTime !== undefined) {
+            dateExecuted = new Date(data.startTime);
+        }
         route.create({
             title: res.locals.title,
             comment: res.locals.comment,
             weather: res.locals.weather,
-            //date: new Date(data.route.startTime),
-            date: new Date("2015-11-30T21:51:29.000+02:00"),
+            date: dateExecuted,
             original_data: res.locals.original_data
         }, function(err, _route) {
             if (err) {
