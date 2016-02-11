@@ -138,7 +138,11 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $inter
     
     NgMap.getMap().then(function(map) {
         var shape = map.shapes.routeShape;
-        var path = shape.get('path');
+        var path = this.getPath();
+        var xy_initial = path.getAt(0);
+        this.lat = xy.lat();
+        this.lng = xy.lng();
+        this.zoom = 15;
         
         var step = function() {
         }
