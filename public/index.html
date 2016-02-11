@@ -16,7 +16,7 @@
         <div id="route-list" class="row">
             <!-- LOOP OVER $scope.routes -->
             <div id= "route-list-element" ng-repeat="route in routes">
-                <b>{{ route.date | date:'MM.dd.yyyy'}} {{ route.title }}</b><br>
+                <b>{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</b><br>
                 {{ route.comment }}<br>
                 <button id="view-details-button" ng-click="showRoute(route._id)">view</button>
                 <button id="delete-button" ng-click="deleteRoute(route._id)">delete</button>
@@ -70,9 +70,9 @@
                 </div>
                 <table>
                 <tr><td>Title</td><td><input type="text" name="saved-title" ng-model="route.title"></td></tr>
-                <tr><td>Start time</td><td>{{ route.data.startTime }}</td></tr>
-                <tr><td>End time</td><td>{{ route.data.trackPoints[route.data.trackPoints.length-1].timeStamp }}</td></tr>
-                <tr><td>Length</td><td>{{ route.data.trackPoints[route.data.trackPoints.length-1].distance }} meters</td></tr>
+                <tr><td>Start time</td><td>{{ route.data.startTime | date:'dd.MM.yyyy HH:mm:ss'}}</td></tr>
+                <tr><td>End time</td><td>{{ route.data.trackPoints[route.data.trackPoints.length-1].timeStamp | date:'dd.MM.yyyy HH:mm:ss'}}</td></tr>
+                <tr><td>Length in meters</td><td>{{ route.data.trackPoints[route.data.trackPoints.length-1].distance }}</td></tr>
                 <tr><td>Device</td><td>{{ route.data.device }}</td></tr>
                 <tr><td>Weather</td><td><input type="text" name="saved-weather" ng-model="route.weather"></td></tr>
                 <tr><td>Comment</td><td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment"></textarea></td></tr>
