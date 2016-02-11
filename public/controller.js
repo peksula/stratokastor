@@ -130,3 +130,20 @@ kastor.controller('routeAnimationController', function(NgMap, $scope, $interval,
     });
 
 });
+
+kastor.controller('routeVisualizationController', function(NgMap, $scope, $interval, $timeout) {
+    var vc = this;
+    this.lat = 60.6333, this.lng = 24.8500; // initial center
+    this.zoom = 8;
+    
+    NgMap.getMap().then(function(map) {
+        var shape = map.shapes.routeShape;
+        var path = shape.get('path');
+        
+        var step = function() {
+        }
+        
+        $timeout(step, 200);
+    });
+
+});
