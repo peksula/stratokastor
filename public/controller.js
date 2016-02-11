@@ -138,7 +138,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $inter
     
     NgMap.getMap().then(function(map) {
         var shape = map.shapes.routeShape;
-        var path = this.getPath();
+        var path = shape.get('path');
         var xy_initial = path.getAt(0);
         this.lat = xy.lat();
         this.lng = xy.lng();
