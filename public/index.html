@@ -16,7 +16,7 @@
         <div id="route-list" class="row">
             <!-- LOOP OVER $scope.routes -->
             <div id= "route-list-element" ng-repeat="route in routes">
-                <b>{{ route.date }} {{ route.title }}</b><br>
+                <b>{{ route.date | date:'MM.dd.yyyy'}} {{ route.title }}</b><br>
                 {{ route.comment }}<br>
                 <button id="view-details-button" ng-click="showRoute(route._id)">view</button>
                 <button id="delete-button" ng-click="deleteRoute(route._id)">delete</button>
