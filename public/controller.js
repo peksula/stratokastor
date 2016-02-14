@@ -46,8 +46,8 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
     var refreshRoute = function(response) {
         $scope.route = angular.fromJson(response.data);
         $scope.mapPosition = {
-            lat: scope.route.data.startLat,
-            lng: scope.route.data.startLng,
+            lat: $scope.route.data.startLat,
+            lng: $scope.route.data.startLng,
             zoom: 15
         };
         console.log($scope.route);
