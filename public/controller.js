@@ -112,6 +112,8 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         );
     };
     
+    
+    
 }]);
 
 kastor.controller('routeAnimationController', function(NgMap, $scope, $interval, $timeout) {
@@ -137,11 +139,10 @@ kastor.controller('routeAnimationController', function(NgMap, $scope, $interval,
 
 });
 
-kastor.controller('routeVisualizationController', function(NgMap, $scope, $interval, $timeout) {
+kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout) {
     var vc = this;
     
-    NgMap.getMap().then(function(map) {
-        var shape = map.shapes.routeShape;
+    $scope.visualizeRoute = function() {
         var trackpointCount = $scope.route.data.trackPoints.length;
         var i = 0;
         
@@ -156,6 +157,11 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $inter
         }
         
         $timeout(step, 200);
+	};    
+
+    
+    NgMap.getMap().then(function(map) {
+        var shape = map.shapes.routeShape;
     });
 
 });

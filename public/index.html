@@ -78,6 +78,7 @@
                 <tr><td>Comment</td><td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment"></textarea></td></tr>
                 <tr><td>Updated</td><td>{{ route.updated | date:'dd.MM.yyyy HH:mm'}}</td></tr>
                 <tr><td></td><td><button ng-click="updateRoute(route._id)">Save changes</button></td></tr>
+                <tr><td></td><td><button ng-click="visualizeRoute()">Visualize!</button></td></tr>
                 </table>
             </div>
         </div>
