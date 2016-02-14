@@ -147,7 +147,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $inter
         
         var step = function() {
             $scope.cursor = {
-                altitide: $scope.route.data.trackPoints[i].altitude,
+                altitude: $scope.route.data.trackPoints[i].altitude,
                 bpm: $scope.route.data.trackPoints[i].heartRate
             };
             i++;
