@@ -45,6 +45,11 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
     
     var refreshRoute = function(response) {
         $scope.route = angular.fromJson(response.data);
+        $scope.mapPosition = {
+            lat: 60.6333;
+            lng: 24.8500;
+            zoom = 8;
+        }
         console.log($scope.route);
     }
 
@@ -52,11 +57,9 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
         RouteService.getAll(
             function successCallback(response) {
                 refreshRoutes(response);
-                $scope.status = {text : "Routes loaded successfully."};
              },
             function errorCallback(response) {
                 console.log("Failed to load routes. %s.", response);
-                $scope.status = {text : "Failed to load routes."};
             }
         );
     };
@@ -133,8 +136,6 @@ kastor.controller('routeAnimationController', function(NgMap, $scope, $interval,
 
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $interval, $timeout) {
     var vc = this;
-    this.lat = 60.6333, this.lng = 24.8500; // initial center
-    this.zoom = 8;
     
     NgMap.getMap().then(function(map) {
         var shape = map.shapes.routeShape;
