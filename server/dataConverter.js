@@ -20,8 +20,9 @@ exports.createConverter = function (data) {
         var startDate = new Date(startTime);
         var endDate = new Date(endTime);
         var diffInMilliseconds = endDate.getTime() - startDate.getTime();
-        var diffInMins = Math.round(((diffInMilliseconds % 86400000) % 3600000) / 60000);
-        return diffInMins;
+        var minutes = Math.floor(diffInMilliseconds / 60000);
+        var seconds = ((diffInMilliseconds % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     }
     
     var tcx2ConverterFn = function (data) {

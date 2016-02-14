@@ -100,7 +100,12 @@ describe("Tcx2Converter", function() {
         var relativePath = 'data/993568829.tcx';
         var buffer = readFileAsString(relativePath);
         var route = converter.createConverter(buffer).convert(buffer);
-        expect(route.duration).toBe(42); // 22:33:11 - 21:51:29  --> 41 mins 42 secs --> rounds up to 42 mins
+        expect(route.duration).toBe("41:42"); // 22:33:11 - 21:51:29  --> 41 mins 42 secs --> rounds up to 42 mins
+
+        relativePath = 'data/1671940524.tcx';
+        buffer = readFileAsString(relativePath);
+        route = converter.createConverter(buffer).convert(buffer);
+        expect(route.duration).toBe("60:28"); // 22:56:06 - 21:55:38  --> 1:00:28--> rounds up to 60
     });
     
     it("should return correct distance", function() {
