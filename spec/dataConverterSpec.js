@@ -88,5 +88,27 @@ describe("Tcx2Converter", function() {
         expect(route.trackPoints[2498].lng).toBe(25.05650023619334);
     });
     
+    it("should return correct starting position", function() {
+        var relativePath = 'data/993568829.tcx';
+        var buffer = readFileAsString(relativePath);
+        var route = converter.createConverter(buffer).convert(buffer);
+        expect(route.startLat).toBe(60.18615917364756);
+        expect(route.startLng).toBe(25.056412513057392);
+    });
+
+    it("should return correct duration", function() {
+        var relativePath = 'data/993568829.tcx';
+        var buffer = readFileAsString(relativePath);
+        var route = converter.createConverter(buffer).convert(buffer);
+        expect(route.duration).toBe(42); // 22:33:11 - 21:51:29  --> 41 mins 42 secs --> rounds up to 42 mins
+    });
+    
+    it("should return correct distance", function() {
+        var relativePath = 'data/993568829.tcx';
+        var buffer = readFileAsString(relativePath);
+        var route = converter.createConverter(buffer).convert(buffer);
+        expect(route.distance).toBe("5438.1");
+    });
+    
 });
 

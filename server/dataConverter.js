@@ -6,10 +6,22 @@ exports.createConverter = function (data) {
         this.convert = converterFunction;
     }
     
-    function route(startTime, device, trackPoints) {
+    function route(startTime, device, trackPoints, duration, distance, startLat, startLng) {
         this.startTime = startTime;
         this.device = device;
         this.trackPoints = trackPoints;
+        this.duration = duration;
+        this.distance = distance;
+        this.startLat = startLat;
+        this.startLng = startLng;
+    }
+    
+    var runTime = function(startTime, endTime) {
+        var startDate = new Date(startTime);
+        var endDate = new Date(endTime);
+        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+        var diffInMins = Math.round(((diffInMilliseconds % 86400000) % 3600000) / 60000);
+        return diffInMins;
     }
     
     var tcx2ConverterFn = function (data) {
@@ -31,10 +43,16 @@ exports.createConverter = function (data) {
             });
         });            
         
+        var duration = runTime(trackPoints[0].timeStamp, trackPoints[trackPoints.length-1].timeStamp);
+        
         return new route(
             json.TrainingCenterDatabase.Activities.Activity.Lap[0].StartTime,
             json.TrainingCenterDatabase.Activities.Activity.Creator.Name,
-            trackPoints
+            trackPoints,
+            duration,
+            trackPoints[trackPoints.length-1].distance,
+            trackPoints[0].lat,
+            trackPoints[0].lng
         );
     }   
 
