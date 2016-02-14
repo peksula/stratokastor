@@ -105,11 +105,9 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
             $scope.route.weather,
             function successCallback(response) {
                 refreshRoutes(response);
-                $scope.status = {text : "Route updated successfully."};
              },
             function errorCallback(response) {
                 console.log("Failed to update the route. %s.", response);
-                $scope.status = {text : "Failed to update the route."};
             }
         );
     };
@@ -148,7 +146,10 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $inter
         var i = 0;
         
         var step = function() {
-            $scope.cursor.altitude = $scope.route.data.trackPoints[i];
+            $scope.cursor = {
+                altitide: $scope.route.data.trackPoints[i].altitude,
+                bpm: $scope.route.data.trackPoints[i].heartRate
+            };
             i++;
             i = i % trackpointCount;
             $timeout(step, 200);
