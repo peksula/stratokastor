@@ -144,8 +144,14 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $inter
     
     NgMap.getMap().then(function(map) {
         var shape = map.shapes.routeShape;
+        var trackpointCount = $scope.route.data.trackPoints.length;
+        var i = 0;
         
         var step = function() {
+            $scope.cursor.altitude = $scope.route.data.trackPoints[i];
+            i++;
+            i = i % trackpointCount;
+            $timeout(step, 200);
         }
         
         $timeout(step, 200);
