@@ -45,20 +45,16 @@
     <div ng-controller="routeVisualizationController as vc" id="map-canvas" map-lazy-load="https://maps.google.com/maps/api/js">
         <ng-map zoom="{{ mapPosition.zoom }}" center="[{{ mapPosition.lat }}, {{ mapPosition.lng }}]" map-type-id="TERRAIN" style="width:1000px;height:600px;">
             <shape name = "polyline" id = "routeShape"
-                icons = "[{
-                    icon: {
-                        path: 'CIRCLE',
-                        scale: 8,
-                        strokeColor: '#393'
-                        
-                    },
-                    offset: '0%'
-                }]"
                 path = "{{ route.data.trackPoints }}"
                 stroke-color = "#990000"
                 stroke-opacity = "0.8"
                 stroke-weight = "2">
             </shape>
+            <marker position="{{ mapPosition.lat }} , {{ mapPosition.lng }}"
+                icon = "{
+                    path: 'CIRCLE',
+                    scale: 8
+                }"></marker>            
         </ng-map>
         <div id="route-data">
             <div id="route-data-dynamic">
