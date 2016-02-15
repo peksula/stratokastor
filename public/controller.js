@@ -115,7 +115,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
     
     
 }]);
-
+/*
 kastor.controller('routeAnimationController', function(NgMap, $scope, $interval, $timeout) {
     var vm = this;
     var count = 0;
@@ -138,22 +138,27 @@ kastor.controller('routeAnimationController', function(NgMap, $scope, $interval,
     });
 
 });
+*/
 
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout) {
     var vc = this;
     
-    $scope.visualizeRoute = function() {
+    $scope.playRoute = function() {
         var trackpointCount = $scope.route.data.trackPoints.length;
         var i = 0;
         
         var step = function() {
             $scope.cursor = {
+                duration: $scope.route.data.trackPoints[i].duration,
+                distance: $scope.route.data.trackPoints[i].distance,
+                climb: $scope.route.data.trackPoints[i].climb,
                 altitude: $scope.route.data.trackPoints[i].altitude,
                 bpm: $scope.route.data.trackPoints[i].heartRate
             };
             i++;
-            i = i % trackpointCount;
-            $timeout(step, 200);
+            if (i < trackpointCount) {
+                $timeout(step, 200);
+            }
         }
         
         $timeout(step, 200);
