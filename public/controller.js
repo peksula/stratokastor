@@ -170,7 +170,6 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             $timeout.cancel(timer);
         }
     };        
-
     
     NgMap.getMap().then(function(map) {
         var shape = map.shapes.routeShape;
