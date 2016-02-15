@@ -36,7 +36,7 @@ exports.createConverter = function (data) {
                     timeStamp: trackPoint.Time,
                     altitude: trackPoint.AltitudeMeters,
                     distance: trackPoint.DistanceMeters,
-                    duration: "dur.",
+                    duration: runTime(elem.Track.Trackpoint[0].Time, trackPoint.Time),
                     climb: "climb",
                     heartRate: trackPoint.HeartRateBpm.Value,
                     lat: parseFloat(trackPoint.Position.LatitudeDegrees),
@@ -46,13 +46,13 @@ exports.createConverter = function (data) {
             });
         });            
         
-        var duration = runTime(trackPoints[0].timeStamp, trackPoints[trackPoints.length-1].timeStamp);
+        var totalDuration = runTime(trackPoints[0].timeStamp, trackPoints[trackPoints.length-1].timeStamp);
         
         return new route(
             json.TrainingCenterDatabase.Activities.Activity.Lap[0].StartTime,
             json.TrainingCenterDatabase.Activities.Activity.Creator.Name,
             trackPoints,
-            duration,
+            totalDuration,
             trackPoints[trackPoints.length-1].distance,
             trackPoints[0].lat,
             trackPoints[0].lng

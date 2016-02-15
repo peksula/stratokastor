@@ -96,7 +96,7 @@ describe("Tcx2Converter", function() {
         expect(route.startLng).toBe(25.056412513057392);
     });
 
-    it("should return correct duration", function() {
+    it("should return correct total duration", function() {
         var relativePath = 'data/993568829.tcx';
         var buffer = readFileAsString(relativePath);
         var route = converter.createConverter(buffer).convert(buffer);
@@ -106,6 +106,13 @@ describe("Tcx2Converter", function() {
         buffer = readFileAsString(relativePath);
         route = converter.createConverter(buffer).convert(buffer);
         expect(route.duration).toBe("60:28"); // 22:56:06 - 21:55:38
+    });
+
+    it("should return correct incremental duration", function() {
+        var relativePath = 'data/993568829.tcx';
+        var buffer = readFileAsString(relativePath);
+        var route = converter.createConverter(buffer).convert(buffer);
+        expect(route.trackPoints[3].duration).toBe("0:13"); // 21:51:29 - 21:51:42
     });
     
     it("should return correct distance", function() {
