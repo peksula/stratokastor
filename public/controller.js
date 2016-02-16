@@ -160,11 +160,11 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             };
             i++;
             if (i < trackpointCount) {
-                timer = $timeout(step, 200);
+                timer = $timeout(step, 1000);
             }
         }
         
-        timer = $timeout(step, 200);
+        timer = $timeout(step, 1000);
 	};
     
     $scope.stopRoute = function() {
