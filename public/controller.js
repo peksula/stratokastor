@@ -154,7 +154,9 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 distance: $scope.route.data.trackPoints[i].distance,
                 climb: $scope.route.data.trackPoints[i].climb,
                 altitude: $scope.route.data.trackPoints[i].altitude,
-                bpm: $scope.route.data.trackPoints[i].heartRate
+                bpm: $scope.route.data.trackPoints[i].heartRate,
+                lat: $scope.route.data.trackPoints[i].lat,
+                lng: $scope.route.data.trackPoints[i].lng
             };
             i++;
             if (i < trackpointCount) {
