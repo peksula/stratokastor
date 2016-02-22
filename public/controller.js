@@ -152,7 +152,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     var percentageRun = function (currentDistance, totalDistance) {
         var percentage = currentDistance/totalDistance*100;
         console.log("percentage " + percentage + ". Curr: " + currentDistance + ". Total: " + totalDistance);
-        return currentDistance/totalDistance*100;
+        return percentage;
     }
 
     var stepMap = function(percentage) {
@@ -176,7 +176,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 lng: $scope.route.data.trackPoints[i].lng
             };
             
-            stepMap(percentageRun($scope.route.data.trackPoints[i].distance), $scope.route.distance);
+            stepMap(percentageRun($scope.route.data.trackPoints[i].distance), $scope.route.data.distance);
             
             i++;
             if (i < trackpointCount) {
