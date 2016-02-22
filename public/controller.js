@@ -174,7 +174,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 lng: $scope.route.data.trackPoints[i].lng
             };
             
-            stepMap(percentageRun($scope.route.data.trackPoints[i].distance), $scope.route.totalDuration);
+            stepMap(percentageRun($scope.route.data.trackPoints[i].distance), $scope.route.distance);
             
             i++;
             if (i < trackpointCount) {
