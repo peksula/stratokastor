@@ -24,21 +24,26 @@ exports.createConverter = function (data) {
         var seconds = ((diffInMilliseconds % 60000) / 1000).toFixed(0);
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     }
-    
+
     var tcx2ConverterFn = function (data) {
         var text = parser.toJson(data);
         var json = JSON.parse(text);
         var trackPoints = [];
+        var startTime;
         
         json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
             elem.Track.Trackpoint.forEach(function(trackPoint) {
+                
+                if (startTime === undefined) {
+                    startTime = trackPoint.Time;
+                }
+                
                 var point = {
                     timeStamp: trackPoint.Time,
                     altitude: trackPoint.AltitudeMeters,
                     distance: trackPoint.DistanceMeters,
-                    percentage: 10,
-                    duration: runTime(elem.Track.Trackpoint[0].Time, trackPoint.Time),
-                    climb: "climb",
+                    duration: runTime(startTime, trackPoint.Time),
+                    climb: "cb",
                     heartRate: trackPoint.HeartRateBpm.Value,
                     lat: parseFloat(trackPoint.Position.LatitudeDegrees),
                     lng: parseFloat(trackPoint.Position.LongitudeDegrees)

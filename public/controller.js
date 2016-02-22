@@ -148,6 +148,10 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             shape = map.shapes.routeShape;
         });
     };
+    
+    var percentageRun = function (currentDistance, totalDistance) {
+        return currentDistance/totalDistance*100;
+    }
 
     var stepMap = function(percentage) {
         var icons = shape.get('icons');
@@ -163,7 +167,6 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             $scope.cursor = {
                 duration: $scope.route.data.trackPoints[i].duration,
                 distance: $scope.route.data.trackPoints[i].distance,
-                percentage: $scope.route.data.trackPoints[i].percentage,
                 climb: $scope.route.data.trackPoints[i].climb,
                 altitude: $scope.route.data.trackPoints[i].altitude,
                 bpm: $scope.route.data.trackPoints[i].heartRate,
@@ -171,7 +174,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 lng: $scope.route.data.trackPoints[i].lng
             };
             
-            stepMap($scope.route.data.trackPoints[i].percentage);
+            stepMap(percentageRun($scope.route.data.trackPoints[i].distance), $scope.route.totalDuration);
             
             i++;
             if (i < trackpointCount) {
