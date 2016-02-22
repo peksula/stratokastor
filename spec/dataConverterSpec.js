@@ -122,5 +122,12 @@ describe("Tcx2Converter", function() {
         expect(route.distance).toBe("5438.1");
     });
     
+    it("should return correct percentage", function() {
+        var relativePath = 'data/993568829.tcx';
+        var buffer = readFileAsString(relativePath);
+        var route = converter.createConverter(buffer).convert(buffer);
+        expect(route.trackPoints[50].percentage).toBe(10);
+    });    
+    
 });
 

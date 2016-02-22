@@ -36,6 +36,7 @@ exports.createConverter = function (data) {
                     timeStamp: trackPoint.Time,
                     altitude: trackPoint.AltitudeMeters,
                     distance: trackPoint.DistanceMeters,
+                    percentage: 10,
                     duration: runTime(elem.Track.Trackpoint[0].Time, trackPoint.Time),
                     climb: "climb",
                     heartRate: trackPoint.HeartRateBpm.Value,

@@ -74,10 +74,8 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
             id,
             function successCallback(response) {
                 refreshRoute(response);
-                $scope.status = {text : "Route loaded successfully."};
              },
             function errorCallback(response) {
-                $scope.status = {text : "Failed to load the route."};
             }
         );
 	};    
@@ -88,11 +86,9 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
             function successCallback(response) {
                 refreshRoutes(response);
                 $scope.route = "";
-                $scope.status = {text : "Route deleted successfully."};
              },
             function errorCallback(response) {
                 console.log("Failed to delete the route. %s.", response);
-                $scope.status = {text : "Failed to delete the route."};
             }
         );
 	};
@@ -143,6 +139,21 @@ kastor.controller('routeAnimationController', function(NgMap, $scope, $interval,
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout) {
     var vc = this;
     var timer;
+    var map;
+    var shape;
+    
+    $scope.initMap = function() {
+        NgMap.getMap().then(function(_map) {
+            map = _map;
+            shape = map.shapes.routeShape;
+        });
+    };
+
+    var stepMap = function(percentage) {
+        var icons = shape.get('icons');
+        icons[0].offset = percentage + '%';
+        shape.set('icons', icons);
+    }
     
     $scope.playRoute = function() {
         var trackpointCount = $scope.route.data.trackPoints.length;
@@ -152,12 +163,16 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             $scope.cursor = {
                 duration: $scope.route.data.trackPoints[i].duration,
                 distance: $scope.route.data.trackPoints[i].distance,
+                percentage: $scope.route.data.trackPoints[i].percentage,
                 climb: $scope.route.data.trackPoints[i].climb,
                 altitude: $scope.route.data.trackPoints[i].altitude,
                 bpm: $scope.route.data.trackPoints[i].heartRate,
                 lat: $scope.route.data.trackPoints[i].lat,
                 lng: $scope.route.data.trackPoints[i].lng
             };
+            
+            stepMap($scope.route.data.trackPoints[i].percentage);
+            
             i++;
             if (i < trackpointCount) {
                 timer = $timeout(step, 1000);
@@ -172,9 +187,5 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             $timeout.cancel(timer);
         }
     };        
-    
-    NgMap.getMap().then(function(map) {
-        var shape = map.shapes.routeShape;
-    });
 
 });
