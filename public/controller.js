@@ -1,4 +1,5 @@
 var kastor = angular.module('kastor', ['ngMap']);
+var utils = require('utils');
 
 kastor.service('RouteService', ['$http', function($http){
 
@@ -149,12 +150,6 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         });
     };
     
-    var percentageRun = function (currentDistance, totalDistance) {
-        var percentage = currentDistance/totalDistance*100;
-        console.log("percentage " + percentage + ". Curr: " + currentDistance + ". Total: " + totalDistance);
-        return percentage;
-    }
-
     var stepMap = function(percentage) {
         var icons = shape.get('icons');
         icons[0].offset = percentage + '%';
@@ -176,7 +171,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 lng: $scope.route.data.trackPoints[i].lng
             };
             
-            stepMap(percentageRun($scope.route.data.trackPoints[i].distance, $scope.route.data.distance));
+            stepMap(utils.percentageRun($scope.route.data.trackPoints[i].distance, $scope.route.data.distance));
             
             i++;
             if (i < trackpointCount) {
