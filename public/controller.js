@@ -106,10 +106,7 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
                 console.log("Failed to update the route. %s.", response);
             }
         );
-    };
-    
-    
-    
+    };    
 }]);
 
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout) {
@@ -129,6 +126,10 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         var percentage = currentDistance/totalDistance*100;
         console.log("percentage " + percentage + ". Curr: " + currentDistance + ". Total: " + totalDistance);
         return percentage;
+    }
+
+    var millisecondsToNextPoint = function (currentTimestamp, nextTimestamp) {
+        return 1000;
     }
 
     var stepMap = function(percentage) {
@@ -156,7 +157,8 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             
             i++;
             if (i < trackpointCount) {
-                timer = $timeout(step, 1000);
+                var delay = millisecondsToNextPoint($scope.route.data.trackPoints[i].timeStamp, $scope.route.data.trackPoints[i+1].timeStamp);
+                timer = $timeout(step, delay);
             }
         }
         
