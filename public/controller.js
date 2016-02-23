@@ -1,5 +1,4 @@
 var kastor = angular.module('kastor', ['ngMap']);
-var utils = require('utils');
 
 kastor.service('RouteService', ['$http', function($http){
 
@@ -112,30 +111,6 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
     
     
 }]);
-/*
-kastor.controller('routeAnimationController', function(NgMap, $scope, $interval, $timeout) {
-    var vm = this;
-    var count = 0;
-    var _timeout = 200;
-    
-    NgMap.getMap().then(function(map) {
-        var shape = map.shapes.routeShape;
-        
-        var step = function() {
-            count = (count + 1) % 200;
-            var icons = shape.get('icons');
-            icons[0].offset = (count / 2) + '%';
-            shape.set('icons', icons);
-            _timeout = _timeout +1;
-            //$timeout(step, _timeout);
-            $timeout(step, 200);
-        }
-        
-        $timeout(step, 200);
-    });
-
-});
-*/
 
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout) {
     var vc = this;
@@ -150,6 +125,12 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         });
     };
     
+    var percentageRun = function (currentDistance, totalDistance) {
+        var percentage = currentDistance/totalDistance*100;
+        console.log("percentage " + percentage + ". Curr: " + currentDistance + ". Total: " + totalDistance);
+        return percentage;
+    }
+
     var stepMap = function(percentage) {
         var icons = shape.get('icons');
         icons[0].offset = percentage + '%';
@@ -171,7 +152,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 lng: $scope.route.data.trackPoints[i].lng
             };
             
-            stepMap(utils.percentageRun($scope.route.data.trackPoints[i].distance, $scope.route.data.distance));
+            stepMap(percentageRun($scope.route.data.trackPoints[i].distance, $scope.route.data.distance));
             
             i++;
             if (i < trackpointCount) {
