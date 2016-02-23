@@ -129,7 +129,10 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     }
 
     var millisecondsToNextPoint = function (currentTimestamp, nextTimestamp) {
-        return 1000;
+        var startDate = new Date(currentTimestamp);
+        var endDate = new Date(nextTimestamp);
+        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+        return diffInMilliseconds;
     }
 
     var stepMap = function(percentage) {
