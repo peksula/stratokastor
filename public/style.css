@@ -59,7 +59,7 @@
     width: 160px;
     height: 110px;
     background-color: #FFFFFF;
-    font: 24px verdana, sans-serif;
+    font: 20px verdana, sans-serif;
 }
 #route-data-hr {
     float: right;
@@ -80,7 +80,7 @@
     width: 160px;
     height: 110px;
     background-color: #FFFFFF;
-    font: 24px verdana, sans-serif;
+    font: 20px verdana, sans-serif;
 }
 #route-playback-controls {
     width: 320px;
