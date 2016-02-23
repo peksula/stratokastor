@@ -116,7 +116,6 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     var shape;
     
     $scope.initMap = function() {
-        cancelAnimation();
         NgMap.getMap().then(function(_map) {
             map = _map;
             shape = map.shapes.routeShape;
