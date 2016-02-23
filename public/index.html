@@ -62,8 +62,8 @@
             <div id="route-data-dynamic">
                 <div id="route-data-hr">HR <span id="bpm">{{ cursor.bpm }}</span></div>
                 <div id="route-data-duration"><span id="duration">{{ cursor.duration }}</span></div>
-                <div id="route-data-altitude">Alt. <span id="altitude">{{ cursor.altitude }}</span></div>
-                <div id="route-data-climb">Climb <span id="climb">{{ cursor.climb }}</span></div>
+                <div id="route-data-altitude">Alt. <span id="altitude">{{ cursor.altitude | number:1 }}</span></div>
+                <div id="route-data-climb">Distance <span id="climb">{{ cursor.distance | number:1 }}</span></div>
                 <div id="route-playback-controls">
                     <button ng-click="playRoute()">Play</button>
                     <button ng-click="stopRoute()">Stop</button>
