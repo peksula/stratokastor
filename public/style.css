@@ -87,16 +87,16 @@
     height: 20px;
 }
 #altitude {
-    font: 64px verdana, sans-serif;
+    font: 48px verdana, sans-serif;
 }
 #bpm {
-    font: 64px verdana, sans-serif;
+    font: 48px verdana, sans-serif;
 }
 #duration {
-    font: 64px verdana, sans-serif;
+    font: 48px verdana, sans-serif;
 }
 #climb {
-    font: 64px verdana, sans-serif;
+    font: 48px verdana, sans-serif;
 }
 #status-bar {
     width: 700px;

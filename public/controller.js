@@ -1,6 +1,7 @@
 var kastor = angular.module('kastor', ['ngMap']);
+var timer;
 
-kastor.service('RouteService', ['$http', function($http){
+kastor.service('RouteService', ['$http', '$timeout', function($http, $timeout){
 
     this.getAll = function(successCallback, errorCallback) {
         $http({
@@ -44,12 +45,22 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
     }
     
     var refreshRoute = function(response) {
+        if (timer !== undefined) {
+            $timeout.cancel(timer);
+        }
         $scope.route = angular.fromJson(response.data);
         $scope.mapPosition = {
             lat: $scope.route.data.startLat,
             lng: $scope.route.data.startLng,
             zoom: 15
         };
+        $scope.cursor = {
+            duration: "0:00",
+            distance: 0,
+            climb: 0,
+            altitude: 0,
+            bpm: 0
+        };        
         console.log($scope.route);
     }
 
@@ -111,7 +122,6 @@ kastor.controller('mainController', ['$scope', 'RouteService', function($scope, 
 
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout) {
     var vc = this;
-    var timer;
     var map;
     var shape;
     
@@ -139,12 +149,6 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         var icons = shape.get('icons');
         icons[0].offset = percentage + '%';
         shape.set('icons', icons);
-    }
-    
-    var cancelAnimation = function() {
-        if (timer !== undefined) {
-            $timeout.cancel(timer);
-        }
     }
 
     $scope.playRoute = function() {
@@ -175,7 +179,9 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
 	};
     
     $scope.stopRoute = function() {
-        cancelAnimation();
-    };        
+        if (timer !== undefined) {
+            $timeout.cancel(timer);
+        }
+    };
 
 });
