@@ -1,7 +1,7 @@
 var kastor = angular.module('kastor', ['ngMap']);
 var timer;
 
-kastor.service('RouteService', ['$http', '$timeout', function($http, $timeout){
+kastor.service('RouteService', ['$http', function($http){
 
     this.getAll = function(successCallback, errorCallback) {
         $http({
@@ -38,7 +38,7 @@ kastor.service('RouteService', ['$http', '$timeout', function($http, $timeout){
 
 }]);    
     
-kastor.controller('mainController', ['$scope', 'RouteService', function($scope, RouteService){
+kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', function($scope, $timeout, RouteService){
     var refreshRoutes = function(response) {
         $scope.routes = response.data;
         console.log($scope.routes);
