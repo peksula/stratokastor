@@ -54,13 +54,6 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', funct
             lng: $scope.route.data.startLng,
             zoom: 15
         };
-        $scope.cursor = {
-            duration: "0:00",
-            distance: 0,
-            climb: 0,
-            altitude: 0,
-            bpm: 0
-        };        
         console.log($scope.route);
     }
 
@@ -159,7 +152,8 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             $scope.cursor = {
                 duration: $scope.route.data.trackPoints[i].duration,
                 distance: $scope.route.data.trackPoints[i].distance,
-                climb: $scope.route.data.trackPoints[i].climb,
+                //climb: $scope.route.data.trackPoints[i].climb,
+                climb: i,
                 altitude: $scope.route.data.trackPoints[i].altitude,
                 bpm: $scope.route.data.trackPoints[i].heartRate,
                 lat: $scope.route.data.trackPoints[i].lat,
