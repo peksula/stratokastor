@@ -67,7 +67,10 @@
                 <div id="route-playback-controls">
                     <button id="play-button" ng-click="playRoute()">Play</button>
                     <button id="stop-button" ng-click="stopRoute()">Stop</button>
-                    Speed: <input id="multiplier-slider" type="range" min="1" max="10" step="1" value="1" ng-model="playbackMultiplier"/> x{{playbackMultiplier}}
+                    Speed: <input id="multiplier-slider" type="range" value=1 min=0 max=20 step=1 ng-model="playbackMultiplier"/ list="multipliers">
+                    <datalist id="multipliers">
+                      <option>1</option>
+                    </datalist>
                 </div>
             </div>
             <table>
