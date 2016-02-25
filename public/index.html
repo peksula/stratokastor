@@ -65,9 +65,9 @@
                 <div id="route-data-altitude">Climb<br><span id="altitude">{{ cursor.climb | number:1 }}</span></div>
                 <div id="route-data-climb">Distance<br><span id="climb">{{ cursor.distance | number:1 }}</span></div>
                 <div id="route-playback-controls">
-                    <button ng-click="playRoute()">Play</button>
-                    <button ng-click="stopRoute()">Stop</button>
-                    <input id="slider" type="range" min="1" max="10" step="1" />
+                    <button id="play-button" ng-click="playRoute()">Play</button>
+                    <button id="stop-button" ng-click="stopRoute()">Stop</button>
+                    Speed: <input id="multiplier-slider" type="range" min="1" max="10" step="1" value="1" ng-model="playbackMultiplier"/> x{{playbackMultiplier}}
                 </div>
             </div>
             <table>

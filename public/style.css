@@ -57,34 +57,35 @@
 #route-data-altitude {
     float: right;
     width: 160px;
-    height: 110px;
+    height: 100px;
     background-color: #FFFFFF;
     font: 20px verdana, sans-serif;
 }
 #route-data-hr {
     float: right;
     width: 160px;
-    height: 110px;
+    height: 100px;
     background-color: #FFFFFF;
     font: 20px verdana, sans-serif;
 }
 #route-data-climb {
     float: right;
     width: 160px;
-    height: 110px;
+    height: 100px;
     background-color: #FFFFFF;
     font: 20px verdana, sans-serif;
 }
 #route-data-duration {
     float: right;
     width: 160px;
-    height: 110px;
+    height: 100px;
     background-color: #FFFFFF;
     font: 20px verdana, sans-serif;
 }
 #route-playback-controls {
     width: 320px;
     height: 20px;
+    vertical-align: middle;
 }
 #altitude {
     font: 48px verdana, sans-serif;
@@ -98,6 +99,19 @@
 #climb {
     font: 48px verdana, sans-serif;
 }
+#play-button {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 8px;
+}
+#stop-button {
+    background-color: #f44336;
+    color: white;
+    border-radius: 8px;
+}
+#multiplier-slider {
+}
+
 #status-bar {
     width: 700px;
     height: 20px;
