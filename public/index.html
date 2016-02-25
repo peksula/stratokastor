@@ -54,8 +54,8 @@
                  }]"            
                 path = "{{ route.data.trackPoints }}"
                 stroke-color = "#990000"
-                stroke-opacity = "0.8"
-                stroke-weight = "2">
+                stroke-opacity = "0.5"
+                stroke-weight = "5">
             </shape>
         </ng-map>
         <div id="route-data">
@@ -67,9 +67,17 @@
                 <div id="route-playback-controls">
                     <button id="play-button" ng-click="playRoute()">Play</button>
                     <button id="stop-button" ng-click="stopRoute()">Stop</button>
-                    Speed: <input id="multiplier-slider" type="range" value=1 min=0 max=20 step=1 ng-model="playbackMultiplier"/ list="multipliers">
+                    Speed: <input id="multiplier-slider" type="range" value=1 min=1 max=50 step=1 ng-model="playbackMultiplier"/ list="multipliers">
                     <datalist id="multipliers">
-                      <option>1</option>
+                      <option>5</option>
+                      <option>10</option>
+                      <option>15</option>
+                      <option>20</option>
+                      <option>25</option>
+                      <option>30</option>
+                      <option>35</option>
+                      <option>40</option>
+                      <option>45</option>
                     </datalist>
                 </div>
             </div>
