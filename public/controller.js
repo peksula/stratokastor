@@ -164,7 +164,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             
             i++;
             if (i < trackpointCount) {
-                var delay = millisecondsToNextPoint($scope.route.data.trackPoints[i].timeStamp, $scope.route.data.trackPoints[i+1].timeStamp);
+                var delay = millisecondsToNextPoint($scope.route.data.trackPoints[i-1].timeStamp, $scope.route.data.trackPoints[i].timeStamp);
                 timer = $timeout(step, delay);
             }
         }
