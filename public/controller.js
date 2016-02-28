@@ -63,6 +63,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', funct
             lng: 24.8500,
             zoom: 8
         };
+        $scope.playbackMultiplier = 1;
         RouteService.getAll(
             function successCallback(response) {
                 refreshRoutes(response);
