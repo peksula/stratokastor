@@ -75,7 +75,7 @@ var Kastor = function() {
         self.app.get('/', function(req, res) {
             res.sendfile('./public/index.html');
         });
-        self.app.post('/routes', self.file_uploader, self.database_save, self.database_get_list);
+        self.app.post('/routes', self.file_uploader, self.database_save);
         self.app.post('/routes/:id', self.database_update, self.database_get_list);
         self.app.get('/routes', self.database_get_list);
         self.app.get('/routes/:id', self.database_get_details);
@@ -105,7 +105,8 @@ var Kastor = function() {
                 res.send(err);
             }
         });
-        next();
+        
+        res.redirect('/');
     };
 
     self.database_delete = function(req, res, next) {
