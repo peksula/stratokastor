@@ -1,42 +1,35 @@
 <!DOCTYPE html>
 <html ng-app="kastor">
-  <head>
+<head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="http://maps.google.com/maps/api/js"></script>
     <script src="ngmap/build/scripts/ng-map.min.js"></script>
     <script src="controller.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  </head>
-  <body ng-controller="mainController" ng-init="init()">
+</head>
+
+<body ng-controller="mainController" ng-init="init()">
     <img src="logo_1934209_web.jpg">
-    <div id="routes">
-        <div id="route-list" class="row">
-            <!-- LOOP OVER $scope.routes -->
-            <div id= "route-list-element" ng-repeat="route in routes">
-                <b>{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</b><br>
-                {{ route.comment }}<br>
-                <button id="view-details-button" ng-click="showRoute(route._id)">Näytä</button>
+    NB. Palvelu on kehitysvaiheessa. Kaikki näkevät reittisi tietoineen. Tietojen säilymistä ei taata.
+    <div id="main-div">
+        <div id="right-panel">
+            <div id="route-list" class="row">
+                <div id= "route-list-element" ng-repeat="route in routes">
+                    <b>{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</b><br>
+                    {{ route.comment }}<br>
+                    <button id="view-details-button" ng-click="showRoute(route._id)">Näytä</button>
+                </div>
+                <div id= "route-list-element-new">
+                    <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
+                        <input type="file" name="route_file">
+                        <input type="submit" value="Lisää uusi reitti">    
+                    </form>
+                </div>
             </div>
-        </div>
-        </p>
-        
-        <h2>Lisää uusi reitti</h2>
-        
-        <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
-            <input type="file" name="route_file">
-            <p>
-            <input type="text" name="title" value="Otsikko">
-            <p>
-            <input type="submit" value="Lähetä">    
-        </form>
-        <p>
-        NB. Palvelu on kehitysvaiheessa. Kaikki näkevät reittisi tietoineen. Tietojen säilymistä ei taata.
-        </p>
-        
-    </div>        
+        </div>        
     <div ng-controller="routeVisualizationController as vc" id="map-canvas" map-lazy-load="https://maps.google.com/maps/api/js" ng-init="initMap()">
-        <ng-map zoom="{{ mapPosition.zoom }}" center="[{{ mapPosition.lat }}, {{ mapPosition.lng }}]" map-type-id="TERRAIN" style="width:1000px;height:600px;">
+        <ng-map zoom="{{ mapPosition.zoom }}" center="[{{ mapPosition.lat }}, {{ mapPosition.lng }}]" map-type-id="TERRAIN" style="width:1000px;height:500px;">
             <shape name = "polyline" id = "routeShape"
                 icons = "[{
                      icon: {
@@ -67,9 +60,9 @@
             <table>
                 <tr><td>Otsikko</td><td><input type="text" name="saved-title" ng-model="route.title"></td></tr>
                 <tr><td>Aloitusaika</td><td>{{ route.data.startTime | date:'dd.MM.yyyy HH:mm:ss'}}</td></tr>
-                <tr><td>Kesto</td><td>{{ route.data.duration}}</td></tr>
-                <tr><td>Pituus</td><td>{{ route.data.distance | number:2 }}</td></tr>
-                <tr><td>Nopeus</td><td>{{ totalVelocity | number:2 }}</td></tr>
+                <tr><td>Kesto [min]</td><td>{{ route.data.duration}}</td></tr>
+                <tr><td>Pituus [m]</td><td>{{ route.data.distance | number:2 }}</td></tr>
+                <tr><td>Nopeus [km/h]</td><td>{{ totalVelocity | number:2 }}</td></tr>
                 <tr><td>Sää</td><td><input type="text" name="saved-weather" ng-model="route.weather"></td></tr>
                 <tr><td>Kuvaus</td><td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment"></textarea></td></tr>
                 <tr><td>Laite</td><td>{{ route.data.device }}</td></tr>
@@ -78,4 +71,5 @@
             </table>
         </div>
     </div>
-  </body>
+  </div>    
+</body>
