@@ -43,6 +43,18 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', funct
         $scope.routes = response.data;
         console.log($scope.routes);
     }
+
+    var lengthInKilometers = function(lengthInMeters) {
+        return lengthInMeters/1000;
+    }    
+
+    var runTimeInHours = function(startTime, endTime) {
+        var startDate = new Date(startTime);
+        var endDate = new Date(endTime);
+        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+        var diffInHours = diffInMilliseconds / 3600000;
+        return diffInHours;
+    }    
     
     var refreshRoute = function(response) {
         if (timer !== undefined) {
@@ -54,6 +66,8 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', funct
             lng: $scope.route.data.startLng,
             zoom: 15
         };
+        var totalTimeInHours = runTime($scope.route.data.trackPoints[0].timeStamp, $scope.route.data.trackPoints[trackPoints.length-1].timeStamp);
+        $scope.totalVelocity = lengthInKilometers($scope.route.data.distance) / totalTimeInHours;
         console.log($scope.route);
     }
 
