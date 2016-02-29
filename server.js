@@ -105,6 +105,7 @@ var Kastor = function() {
                 res.send(err);
             }
         });
+        next();
     };
 
     self.database_delete = function(req, res, next) {
