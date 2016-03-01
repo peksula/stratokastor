@@ -47,14 +47,16 @@
         </ng-map>
         <div id="route-data">
             <div id="route-data-dynamic">
-                <div id="route-data-hr">Syke<br><span id="bpm">{{ cursor.bpm }}</span></div>
-                <div id="route-data-duration">Kesto<br><span id="duration">{{ cursor.duration }}</span></div>
-                <div id="route-data-altitude">Nousu<br><span id="altitude">{{ cursor.climb | number:1 }}</span></div>
+                <div id="route-data-velocity">Nopeus<br><span id="velocity">{{ cursor.velocity }}</span></div>
                 <div id="route-data-climb">Pituus<br><span id="climb">{{ cursor.distance | number:1 }}</span></div>
+                <div id="route-data-duration">Kesto<br><span id="duration">{{ cursor.duration }}</span></div>
+                <div id="route-data-hr">Syke<br><span id="bpm">{{ cursor.bpm }}</span></div>
+                <div id="route-data-climb">Nousu<br><span id="climb">{{ cursor.climb | number:1 }}</span></div>
+                <div id="route-data-altitude">Korkeus<br><span id="altitude">{{ cursor.altitude | number:1 }}</span></div>
                 <div id="route-playback-controls">
                     <button id="play-button" ng-click="playRoute()">Play</button>
                     <button id="stop-button" ng-click="stopRoute()">Stop</button>
-                    Nopeus: <input id="multiplier-slider" type="range" min=1 max=5 step=1 ng-model="playbackMultiplier"/>
+                    Nopeus: <input id="multiplier-slider" type="range" min=1 max=8 step=1 ng-model="playbackMultiplier"/>
                 </div>
             </div>
             <table>

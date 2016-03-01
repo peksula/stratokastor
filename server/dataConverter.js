@@ -44,6 +44,7 @@ exports.createConverter = function (data) {
                     distance: trackPoint.DistanceMeters,
                     duration: runTime(startTime, trackPoint.Time),
                     climb: "cb",
+                    velocity: "vel",
                     heartRate: trackPoint.HeartRateBpm.Value,
                     lat: parseFloat(trackPoint.Position.LatitudeDegrees),
                     lng: parseFloat(trackPoint.Position.LongitudeDegrees)

@@ -167,8 +167,8 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             $scope.cursor = {
                 duration: $scope.route.data.trackPoints[i].duration,
                 distance: $scope.route.data.trackPoints[i].distance,
-                //climb: $scope.route.data.trackPoints[i].climb,
-                climb: $scope.playbackMultiplier,
+                velocity: $scope.route.data.trackPoints[i].velocity,
+                climb: $scope.route.data.trackPoints[i].climb,
                 altitude: $scope.route.data.trackPoints[i].altitude,
                 bpm: $scope.route.data.trackPoints[i].heartRate,
                 lat: $scope.route.data.trackPoints[i].lat,
