@@ -152,6 +152,19 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         var diffInMilliseconds = endDate.getTime() - startDate.getTime();
         return diffInMilliseconds;
     }
+    
+    var lengthInKilometers = function(lengthInMeters) {
+        return lengthInMeters/1000;
+    }    
+
+    // TODO: a service is needed for the utilities
+    var runTimeInHours = function(startTime, endTime) {
+        var startDate = new Date(startTime);
+        var endDate = new Date(endTime);
+        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+        var diffInHours = diffInMilliseconds / 3600000;
+        return diffInHours;
+    }    
 
     var stepMap = function(percentage) {
         var icons = shape.get('icons');
