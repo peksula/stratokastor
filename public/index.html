@@ -48,7 +48,7 @@
         <div id="route-data">
             <div id="route-data-dynamic">
                 <div id="route-data-velocity">Nopeus [km/h]<br><span id="velocity">{{ cursor.velocity | number:1 }}</span></div>
-                <div id="route-data-climb">Pituus [m]<br><span id="climb">{{ cursor.distance | number:1 }}</span></div>
+                <div id="route-data-climb">Pituus [m]<br><span id="distance">{{ cursor.distance | number:0 }}</span></div>
                 <div id="route-data-duration">Kesto<br><span id="duration">{{ cursor.duration }}</span></div>
                 <div id="route-data-hr">Syke<br><span id="bpm">{{ cursor.bpm }}</span></div>
                 <div id="route-data-climb">Nousu [m]<br><span id="climb">{{ cursor.climb | number:1 }}</span></div>
