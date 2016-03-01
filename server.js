@@ -75,14 +75,14 @@ var Kastor = function() {
         self.app.get('/', function(req, res) {
             res.sendfile('./public/index.html');
         });
-        self.app.post('/routes', self.file_uploader, self.database_save);
+        self.app.post('/routes', self.upload_file, self.database_save);
         self.app.post('/routes/:id', self.database_update, self.database_get_list);
         self.app.get('/routes', self.database_get_list);
         self.app.get('/routes/:id', self.database_get_details);
         self.app.delete('/routes/:id', self.database_delete, self.database_get_list);
     };
     
-    self.file_uploader = function(req, res, next) {
+    self.upload_file = function(req, res, next) {
         uploader.process_form(req, res, next);
     };
     
@@ -162,7 +162,7 @@ var Kastor = function() {
 	};
     
     self.database_get_list = function(req, res, next) {
-		route.find({}, 'title date comment', function(err, routes) {
+		route.find({}, 'title date comment', {sort: {date: -1}}, function(err, routes) {
 			if (err) {
                 console.log('Error occurred when getting list from database %s', err);
 				res.send(err);
@@ -185,6 +185,7 @@ var Kastor = function() {
         self.createRoutes();
 
         //  Add handlers for the app (from the routes).
+        // TODO: REMOVE AS REDUNDANT?
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
         }

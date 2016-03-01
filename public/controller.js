@@ -185,7 +185,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             }
         }
         
-        timer = $timeout(step, 1000);
+        timer = $timeout(step, 250);
 	};
     
     $scope.stopRoute = function() {
