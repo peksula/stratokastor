@@ -162,7 +162,7 @@ var Kastor = function() {
 	};
     
     self.database_get_list = function(req, res, next) {
-		route.find({}, 'title date comment', {sort: {date: -1}}, function(err, routes) {
+		route.find({}, 'title date comment', {sort: '-date'}, function(err, routes) {
 			if (err) {
                 console.log('Error occurred when getting list from database %s', err);
 				res.send(err);
