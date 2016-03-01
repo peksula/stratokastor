@@ -24,7 +24,7 @@ exports.createConverter = function (data) {
         var seconds = ((diffInMilliseconds % 60000) / 1000).toFixed(0);
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     }
-
+    
     var tcx2ConverterFn = function (data) {
         var text = parser.toJson(data);
         var json = JSON.parse(text);
@@ -44,7 +44,6 @@ exports.createConverter = function (data) {
                     distance: trackPoint.DistanceMeters,
                     duration: runTime(startTime, trackPoint.Time),
                     climb: "cb",
-                    velocity: "vel",
                     heartRate: trackPoint.HeartRateBpm.Value,
                     lat: parseFloat(trackPoint.Position.LatitudeDegrees),
                     lng: parseFloat(trackPoint.Position.LongitudeDegrees)

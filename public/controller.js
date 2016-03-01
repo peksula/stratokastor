@@ -164,10 +164,16 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         var i = 0;
         
         var step = function() {
+            var currentVelocity = 0;
+            if (i > 0) {
+                var timeInHours = runTimeInHours($scope.route.data.trackPoints[i-1].timeStamp, $scope.route.data.trackPoints[i].timeStamp);
+                var kilometersSinceLastPoint = lengthInKilometers($scope.route.data.trackPoints[i].distance - $scope.route.data.trackPoints[i-1].distance);
+                currentVelocity = kilometersSinceLastPoint / timeInHours;
+            }
             $scope.cursor = {
                 duration: $scope.route.data.trackPoints[i].duration,
                 distance: $scope.route.data.trackPoints[i].distance,
-                velocity: $scope.route.data.trackPoints[i].velocity,
+                velocity: currentVelocity,
                 climb: $scope.route.data.trackPoints[i].climb,
                 altitude: $scope.route.data.trackPoints[i].altitude,
                 bpm: $scope.route.data.trackPoints[i].heartRate,
