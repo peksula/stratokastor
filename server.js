@@ -183,12 +183,6 @@ var Kastor = function() {
         self.app.use(bodyParser.urlencoded({ extended: true }));
         
         self.createRoutes();
-
-        //  Add handlers for the app (from the routes).
-        // TODO: REMOVE AS REDUNDANT?
-        for (var r in self.routes) {
-            self.app.get(r, self.routes[r]);
-        }
     };
     
     /**
