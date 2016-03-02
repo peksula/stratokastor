@@ -6,12 +6,13 @@ exports.createConverter = function (data) {
         this.convert = converterFunction;
     }
     
-    function route(startTime, device, trackPoints, duration, distance, startLat, startLng) {
+    function route(startTime, device, trackPoints, duration, distance, climb, startLat, startLng) {
         this.startTime = startTime;
         this.device = device;
         this.trackPoints = trackPoints;
         this.duration = duration;
         this.distance = distance;
+        this.climb = climb;
         this.startLat = startLat;
         this.startLng = startLng;
     }
@@ -30,6 +31,8 @@ exports.createConverter = function (data) {
         var json = JSON.parse(text);
         var trackPoints = [];
         var startTime;
+        var lastAltitudeReading;
+        var totalClimb = 0;
         
         json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
             elem.Track.Trackpoint.forEach(function(trackPoint) {
@@ -38,17 +41,26 @@ exports.createConverter = function (data) {
                     startTime = trackPoint.Time;
                 }
                 
+                if (lastAltitudeReading !== undefined) {
+                    currentAltitude = parseFloat(trackPoint.AltitudeMeters);
+                    
+                    if (currentAltitude > lastAltitudeReading) {
+                        totalClimb = totalClimb + currentAltitude - lastAltitudeReading;
+                    }
+                }
+                
                 var point = {
                     timeStamp: trackPoint.Time,
                     altitude: trackPoint.AltitudeMeters,
                     distance: trackPoint.DistanceMeters,
                     duration: runTime(startTime, trackPoint.Time),
-                    climb: "cb",
+                    climb: totalClimb,
                     heartRate: trackPoint.HeartRateBpm.Value,
                     lat: parseFloat(trackPoint.Position.LatitudeDegrees),
                     lng: parseFloat(trackPoint.Position.LongitudeDegrees)
                     };
                 trackPoints.push(point);
+                lastAltitudeReading = point.altitude;
             });
         });            
         
@@ -60,6 +72,7 @@ exports.createConverter = function (data) {
             trackPoints,
             totalDuration,
             trackPoints[trackPoints.length-1].distance,
+            totalClimb,
             trackPoints[0].lat,
             trackPoints[0].lng
         );

@@ -93,5 +93,10 @@ describe("Tcx2Converter", function() {
         expect(this.route.distance).toBe("5438.1");
     });
     
+    it("should calculate correct climb", function() {
+        expect(this.route.trackPoints[3].climb).toBe(0);
+        expect(this.route.trackPoints[8].climb).toBe(3.9);
+    });    
+    
 });
 

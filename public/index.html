@@ -21,9 +21,10 @@
                     <button id="view-details-button" ng-click="showRoute(route._id)">Näytä</button>
                 </div>
                 <div id= "route-list-element-new">
+                    Lisää uusi reitti tcx- tai gpx- tiedostosta.
                     <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
                         <span id="add-route-plus-sign">+</span> <input type="file" name="route_file">
-                        <input type="submit" value="Lisää uusi reitti">    
+                        <input type="submit" value="Lataa reittitiedosto palvelimelle">    
                     </form>
                 </div>
             </div>
@@ -52,7 +53,7 @@
                 <div id="route-data-duration">Kesto<br><span id="duration">{{ cursor.duration }}</span></div>
                 <div id="route-data-hr">Syke<br><span id="bpm">{{ cursor.bpm }}</span></div>
                 <div id="route-data-climb">Nousu [m]<br><span id="climb">{{ cursor.climb | number:1 }}</span></div>
-                <div id="route-data-altitude">Korkeus<br><span id="altitude">{{ cursor.altitude | number:1 }}</span></div>
+                <div id="route-data-altitude"></div>
                 <div id="route-playback-controls">
                     <button id="play-button" ng-click="playRoute()">Play</button>
                     <button id="stop-button" ng-click="stopRoute()">Stop</button>
