@@ -60,7 +60,7 @@ exports.createConverter = function (data) {
                     lng: parseFloat(trackPoint.Position.LongitudeDegrees)
                     };
                 trackPoints.push(point);
-                lastAltitudeReading = point.altitude;
+                lastAltitudeReading = parseFloat(point.altitude);
             });
         });            
         
