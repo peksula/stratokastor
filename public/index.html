@@ -65,6 +65,7 @@
                 <tr><td>Aloitusaika</td><td>{{ route.data.startTime | date:'dd.MM.yyyy HH:mm:ss'}}</td></tr>
                 <tr><td>Kesto [min]</td><td>{{ route.data.duration}}</td></tr>
                 <tr><td>Pituus [m]</td><td>{{ route.data.distance | number:2 }}</td></tr>
+                <tr><td>Nousu [m]</td><td>{{ route.data.climb | number:1 }}</td></tr>
                 <tr><td>Nopeus [km/h]</td><td>{{ totalVelocity | number:2 }}</td></tr>
                 <tr><td>Sää</td><td><input type="text" name="saved-weather" ng-model="route.weather"></td></tr>
                 <tr><td>Kuvaus</td><td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment"></textarea></td></tr>
