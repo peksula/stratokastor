@@ -44,6 +44,26 @@ kastor.service('TimeAndSpace', [function(){
         return lengthInMeters/1000;
     }    
 
+    this.millisecondsToNextPoint = function (currentTimestamp, nextTimestamp) {
+        var startDate = new Date(currentTimestamp);
+        var endDate = new Date(nextTimestamp);
+        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+        return diffInMilliseconds;
+    }
+    
+    this.runTimeInHours = function(startTime, endTime) {
+        var startDate = new Date(startTime);
+        var endDate = new Date(endTime);
+        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+        var diffInHours = diffInMilliseconds / 3600000;
+        return diffInHours;
+    }
+    
+    this.percentageRun = function (currentDistance, totalDistance) {
+        var percentage = currentDistance/totalDistance*100;
+        return percentage;
+    }
+
 }]);
     
 kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'TimeAndSpace', function($scope, $timeout, RouteService, TimeAndSpace){
@@ -52,14 +72,6 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
         console.log($scope.routes);
     }
 
-    var runTimeInHours = function(startTime, endTime) {
-        var startDate = new Date(startTime);
-        var endDate = new Date(endTime);
-        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
-        var diffInHours = diffInMilliseconds / 3600000;
-        return diffInHours;
-    }    
-    
     var refreshRoute = function(response) {
         if (timer !== undefined) {
             $timeout.cancel(timer);
@@ -68,9 +80,12 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
         $scope.mapPosition = {
             lat: $scope.route.data.startLat,
             lng: $scope.route.data.startLng,
-            zoom: 15
+            zoom: 16
         };
-        var totalTimeInHours = runTimeInHours($scope.route.data.trackPoints[0].timeStamp, $scope.route.data.trackPoints[$scope.route.data.trackPoints.length-1].timeStamp);
+        
+        var firstTimeStamp = $scope.route.data.trackPoints[0].timeStamp;
+        var lastTimeStamp = $scope.route.data.trackPoints[$scope.route.data.trackPoints.length-1].timeStamp;
+        var totalTimeInHours = TimeAndSpace.runTimeInHours(firstTimeStampce, lastTimeStamp);
         $scope.totalVelocity = TimeAndSpace.lengthInKilometers($scope.route.data.distance) / totalTimeInHours;
         console.log($scope.route);
     }
@@ -82,6 +97,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
             zoom: 8
         };
         $scope.playbackMultiplier = 1;
+
         RouteService.getAll(
             function successCallback(response) {
                 refreshRoutes(response);
@@ -99,6 +115,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
                 refreshRoute(response);
              },
             function errorCallback(response) {
+                console.log("Failed to load the route. %s.", response);
             }
         );
 	};    
@@ -134,37 +151,13 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
 
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout, TimeAndSpace) {
     var vc = this;
-    var map;
     var shape;
     
     $scope.initMap = function() {
-        NgMap.getMap().then(function(_map) {
-            map = _map;
+        NgMap.getMap().then(function(map) {
             shape = map.shapes.routeShape;
         });
     };
-    
-    var percentageRun = function (currentDistance, totalDistance) {
-        var percentage = currentDistance/totalDistance*100;
-        console.log("percentage " + percentage + ". Curr: " + currentDistance + ". Total: " + totalDistance);
-        return percentage;
-    }
-
-    var millisecondsToNextPoint = function (currentTimestamp, nextTimestamp) {
-        var startDate = new Date(currentTimestamp);
-        var endDate = new Date(nextTimestamp);
-        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
-        return diffInMilliseconds;
-    }
-    
-    // TODO: a service is needed for the utilities
-    var runTimeInHours = function(startTime, endTime) {
-        var startDate = new Date(startTime);
-        var endDate = new Date(endTime);
-        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
-        var diffInHours = diffInMilliseconds / 3600000;
-        return diffInHours;
-    }    
 
     var stepMap = function(percentage) {
         var icons = shape.get('icons');
@@ -179,8 +172,12 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         var step = function() {
             var currentVelocity = 0;
             if (i > 0) {
-                var timeInHours = runTimeInHours($scope.route.data.trackPoints[i-1].timeStamp, $scope.route.data.trackPoints[i].timeStamp);
-                var kilometersSinceLastPoint = TimeAndSpace.lengthInKilometers($scope.route.data.trackPoints[i].distance - $scope.route.data.trackPoints[i-1].distance);
+                var previousTimeStamp = $scope.route.data.trackPoints[i-1].timeStamp;
+                var currentTimeStamp = $scope.route.data.trackPoints[i].timeStamp;
+                var previousDistance = $scope.route.data.trackPoints[i-1].distance;
+                var currentDistance = $scope.route.data.trackPoints[i].distance;
+                var timeInHours = TimeAndSpace.runTimeInHours(previousTimeStamp, currentTimeStamp);
+                var kilometersSinceLastPoint = TimeAndSpace.lengthInKilometers(currentDistance - previousDistance);
                 currentVelocity = kilometersSinceLastPoint / timeInHours;
             }
             $scope.cursor = {
@@ -194,11 +191,13 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 lng: $scope.route.data.trackPoints[i].lng
             };
             
-            stepMap(percentageRun($scope.route.data.trackPoints[i].distance, $scope.route.data.distance));
+            stepMap(TimeAndSpace.percentageRun($scope.route.data.trackPoints[i].distance, $scope.route.data.distance));
             
             i++;
             if (i < trackpointCount) {
-                var delay = millisecondsToNextPoint($scope.route.data.trackPoints[i-1].timeStamp, $scope.route.data.trackPoints[i].timeStamp);
+                var currentTimeStamp = $scope.route.data.trackPoints[i-1].timeStamp;
+                var nextTimeStamp = $scope.route.data.trackPoints[i].timeStamp;
+                var delay = TimeAndSpace.millisecondsToNextPoint(currentTimeStamp, nextTimeStamp);
                 delay = delay / $scope.playbackMultiplier;
                 timer = $timeout(step, delay);
             }
