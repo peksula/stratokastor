@@ -74,49 +74,49 @@
     width: 160px;
     height: 100px;
     background-color: #FFFFFF;
-    font: 20px verdana, sans-serif;
+    font: 16px verdana, sans-serif;
 }
 #route-data-hr {
     float: right;
     width: 160px;
     height: 100px;
     background-color: #FFFFFF;
-    font: 20px verdana, sans-serif;
+    font: 16px verdana, sans-serif;
 }
-#route-data-altitude {
+#route-data-speed {
     float: right;
     width: 160px;
     height: 100px;
     background-color: #FFFFFF;
-    font: 20px verdana, sans-serif;
+    font: 16px verdana, sans-serif;
 }
 #route-data-climb {
     float: right;
     width: 160px;
     height: 100px;
     background-color: #FFFFFF;
-    font: 20px verdana, sans-serif;
+    font: 16px verdana, sans-serif;
 }
 #route-data-duration {
     float: right;
     width: 160px;
     height: 100px;
     background-color: #FFFFFF;
-    font: 20px verdana, sans-serif;
+    font: 16px verdana, sans-serif;
 }
 #route-data-velocity {
     float: right;
     width: 160px;
     height: 100px;
     background-color: #FFFFFF;
-    font: 20px verdana, sans-serif;
+    font: 16px verdana, sans-serif;
 }
 #route-playback-controls {
-    width: 320px;
+    width: 480px;
     height: 20px;
     vertical-align: middle;
 }
-#altitude {
+#speed {
     font: 48px verdana, sans-serif;
 }
 #bpm {
@@ -135,16 +135,57 @@
     font: 48px verdana, sans-serif;
 }
 #play-button {
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 8px;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 24px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+#play-button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+#play-button span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+#play-button:hover span {
+  padding-right: 25px;
+}
+#play-button:hover span:after {
+  opacity: 1;
+  right: 0;
 }
 #stop-button {
-    background-color: #f44336;
-    color: white;
-    border-radius: 8px;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #f44336;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 24px;
+  padding: 20px;
+  width: 100px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
 }
 #multiplier-slider {
+    height: 20px;
+    width: 200px;
 }
 
 #status-bar {

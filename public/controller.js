@@ -59,6 +59,14 @@ kastor.service('TimeAndSpace', [function(){
         return diffInHours;
     }
     
+    this.runTimeInMins = function(startTime, endTime) {
+        var startDate = new Date(startTime);
+        var endDate = new Date(endTime);
+        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+        var diffInMins = diffInMilliseconds / 60000;
+        return diffInMins;
+    }    
+    
     this.percentageRun = function (currentDistance, totalDistance) {
         var percentage = currentDistance/totalDistance*100;
         return percentage;
@@ -85,8 +93,10 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
         
         var firstTimeStamp = $scope.route.data.trackPoints[0].timeStamp;
         var lastTimeStamp = $scope.route.data.trackPoints[$scope.route.data.trackPoints.length-1].timeStamp;
-        var totalTimeInHours = TimeAndSpace.runTimeInHours(firstTimeStampce, lastTimeStamp);
+        var totalTimeInHours = TimeAndSpace.runTimeInHours(firstTimeStamp, lastTimeStamp);
+        var totalTimeInMins = TimeAndSpace.runTimeInMins(firstTimeStamp, lastTimeStamp);
         $scope.totalVelocity = TimeAndSpace.lengthInKilometers($scope.route.data.distance) / totalTimeInHours;
+        $scope.totalSpeed = totalTimeInMins / TimeAndSpace.lengthInKilometers($scope.route.data.distance);
         console.log($scope.route);
     }
 

@@ -53,11 +53,11 @@
                 <div id="route-data-duration">Kesto<br><span id="duration">{{ cursor.duration }}</span></div>
                 <div id="route-data-hr">Syke<br><span id="bpm">{{ cursor.bpm }}</span></div>
                 <div id="route-data-climb">Nousu [m]<br><span id="climb">{{ cursor.climb | number:1 }}</span></div>
-                <div id="route-data-altitude"></div>
+                <div id="route-data-speed">Nopeus [min/km]<br><span id="speed">{{ cursor.speed | number:1 }}</span></div>
                 <div id="route-playback-controls">
-                    <button id="play-button" ng-click="playRoute()">Play</button>
+                    <button id="play-button" ng-click="playRoute()"><span>Play</span></button>
                     <button id="stop-button" ng-click="stopRoute()">Stop</button>
-                    Nopeus: <input id="multiplier-slider" type="range" min=1 max=8 step=1 ng-model="playbackMultiplier"/>
+                    <input id="multiplier-slider" type="range" min=1 max=8 step=1 ng-model="playbackMultiplier"/>
                 </div>
             </div>
             <table>
@@ -67,6 +67,7 @@
                 <tr><td>Pituus [m]</td><td>{{ route.data.distance | number:2 }}</td></tr>
                 <tr><td>Nousu [m]</td><td>{{ route.data.climb | number:1 }}</td></tr>
                 <tr><td>Nopeus [km/h]</td><td>{{ totalVelocity | number:2 }}</td></tr>
+                <tr><td>Nopeus [min/km]</td><td>{{ totalSpeed | number:2 }}</td></tr>
                 <tr><td>Sää</td><td><input type="text" name="saved-weather" ng-model="route.weather"></td></tr>
                 <tr><td>Kuvaus</td><td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment"></textarea></td></tr>
                 <tr><td>Laite</td><td>{{ route.data.device }}</td></tr>
