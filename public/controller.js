@@ -36,17 +36,21 @@ kastor.service('RouteService', ['$http', function($http){
         }).then(successCallback, errorCallback)
     };
 
-}]);    
+}]);
+
+kastor.service('TimeAndSpace', [function(){
+
+    this.lengthInKilometers = function(lengthInMeters) {
+        return lengthInMeters/1000;
+    }    
+
+}]);
     
-kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', function($scope, $timeout, RouteService){
+kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'TimeAndSpace', function($scope, $timeout, RouteService, TimeAndSpace){
     var refreshRoutes = function(response) {
         $scope.routes = response.data;
         console.log($scope.routes);
     }
-
-    var lengthInKilometers = function(lengthInMeters) {
-        return lengthInMeters/1000;
-    }    
 
     var runTimeInHours = function(startTime, endTime) {
         var startDate = new Date(startTime);
@@ -67,7 +71,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', funct
             zoom: 15
         };
         var totalTimeInHours = runTimeInHours($scope.route.data.trackPoints[0].timeStamp, $scope.route.data.trackPoints[$scope.route.data.trackPoints.length-1].timeStamp);
-        $scope.totalVelocity = lengthInKilometers($scope.route.data.distance) / totalTimeInHours;
+        $scope.totalVelocity = TimeAndSpace.lengthInKilometers($scope.route.data.distance) / totalTimeInHours;
         console.log($scope.route);
     }
 
@@ -128,7 +132,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', funct
     };    
 }]);
 
-kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout) {
+kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout, TimeAndSpace) {
     var vc = this;
     var map;
     var shape;
@@ -153,10 +157,6 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         return diffInMilliseconds;
     }
     
-    var lengthInKilometers = function(lengthInMeters) {
-        return lengthInMeters/1000;
-    }    
-
     // TODO: a service is needed for the utilities
     var runTimeInHours = function(startTime, endTime) {
         var startDate = new Date(startTime);
@@ -180,7 +180,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             var currentVelocity = 0;
             if (i > 0) {
                 var timeInHours = runTimeInHours($scope.route.data.trackPoints[i-1].timeStamp, $scope.route.data.trackPoints[i].timeStamp);
-                var kilometersSinceLastPoint = lengthInKilometers($scope.route.data.trackPoints[i].distance - $scope.route.data.trackPoints[i-1].distance);
+                var kilometersSinceLastPoint = TimeAndSpace.lengthInKilometers($scope.route.data.trackPoints[i].distance - $scope.route.data.trackPoints[i-1].distance);
                 currentVelocity = kilometersSinceLastPoint / timeInHours;
             }
             $scope.cursor = {
