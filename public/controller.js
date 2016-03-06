@@ -111,6 +111,9 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
         RouteService.getAll(
             function successCallback(response) {
                 refreshRoutes(response);
+                if ($scope.routes.length > 0) {
+                    $scope.showRoute($scope.routes[0]._id);
+                }
              },
             function errorCallback(response) {
                 console.log("Failed to load routes. %s.", response);
