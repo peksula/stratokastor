@@ -68,6 +68,9 @@ kastor.service('TimeAndSpace', [function(){
     }    
     
     this.percentageRun = function (currentDistance, totalDistance) {
+        if (totalDistance === 0) {
+            return 0;
+        }
         var percentage = currentDistance/totalDistance*100;
         return percentage;
     }
