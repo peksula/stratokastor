@@ -197,7 +197,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 var kilometersSinceLastPoint = TimeAndSpace.lengthInKilometers(currentDistance - previousDistance);
                 currentVelocity = kilometersSinceLastPoint / timeInHours;
                 var timeInMins = TimeAndSpace.runTimeInMins(previousTimeStamp, currentTimeStamp);
-                currentSpeed = timeInMins / TimeAndSpace.lengthInKilometers(currentDistance);
+                currentSpeed = timeInMins / TimeAndSpace.lengthInKilometers(currentDistance - previousDistance);
             }
             $scope.cursor = {
                 duration: $scope.route.data.trackPoints[i].duration,

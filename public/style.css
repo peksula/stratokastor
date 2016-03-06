@@ -117,22 +117,22 @@
     vertical-align: middle;
 }
 #speed {
-    font: 48px verdana, sans-serif;
+    font: 36px verdana, sans-serif;
 }
 #bpm {
-    font: 48px verdana, sans-serif;
+    font: 36px verdana, sans-serif;
 }
 #duration {
-    font: 48px verdana, sans-serif;
+    font: 36px verdana, sans-serif;
 }
 #climb {
-    font: 48px verdana, sans-serif;
+    font: 36px verdana, sans-serif;
 }
 #distance {
-    font: 48px verdana, sans-serif;
+    font: 36px verdana, sans-serif;
 }
 #velocity {
-    font: 48px verdana, sans-serif;
+    font: 36px verdana, sans-serif;
 }
 #play-button {
   display: inline-block;
