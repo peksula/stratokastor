@@ -52,11 +52,6 @@
     color: white;
     border-radius: 8px;
 }
-#delete-button {
-    background-color: #f44336;
-    color: white;
-    border-radius: 8px;
-}
 #route-data {
     border-style: solid;
     border-width: 1px;
@@ -134,6 +129,26 @@
 #velocity {
     font: 36px verdana, sans-serif;
 }
+#edit-button {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+}
+#save-changes-button {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+}
+#cancel-button {
+    background-color: #A5A500;
+    color: white;
+    border-radius: 4px;
+}
+#delete-button {
+    background-color: #f44336;
+    color: white;
+    border-radius: 4px;
+}
 #play-button {
   display: inline-block;
   border-radius: 4px;
@@ -186,20 +201,4 @@
 #multiplier-slider {
     height: 20px;
     width: 200px;
-}
-
-#status-bar {
-    width: 700px;
-    height: 20px;
-    margin-top: 20px;
-}
-
-h1 {
-    color0: red;
-    font-family: sans-serif;
-    font-size: 20px;
-}
-h2 {
-    font-family: sans-serif;
-    font-size: 16px;
 }

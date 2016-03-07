@@ -110,7 +110,8 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
             zoom: 8
         };
         $scope.playbackMultiplier = 1;
-
+        $scope.editorEnabled = false;
+        
         RouteService.getAll(
             function successCallback(response) {
                 refreshRoutes(response);
@@ -150,6 +151,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
 	};
     
     $scope.updateRoute = function(id){
+        $scope.disableEditor();        
         RouteService.update(
             id,
             $scope.route.title,
@@ -162,7 +164,20 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
                 console.log("Failed to update the route. %s.", response);
             }
         );
-    };    
+    };
+    
+    $scope.enableEditor = function() {
+        $scope.editorEnabled = true;
+        //$scope.editableTitle = $scope.title;
+    };
+    
+    $scope.cancelEdit = function(id) {
+        $scope.editorEnabled = false;
+        if (id !== undefined) {
+            $scope.showRoute(id);
+        }
+    };
+
 }]);
 
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout, TimeAndSpace) {

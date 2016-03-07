@@ -61,18 +61,23 @@
                 </div>
             </div>
             <table>
-                <tr><td>Otsikko</td><td><input type="text" name="saved-title" ng-model="route.title"></td></tr>
+                <tr><td>Otsikko</td><td><input type="text" name="saved-title" ng-model="route.title" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.title }}</span></td></tr>
                 <tr><td>Aloitusaika</td><td>{{ route.data.startTime | date:'dd.MM.yyyy HH:mm:ss'}}</td></tr>
                 <tr><td>Kesto [min]</td><td>{{ route.data.duration}}</td></tr>
                 <tr><td>Pituus [m]</td><td>{{ route.data.distance | number:2 }}</td></tr>
                 <tr><td>Nousu [m]</td><td>{{ route.data.climb | number:1 }}</td></tr>
                 <tr><td>Nopeus [km/h]</td><td>{{ totalVelocity | number:2 }}</td></tr>
                 <tr><td>Nopeus [min/km]</td><td>{{ totalSpeed | number:2 }}</td></tr>
-                <tr><td>Sää</td><td><input type="text" name="saved-weather" ng-model="route.weather"></td></tr>
-                <tr><td>Kuvaus</td><td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment"></textarea></td></tr>
+                <tr><td>Sää</td><td><input type="text" name="saved-weather" ng-model="route.weather" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.weather }}</span></td></tr>
+                <tr><td>Kuvaus</td><td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment" ng-show="editorEnabled"></textarea><span ng-hide="editorEnabled">{{ route.comment }}</span></td></tr>
                 <tr><td>Laite</td><td>{{ route.data.device }}</td></tr>
                 <tr><td>Päivitetty</td><td>{{ route.updated | date:'dd.MM.yyyy HH:mm'}}</td></tr>
-                <tr><td></td><td><button ng-click="updateRoute(route._id)">Tallenna muutokset</button> <button id="delete-button" ng-click="deleteRoute(route._id)">Poista reitti</button></td></tr>
+                <tr><td></td><td>
+                    <button id="edit-button" ng-click="enableEditor()" ng-hide="editorEnabled">Muokkaa tietoja</button>
+                    <button id="save-changes-button" ng-click="updateRoute(route._id)" ng-show="editorEnabled">Tallenna muutokset</button>
+                    <button id="cancel-button" ng-click="cancelEdit(route._id)" ng-show="editorEnabled">Kumoa muutokset</button>
+                    <button id="delete-button" ng-click="deleteRoute(route._id)" ng-show="editorEnabled">Poista reitti</button>
+                </td></tr>
             </table>
         </div>
     </div>
