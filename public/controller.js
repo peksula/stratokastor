@@ -126,6 +126,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
     };
 
     $scope.showRoute = function(id) {
+        $scope.editorEnabled = false;
         RouteService.get(
             id,
             function successCallback(response) {
