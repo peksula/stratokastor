@@ -66,8 +66,8 @@
                 <tr><td>Kesto [min]</td><td>{{ route.data.duration}}</td></tr>
                 <tr><td>Pituus [m]</td><td>{{ route.data.distance | number:2 }}</td></tr>
                 <tr><td>Nousu [m]</td><td>{{ route.data.climb | number:1 }}</td></tr>
-                <tr><td>Nopeus [km/h]</td><td>{{ totalVelocity | number:2 }}</td></tr>
-                <tr><td>Nopeus [min/km]</td><td>{{ totalSpeed | number:2 }}</td></tr>
+                <tr><td>Km/h</td><td>{{ totalVelocity | number:2 }}</td></tr>
+                <tr><td>Min/km</td><td>{{ totalSpeed | number:2 }}</td></tr>
                 <tr><td>Sää</td><td><input type="text" name="saved-weather" ng-model="route.weather" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.weather }}</span></td></tr>
                 <tr><td>Kuvaus</td><td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment" ng-show="editorEnabled"></textarea><span ng-hide="editorEnabled">{{ route.comment }}</span></td></tr>
                 <tr><td>Laite</td><td>{{ route.data.device }}</td></tr>
