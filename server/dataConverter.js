@@ -26,6 +26,13 @@ exports.createConverter = function (data) {
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     }
     
+    var heartRateAtTrackPoint = function(trackPoint) {
+        if (trackPoint.HeartRateBpm === undefined) {
+            return "";
+        }
+        return trackPoint.HeartRateBpm.Value;
+    }
+    
     var tcx2ConverterFn = function (data) {
         var text = parser.toJson(data);
         var json = JSON.parse(text);
@@ -37,37 +44,40 @@ exports.createConverter = function (data) {
         json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
             elem.Track.Trackpoint.forEach(function(trackPoint) {
                 
-                if (startTime === undefined) {
-                    startTime = trackPoint.Time;
-                }
-                
-                if (lastAltitudeReading !== undefined) {
-                    currentAltitude = parseFloat(trackPoint.AltitudeMeters);
-                    
-                    if (currentAltitude > lastAltitudeReading) {
-                        totalClimb = totalClimb + currentAltitude - lastAltitudeReading;
+                if (trackPoint.Position !== undefined) {
+
+                    if (startTime === undefined) {
+                        startTime = trackPoint.Time;
                     }
-                }
+                    
+                    if (lastAltitudeReading !== undefined) {
+                        currentAltitude = parseFloat(trackPoint.AltitudeMeters);
+                        
+                        if (currentAltitude > lastAltitudeReading) {
+                            totalClimb = totalClimb + currentAltitude - lastAltitudeReading;
+                        }
+                    }
                 
-                var point = {
-                    timeStamp: trackPoint.Time,
-                    altitude: trackPoint.AltitudeMeters,
-                    distance: trackPoint.DistanceMeters,
-                    duration: runTime(startTime, trackPoint.Time),
-                    climb: totalClimb,
-                    heartRate: trackPoint.HeartRateBpm.Value,
-                    lat: parseFloat(trackPoint.Position.LatitudeDegrees),
-                    lng: parseFloat(trackPoint.Position.LongitudeDegrees)
-                    };
-                trackPoints.push(point);
-                lastAltitudeReading = parseFloat(point.altitude);
+                    var point = {
+                        timeStamp: trackPoint.Time,
+                        altitude: trackPoint.AltitudeMeters,
+                        distance: trackPoint.DistanceMeters,
+                        duration: runTime(startTime, trackPoint.Time),
+                        climb: totalClimb,
+                        heartRate: heartRateAtTrackPoint(trackPoint),
+                        lat: parseFloat(trackPoint.Position.LatitudeDegrees),
+                        lng: parseFloat(trackPoint.Position.LongitudeDegrees)
+                        };
+                    trackPoints.push(point);
+                    lastAltitudeReading = parseFloat(point.altitude);
+                }
             });
         });            
         
-        var totalDuration = runTime(trackPoints[0].timeStamp, trackPoints[trackPoints.length-1].timeStamp);
+        var totalDuration = runTime(startTime, trackPoints[trackPoints.length-1].timeStamp);
         
         return new route(
-            json.TrainingCenterDatabase.Activities.Activity.Lap[0].StartTime,
+            startTime,
             json.TrainingCenterDatabase.Activities.Activity.Creator.Name,
             trackPoints,
             totalDuration,
