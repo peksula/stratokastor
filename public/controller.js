@@ -138,6 +138,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
 	};    
 
     $scope.deleteRoute = function(id) {
+        $scope.editorEnabled = false;
         RouteService.del(
             id,
             function successCallback(response) {
@@ -151,7 +152,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
 	};
     
     $scope.updateRoute = function(id){
-        $scope.disableEditor();        
+        $scope.editorEnabled = false;
         RouteService.update(
             id,
             $scope.route.title,
