@@ -15,17 +15,17 @@
     <div id="main-div">
         <div id="right-panel">
             <div id="route-list" class="row">
-                <div id= "route-list-element" ng-repeat="route in routes">
-                    <b>{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</b><br>
-                    {{ route.comment }}<br>
-                    <button id="view-details-button" ng-click="showRoute(route._id)">Näytä</button>
-                </div>
                 <div id= "route-list-element-new">
-                    Lisää uusi reitti tcx- tai gpx- tiedostosta.
+                    <b>Lisää uusi reitti tcx- tai gpx- tiedostosta.</b>
                     <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
                         <span id="add-route-plus-sign">+</span> <input type="file" name="route_file">
                         <input type="submit" value="Lataa reittitiedosto palvelimelle">    
                     </form>
+                </div>
+                <div id= "route-list-element" ng-repeat="route in routes">
+                    <b>{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</b><br>
+                    {{ route.comment }}<br>
+                    <button id="view-details-button" ng-click="showRoute(route._id)">Näytä</button>
                 </div>
             </div>
         </div>        
