@@ -93,6 +93,18 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
             lng: $scope.route.data.startLng,
             zoom: 16
         };
+        $scope.cursor = {
+            duration: "",
+            distance: "",
+            velocity: "",
+            speed: "",
+            climb: "",
+            altitude: "",
+            bpm: "",
+            lat: "",
+            lng: ""
+        };
+               
         
         var firstTimeStamp = $scope.route.data.trackPoints[0].timeStamp;
         var lastTimeStamp = $scope.route.data.trackPoints[$scope.route.data.trackPoints.length-1].timeStamp;
