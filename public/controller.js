@@ -170,7 +170,6 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
     
     $scope.enableEditor = function() {
         $scope.editorEnabled = true;
-        //$scope.editableTitle = $scope.title;
     };
     
     $scope.cancelEdit = function(id) {
@@ -197,11 +196,26 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         icons[0].offset = percentage + '%';
         shape.set('icons', icons);
     }
-
-    $scope.playRoute = function() {
+    
+    var reset = function() {
         if (timer !== undefined) {
             $timeout.cancel(timer);
         }
+        $scope.cursor = {
+            duration: "",
+            distance: "",
+            velocity: "",
+            speed: "",
+            climb: "",
+            altitude: "",
+            bpm: "",
+            lat: "",
+            lng: ""
+        };
+    }
+
+    $scope.playRoute = function() {
+        reset();
 
         var trackpointCount = $scope.route.data.trackPoints.length;
         var i = 0;
@@ -248,9 +262,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
 	};
     
     $scope.stopRoute = function() {
-        if (timer !== undefined) {
-            $timeout.cancel(timer);
-        }
+        reset();
     };
 
 });
