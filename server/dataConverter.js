@@ -56,6 +56,7 @@ exports.createConverter = function (data) {
                         if (currentAltitude > lastAltitudeReading) {
                             totalClimb = totalClimb + currentAltitude - lastAltitudeReading;
                         }
+                        //console.log("Altitude " + currentAltitude + ". Climb " + totalClimb);                        
                     }
                 
                     var point = {

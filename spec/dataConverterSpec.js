@@ -103,18 +103,19 @@ describe("Tcx2Converter", function() {
 
     it("should return correct incremental duration", function() {
         expect(this.route.trackPoints[3].duration).toBe("0:13"); // 21:51:29 - 21:51:42
+        expect(this.garminRoute.trackPoints[3].duration).toBe("0:14"); // 18:04:12 - 18:03:58
     });
     
     it("should return correct distance", function() {
         expect(this.route.distance).toBe("5438.1");
         expect(this.garminRoute.distance).toBe("8370.2099609375");
     });
-    
+
     it("should calculate correct climb", function() {
         expect(this.route.trackPoints[3].climb).toBe(0);
         expect(this.route.trackPoints[8].climb).toBe(3.9);
-        expect(this.garminRoute.trackPoints[3].climb).toBe(0);
-        expect(this.garminRoute.trackPoints[34].climb).toBe(0.4000091552735);
+        expect(this.garminRoute.trackPoints[0].climb).toBe(0);
+        expect(this.garminRoute.trackPoints[33].climb).toBeCloseTo(0.4, 4);
     });    
     
 });

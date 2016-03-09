@@ -202,6 +202,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         if (timer !== undefined) {
             $timeout.cancel(timer);
         }
+
         var trackpointCount = $scope.route.data.trackPoints.length;
         var i = 0;
         
