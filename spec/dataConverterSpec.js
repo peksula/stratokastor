@@ -44,7 +44,7 @@ describe("Tcx2Converter", function() {
 
     it("should return correct start time", function() {
         expect(this.route.startTime).toBe("2015-11-30T21:51:29.000+02:00");
-        expect(this.garminRoute.startTime).toBe("2015-12-10T18:03:56.000Z");
+        expect(this.garminRoute.startTime).toBe("2015-12-10T18:03:58.000Z");
     });
 
     it("should return correct device", function() {
@@ -93,7 +93,7 @@ describe("Tcx2Converter", function() {
 
     it("should return correct total duration", function() {
         expect(this.route.duration).toBe("41:42"); // 22:33:11 - 21:51:29
-        expect(this.garminRoute.duration).toBe("53:23"); // 18:56:19 - 18:03:56
+        expect(this.garminRoute.duration).toBe("52:21"); // 18:56:19 - 18:03:58
 
         var relativePath = 'data/1671940524.tcx';
         var buffer = readFileAsString(relativePath);
@@ -113,6 +113,8 @@ describe("Tcx2Converter", function() {
     it("should calculate correct climb", function() {
         expect(this.route.trackPoints[3].climb).toBe(0);
         expect(this.route.trackPoints[8].climb).toBe(3.9);
+        expect(this.garminRoute.trackPoints[3].climb).toBe(0);
+        expect(this.garminRoute.trackPoints[34].climb).toBe(0.4000091552735);
     });    
     
 });
