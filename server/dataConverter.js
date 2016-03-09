@@ -33,42 +33,57 @@ exports.createConverter = function (data) {
         return trackPoint.HeartRateBpm.Value;
     }
     
-    var tcx2ConverterFn = function (data) {
+    var calculateClimb = function(tcxPoint, lastAltitudeReading, totalClimb) {
+        if (lastAltitudeReading !== undefined) {
+            currentAltitude = parseFloat(tcxPoint.AltitudeMeters);
+            
+            if (currentAltitude > lastAltitudeReading) {
+                totalClimb += currentAltitude - lastAltitudeReading;
+            }
+            //console.log("Altitude " + currentAltitude + ". Climb " + totalClimb);                        
+        }
+        return totalClimb;
+    }
+    
+    var createDataPoint = function(tcxPoint, startTime, totalClimb) {
+        if (tcxPoint.Position === undefined) {
+            // Only create a data point if there is lat/lon information for it available
+            return null;
+        }
+
+        var point = {
+            timeStamp: tcxPoint.Time,
+            altitude: tcxPoint.AltitudeMeters,
+            distance: tcxPoint.DistanceMeters,
+            duration: runTime(startTime, tcxPoint.Time),
+            climb: totalClimb,
+            heartRate: heartRateAtTrackPoint(tcxPoint),
+            lat: parseFloat(tcxPoint.Position.LatitudeDegrees),
+            lng: parseFloat(tcxPoint.Position.LongitudeDegrees)
+            };
+        return point;
+    }
+    
+    var tcx2ConverterFn = function(data) {
         var text = parser.toJson(data);
         var json = JSON.parse(text);
-        var trackPoints = [];
-        var startTime;
         var lastAltitudeReading;
         var totalClimb = 0;
         
+        var startTime;
+        var trackPoints = [];
+
         json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
             elem.Track.Trackpoint.forEach(function(trackPoint) {
                 
-                if (trackPoint.Position !== undefined) {
-
-                    if (startTime === undefined) {
-                        startTime = trackPoint.Time;
-                    }
-                    
-                    if (lastAltitudeReading !== undefined) {
-                        currentAltitude = parseFloat(trackPoint.AltitudeMeters);
-                        
-                        if (currentAltitude > lastAltitudeReading) {
-                            totalClimb = totalClimb + currentAltitude - lastAltitudeReading;
-                        }
-                        //console.log("Altitude " + currentAltitude + ". Climb " + totalClimb);                        
-                    }
+                if (startTime === undefined) {
+                    startTime = trackPoint.Time;
+                }
                 
-                    var point = {
-                        timeStamp: trackPoint.Time,
-                        altitude: trackPoint.AltitudeMeters,
-                        distance: trackPoint.DistanceMeters,
-                        duration: runTime(startTime, trackPoint.Time),
-                        climb: totalClimb,
-                        heartRate: heartRateAtTrackPoint(trackPoint),
-                        lat: parseFloat(trackPoint.Position.LatitudeDegrees),
-                        lng: parseFloat(trackPoint.Position.LongitudeDegrees)
-                        };
+                totalClimb = calculateClimb(trackPoint, lastAltitudeReading, totalClimb);
+
+                var point = createDataPoint(trackPoint, startTime, totalClimb);
+                if (point != null) {
                     trackPoints.push(point);
                     lastAltitudeReading = parseFloat(point.altitude);
                 }
@@ -90,7 +105,6 @@ exports.createConverter = function (data) {
     }   
 
     var tcx2Converter = new converter("tcx2", tcx2ConverterFn);
-    
 
     var tcx2Pattern = "TrainingCenterDatabase/v2";
     var n = data.search(tcx2Pattern);
