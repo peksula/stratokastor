@@ -93,18 +93,6 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
             lng: $scope.route.data.startLng,
             zoom: 16
         };
-        $scope.cursor = {
-            duration: "",
-            distance: "",
-            velocity: "",
-            speed: "",
-            climb: "",
-            altitude: "",
-            bpm: "",
-            lat: "",
-            lng: ""
-        };
-               
         
         var firstTimeStamp = $scope.route.data.trackPoints[0].timeStamp;
         var lastTimeStamp = $scope.route.data.trackPoints[$scope.route.data.trackPoints.length-1].timeStamp;
@@ -123,6 +111,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
         };
         $scope.playbackMultiplier = 1;
         $scope.editorEnabled = false;
+        $scope.playbackToggled = false;
         
         RouteService.getAll(
             function successCallback(response) {
@@ -139,6 +128,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
 
     $scope.showRoute = function(id) {
         $scope.editorEnabled = false;
+        $scope.playbackToggled = false;
         RouteService.get(
             id,
             function successCallback(response) {
@@ -213,6 +203,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         if (timer !== undefined) {
             $timeout.cancel(timer);
         }
+        $scope.playbackToggled = false;        
         $scope.cursor = {
             duration: "",
             distance: "",
@@ -228,6 +219,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
 
     $scope.playRoute = function() {
         reset();
+        $scope.playbackToggled = true;
 
         var trackpointCount = $scope.route.data.trackPoints.length;
         var i = 0;
