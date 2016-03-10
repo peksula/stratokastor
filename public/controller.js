@@ -127,6 +127,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
 
     $scope.showRoute = function(id) {
         $scope.editorEnabled = false;
+        $scope.stopRoute();
         RouteService.get(
             id,
             function successCallback(response) {
@@ -187,8 +188,6 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     var shape;
     
     $scope.initMap = function() {
-        $scope.playbackToggled = false;
-        console.log("init map");
         NgMap.getMap().then(function(map) {
             shape = map.shapes.routeShape;
         });
