@@ -110,14 +110,12 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
             zoom: 8
         };
         $scope.playbackMultiplier = 1;
-        $scope.editorEnabled = false;
-        $scope.playbackToggled = false;
-        console.log("playback = false (scope.init)");
         
         RouteService.getAll(
             function successCallback(response) {
                 refreshRoutes(response);
                 if ($scope.routes.length > 0) {
+                    // Show the details of the first route
                     $scope.showRoute($scope.routes[0]._id);
                 }
              },
@@ -129,8 +127,6 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
 
     $scope.showRoute = function(id) {
         $scope.editorEnabled = false;
-        $scope.playbackToggled = false;
-        console.log("playback = false (showroute)");
         RouteService.get(
             id,
             function successCallback(response) {
@@ -191,6 +187,8 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     var shape;
     
     $scope.initMap = function() {
+        $scope.playbackToggled = false;
+        console.log("init map");
         NgMap.getMap().then(function(map) {
             shape = map.shapes.routeShape;
         });
@@ -207,7 +205,6 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             $timeout.cancel(timer);
         }
         $scope.playbackToggled = false;
-        console.log("playback = false (reset)");
         $scope.cursor = {
             duration: "",
             distance: "",
@@ -224,7 +221,6 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     $scope.playRoute = function() {
         reset();
         $scope.playbackToggled = true;
-        console.log("playback = true (play)");
 
         var trackpointCount = $scope.route.data.trackPoints.length;
         var i = 0;
