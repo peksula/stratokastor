@@ -218,6 +218,10 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             lng: ""
         };
     }
+    
+    $scope.setAnimationSpeed = function(speed) {
+        $scope.playbackMultiplier = speed;
+    }
 
     $scope.playRoute = function() {
         reset();

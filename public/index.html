@@ -56,7 +56,12 @@
                 <div id="route-playback-controls">
                     <button id="play-button" ng-click="playRoute()" ng-hide="playbackToggled"><span>Play</span></button>
                     <button id="stop-button" ng-click="stopRoute()" ng-show="playbackToggled">Stop</button>
-                    <input id="multiplier-slider" type="range" min=1 max=8 step=1 ng-model="playbackMultiplier"/>
+                    <button id="speed-button" ng-click="setAnimationSpeed(1)" ng-show="playbackToggled">1x</button>
+                    <button id="speed-button" ng-click="setAnimationSpeed(2)" ng-show="playbackToggled">2x</button>
+                    <button id="speed-button" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled">5x</button>
+                    <div ng-show="playbackToggled">
+                        Toiston nopeus: {{ playbackMultiplier }}x
+                    </div>
                 </div>
             </div>
             <table>
