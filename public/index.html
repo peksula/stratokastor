@@ -47,18 +47,16 @@
         </ng-map>
         <div id="route-data">
             <div id="route-data-dynamic">
-                <div id="route-data-velocity">Km/h<br><span id="velocity">{{ cursor.velocity | number:1 }}</span></div>
-                <div id="route-data-climb">Pituus [m]<br><span id="distance">{{ cursor.distance | number:0 }}</span></div>
-                <div id="route-data-duration">Kesto<br><span id="duration">{{ cursor.duration }}</span></div>
-                <div id="route-data-hr">Syke<br><span id="bpm">{{ cursor.bpm }}</span></div>
-                <div id="route-data-climb">Nousu [m]<br><span id="climb">{{ cursor.climb | number:1 }}</span></div>
-                <div id="route-data-speed">Min/km<br><span id="speed">{{ cursor.speed | number:1 }}</span></div>
+                <div id="route-data-velocity">Km/h<br><span id="velocity" ng-show="playbackToggled">{{ cursor.velocity | number:1 }}</span></div>
+                <div id="route-data-climb">Pituus [m]<br><span id="distance" ng-show="playbackToggled">{{ cursor.distance | number:0 }}</span></div>
+                <div id="route-data-duration">Kesto<br><span id="duration" ng-show="playbackToggled">{{ cursor.duration }}</span></div>
+                <div id="route-data-hr">Syke<br><span id="bpm" ng-show="playbackToggled">{{ cursor.bpm }}</span></div>
+                <div id="route-data-climb">Nousu [m]<br><span id="climb" ng-show="playbackToggled">{{ cursor.climb | number:1 }}</span></div>
+                <div id="route-data-speed">Min/km<br><span id="speed" ng-show="playbackToggled">{{ cursor.speed | number:1 }}</span></div>
                 <div id="route-playback-controls">
                     <button id="play-button" ng-click="playRoute()" ng-hide="playbackToggled"><span>Play</span></button>
                     <button id="stop-button" ng-click="stopRoute()" ng-show="playbackToggled">Stop</button>
                     <input id="multiplier-slider" type="range" min=1 max=8 step=1 ng-model="playbackMultiplier"/>
-                    <br>
-                    Toistonopeus: {{ playbackMultiplier }}x
                 </div>
             </div>
             <table>
