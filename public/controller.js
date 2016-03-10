@@ -112,6 +112,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
         $scope.playbackMultiplier = 1;
         $scope.editorEnabled = false;
         $scope.playbackToggled = false;
+        console.log("playback = false (scope.init)");
         
         RouteService.getAll(
             function successCallback(response) {
@@ -129,6 +130,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
     $scope.showRoute = function(id) {
         $scope.editorEnabled = false;
         $scope.playbackToggled = false;
+        console.log("playback = false (showroute)");
         RouteService.get(
             id,
             function successCallback(response) {
@@ -177,6 +179,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
     $scope.cancelEdit = function(id) {
         $scope.editorEnabled = false;
         if (id !== undefined) {
+            // Reload original data to control from backend
             $scope.showRoute(id);
         }
     };
@@ -203,7 +206,8 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         if (timer !== undefined) {
             $timeout.cancel(timer);
         }
-        $scope.playbackToggled = false;        
+        $scope.playbackToggled = false;
+        console.log("playback = false (reset)");
         $scope.cursor = {
             duration: "",
             distance: "",
@@ -220,6 +224,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     $scope.playRoute = function() {
         reset();
         $scope.playbackToggled = true;
+        console.log("playback = true (play)");
 
         var trackpointCount = $scope.route.data.trackPoints.length;
         var i = 0;
