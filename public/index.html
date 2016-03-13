@@ -18,7 +18,7 @@
                     <b>Lisää uusi reitti tcx- tai gpx- tiedostosta.</b>
                     <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
                         <span id="add-route-plus-sign">+</span> <input type="file" name="route_file">
-                        <input type="submit" value="Lataa reittitiedosto palvelimelle">    
+                        <input type="submit" value="Lataa tiedosto palvelimelle">    
                     </form>
                 </div>
                 <div id= "route-list-element" ng-repeat="route in routes">
@@ -28,8 +28,8 @@
                 </div>
             </div>
         </div>        
-    <div ng-controller="routeVisualizationController as vc" id="map-canvas" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIX3aIvnWjCp-MyU86k9xh-FavD4XzNUQ" ng-init="initMap()">
-        <ng-map zoom="{{ mapPosition.zoom }}" center="[{{ mapPosition.lat }}, {{ mapPosition.lng }}]" map-type-id="TERRAIN" style="width:1000px;height:500px;">
+        <div ng-controller="routeVisualizationController as vc" id="map-canvas" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIX3aIvnWjCp-MyU86k9xh-FavD4XzNUQ" ng-init="initMap()">
+        <ng-map zoom="{{ mapPosition.zoom }}" center="[{{ mapPosition.lat }}, {{ mapPosition.lng }}]" map-type-id="TERRAIN" style="width:100%;height:550px;">
             <shape name = "polyline" id = "routeShape"
                 icons = "[{
                      icon: {
