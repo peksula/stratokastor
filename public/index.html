@@ -53,15 +53,15 @@
                 <div id="route-data-hr">Syke<br><span id="bpm" ng-show="playbackToggled">{{ cursor.bpm }}</span></div>
                 <div id="route-data-climb">Nousu [m]<br><span id="climb" ng-show="playbackToggled">{{ cursor.climb | number:1 }}</span></div>
                 <div id="route-data-speed">Min/km<br><span id="speed" ng-show="playbackToggled">{{ cursor.speed | number:1 }}</span></div>
-                <div id="route-playback-controls">
+                <div id="route-playback-controls" ng>
                     <button id="play-button" ng-click="playRoute()" ng-hide="playbackToggled"><span>Play</span></button>
                     <button id="stop-button" ng-click="stopRoute()" ng-show="playbackToggled">Stop</button>
-                    <button id="speed-button" ng-click="setAnimationSpeed(1)" ng-show="playbackToggled">1x</button>
-                    <button id="speed-button" ng-click="setAnimationSpeed(2)" ng-show="playbackToggled">2x</button>
-                    <button id="speed-button" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled">5x</button>
-                    <div ng-show="playbackToggled">
-                        Toiston nopeus: {{ playbackMultiplier }}x
-                    </div>
+                    <button id="speed-button-pressed" ng-click="setAnimationSpeed(1)" ng-show="playbackToggled" ng-if="playbackMultiplier==1">1x</button>
+                    <button id="speed-button" ng-click="setAnimationSpeed(1)" ng-show="playbackToggled" ng-if="playbackMultiplier!=1">1x</button>
+                    <button id="speed-button-pressed" ng-click="setAnimationSpeed(2)" ng-show="playbackToggled" ng-if="playbackMultiplier==2">2x</button>
+                    <button id="speed-button" ng-click="setAnimationSpeed(2)" ng-show="playbackToggled" ng-if="playbackMultiplier!=2">2x</button>
+                    <button id="speed-button-pressed" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier==5">5x</button>
+                    <button id="speed-button" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier!=5">5x</button>
                 </div>
             </div>
             <table>
