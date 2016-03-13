@@ -89,6 +89,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
         }
         $scope.editorEnabled = false;
         $scope.playbackToggled = false;
+        $scope.playbackMultiplier = 1;
         $scope.route = angular.fromJson(response.data);
         $scope.mapPosition = {
             lat: $scope.route.data.startLat,
@@ -220,7 +221,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     }
     
     $scope.setAnimationSpeed = function(speed) {
-        $scope.playbackMultiplier = speed;
+        $scope.$parent.playbackMultiplier = speed;
     }
 
     $scope.playRoute = function() {
@@ -263,7 +264,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 var currentTimeStamp = $scope.route.data.trackPoints[i-1].timeStamp;
                 var nextTimeStamp = $scope.route.data.trackPoints[i].timeStamp;
                 var delay = TimeAndSpace.millisecondsToNextPoint(currentTimeStamp, nextTimeStamp);
-                delay = delay / $scope.playbackMultiplier;
+                delay = delay / $scope.$parent.playbackMultiplier;
                 timer = $timeout(step, delay);
             }
         }
