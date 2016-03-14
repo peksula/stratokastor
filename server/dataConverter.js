@@ -34,6 +34,15 @@ exports.createConverter = function (data) {
         return trackPoint.HeartRateBpm.Value;
     }
     
+    var percentageRun = function (currentDistance, totalDistance) {
+        if (totalDistance === 0) {
+            return 0;
+        }
+        var percentage = currentDistance/totalDistance*100;
+        return percentage;
+    }
+    
+    
     var calculateClimb = function(tcxPoint, lastAltitudeReading, totalClimb) {
         if (lastAltitudeReading !== undefined) {
             currentAltitude = parseFloat(tcxPoint.AltitudeMeters);
@@ -46,7 +55,7 @@ exports.createConverter = function (data) {
         return totalClimb;
     }
     
-    var createDataPoint = function(tcxPoint, startTime, totalClimb) {
+    var createDataPoint = function(tcxPoint, startTime, totalClimb, totalDistance) {
         if (tcxPoint.Position === undefined) {
             // Only create a data point if there is lat/lon information for it available
             return null;
@@ -59,8 +68,7 @@ exports.createConverter = function (data) {
             duration: runTime(startTime, tcxPoint.Time),
             climb: totalClimb,
             heartRate: heartRateAtTrackPoint(tcxPoint),
-            lat: parseFloat(tcxPoint.Position.LatitudeDegrees),
-            lng: parseFloat(tcxPoint.Position.LongitudeDegrees)
+            percentage: percentageRun(tcxPoint.DistanceMeters, totalDistance)
             };
         return point;
     }
@@ -76,6 +84,10 @@ exports.createConverter = function (data) {
             lng: parseFloat(tcxPoint.Position.LongitudeDegrees)
             };
         return geoPoint;
+    }
+    
+    var gpxConverterFn = function(data) {
+        return null;
     }
     
     var tcx2ConverterFn = function(data) {
@@ -97,7 +109,7 @@ exports.createConverter = function (data) {
                 
                 totalClimb = calculateClimb(trackPoint, lastAltitudeReading, totalClimb);
 
-                var point = createDataPoint(trackPoint, startTime, totalClimb);
+                var point = createDataPoint(trackPoint, startTime, totalClimb, 0);
                 if (point != null) {
                     trackPoints.push(point);
                     lastAltitudeReading = parseFloat(point.altitude);
@@ -118,18 +130,31 @@ exports.createConverter = function (data) {
             totalDuration,
             trackPoints[trackPoints.length-1].distance,
             totalClimb,
-            trackPoints[0].lat,
-            trackPoints[0].lng,
+            geoPoints[0].lat,
+            geoPoints[0].lng,
             geoPoints
         );
     }   
 
     var tcx2Converter = new converter("tcx2", tcx2ConverterFn);
+    var gpxConverter = new converter("gpx", gpxConverterFn);
 
     var tcx2Pattern = "TrainingCenterDatabase/v2";
-    var n = data.search(tcx2Pattern);
-    if (n > -1) {
+    var gpxPattern = "GPX/1/1";
+    
+    var isMatch = function(data, pattern) {
+        var n = data.search(pattern);
+        if (n > -1) {
+            return true;
+        }
+        return false;
+    }
+    
+    if (isMatch(data, tcx2Pattern)) {
         return tcx2Converter;
+    }
+    if (isMatch(data, gpxPattern)) {
+        return gpxConverter;
     }
     
     return undefined;

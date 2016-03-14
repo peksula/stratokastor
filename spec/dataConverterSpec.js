@@ -28,6 +28,12 @@ describe("DataConverterFactory", function() {
         var buffer = readFileAsString(relativePath);
         expect(converter.createConverter(buffer).name).toBe("tcx2");
     });
+
+    it("should return gpxConverter for gpx files", function() {
+        var relativePath = 'data/activity_986153810.gpx';
+        var buffer = readFileAsString(relativePath);
+        expect(converter.createConverter(buffer).name).toBe("gpx");
+    });
 });
 
 describe("Tcx2Converter", function() {
@@ -52,9 +58,9 @@ describe("Tcx2Converter", function() {
         expect(this.garminRoute.device).toBe("Garmin Forerunner 210");
     });
     
-    it("should return correct amount of track points", function() {
-        expect(this.route.trackPoints.length).toBe(2502);
-        expect(this.garminRoute.trackPoints.length).toBe(608);
+    it("should return correct amount of geo points", function() {
+        expect(this.route.geoPoints.length).toBe(2502);
+        expect(this.garminRoute.geoPoints.length).toBe(608);
     });
     
     it("should return correct time stamp", function() {
@@ -78,10 +84,10 @@ describe("Tcx2Converter", function() {
     });
 
     it("should return correct position", function() {
-        expect(this.route.trackPoints[2498].lat).toBe(60.18599021434784);
-        expect(this.route.trackPoints[2498].lng).toBe(25.05650023619334);
-        expect(this.garminRoute.trackPoints[607].lat).toBe(60.991019094362855);
-        expect(this.garminRoute.trackPoints[607].lng).toBe(25.475816605612636);
+        expect(this.route.geoPoints[2498].lat).toBe(60.18599021434784);
+        expect(this.route.geoPoints[2498].lng).toBe(25.05650023619334);
+        expect(this.garminRoute.geoPoints[607].lat).toBe(60.991019094362855);
+        expect(this.garminRoute.geoPoints[607].lng).toBe(25.475816605612636);
     });
     
     it("should return correct starting position", function() {
