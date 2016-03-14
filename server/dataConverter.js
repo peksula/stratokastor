@@ -6,7 +6,7 @@ exports.createConverter = function (data) {
         this.convert = converterFunction;
     }
     
-    function route(startTime, device, trackPoints, duration, distance, climb, startLat, startLng) {
+    function route(startTime, device, trackPoints, duration, distance, climb, startLat, startLng, geoPoints) {
         this.startTime = startTime;
         this.device = device;
         this.trackPoints = trackPoints;
@@ -15,6 +15,7 @@ exports.createConverter = function (data) {
         this.climb = climb;
         this.startLat = startLat;
         this.startLng = startLng;
+        this.geoPoints = geoPoints;
     }
     
     var runTime = function(startTime, endTime) {
@@ -63,6 +64,19 @@ exports.createConverter = function (data) {
             };
         return point;
     }
+
+    var createGeoPoint = function(tcxPoint) {
+        if (tcxPoint.Position === undefined) {
+            // Only create a geo point if there is lat/lon information for it available
+            return null;
+        }
+
+        var geoPoint = {
+            lat: parseFloat(tcxPoint.Position.LatitudeDegrees),
+            lng: parseFloat(tcxPoint.Position.LongitudeDegrees)
+            };
+        return geoPoint;
+    }
     
     var tcx2ConverterFn = function(data) {
         var text = parser.toJson(data);
@@ -72,6 +86,7 @@ exports.createConverter = function (data) {
         
         var startTime;
         var trackPoints = [];
+        var geoPoints = [];
 
         json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
             elem.Track.Trackpoint.forEach(function(trackPoint) {
@@ -87,6 +102,10 @@ exports.createConverter = function (data) {
                     trackPoints.push(point);
                     lastAltitudeReading = parseFloat(point.altitude);
                 }
+                var geoPoint = createGeoPoint(trackPoint);
+                if (geoPoint != null) {
+                    geoPoints.push(geoPoint);
+                }
             });
         });            
         
@@ -100,7 +119,8 @@ exports.createConverter = function (data) {
             trackPoints[trackPoints.length-1].distance,
             totalClimb,
             trackPoints[0].lat,
-            trackPoints[0].lng
+            trackPoints[0].lng,
+            geoPoints
         );
     }   
 

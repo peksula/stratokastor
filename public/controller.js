@@ -179,7 +179,8 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
     $scope.cancelEdit = function(id) {
         $scope.editorEnabled = false;
         if (id !== undefined) {
-            // Reload original data to control from backend
+            // Reload original data to control from backend.
+            // TODO: Because this also switches to stopped state: save original data to memory and restore from there
             $scope.showRoute(id);
         }
     };
