@@ -63,6 +63,7 @@
                     <button id="speed-button-pressed" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier==5">5x</button>
                     <button id="speed-button" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier!=5">5x</button>
                 </div>
+                <span ng-show="playbackToggled">{{ cursor.percentage | number:2 }}</span>
             </div>
             <table>
                 <tr>

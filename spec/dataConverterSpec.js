@@ -64,23 +64,23 @@ describe("Tcx2Converter", function() {
     });
     
     it("should return correct time stamp", function() {
-        expect(this.route.trackPoints[4].timeStamp).toBe("2015-11-30T21:51:43.000+02:00");
-        expect(this.garminRoute.trackPoints[4].timeStamp).toBe("2015-12-10T18:04:26.000Z");
+        expect(this.route.metaPoints[4].timeStamp).toBe("2015-11-30T21:51:43.000+02:00");
+        expect(this.garminRoute.metaPoints[4].timeStamp).toBe("2015-12-10T18:04:26.000Z");
     });
 
     it("should return correct altitude", function() {
-        expect(this.route.trackPoints[10].altitude).toBe("8.1");
-        expect(this.garminRoute.trackPoints[10].altitude).toBe("148.8000030517578");
+        expect(this.route.metaPoints[10].altitude).toBe("8.1");
+        expect(this.garminRoute.metaPoints[10].altitude).toBe("148.8000030517578");
     });
 
     it("should return correct distance", function() {
-        expect(this.route.trackPoints[2501].distance).toBe("5438.1");
-        expect(this.garminRoute.trackPoints[607].distance).toBe("8370.2099609375");
+        expect(this.route.metaPoints[2501].distance).toBe("5438.1");
+        expect(this.garminRoute.metaPoints[607].distance).toBe("8370.2099609375");
     });
 
     it("should return correct heart rate", function() {
-        expect(this.route.trackPoints[2499].heartRate).toBe("137");
-        expect(this.garminRoute.trackPoints[607].heartRate).toBe("");
+        expect(this.route.metaPoints[2499].heartRate).toBe("137");
+        expect(this.garminRoute.metaPoints[607].heartRate).toBe("");
     });
 
     it("should return correct position", function() {
@@ -108,20 +108,23 @@ describe("Tcx2Converter", function() {
     });
 
     it("should return correct incremental duration", function() {
-        expect(this.route.trackPoints[3].duration).toBe("0:13"); // 21:51:29 - 21:51:42
-        expect(this.garminRoute.trackPoints[3].duration).toBe("0:14"); // 18:04:12 - 18:03:58
+        expect(this.route.metaPoints[3].duration).toBe("0:13"); // 21:51:29 - 21:51:42
+        expect(this.garminRoute.metaPoints[3].duration).toBe("0:14"); // 18:04:12 - 18:03:58
     });
     
-    it("should return correct distance", function() {
-        expect(this.route.distance).toBe("5438.1");
-        expect(this.garminRoute.distance).toBe("8370.2099609375");
+    it("should return correct percentage", function() {
+        expect(this.route.metaPoints[0].percentage).toBe(0);
+        expect(this.route.metaPoints[1].percentage).toBeCloseTo(0.064, 3); // 3.5 / 5438.1 * 100
+        expect(this.route.metaPoints[2501].percentage).toBe(100);
+        expect(this.garminRoute.metaPoints[0].percentage).toBeCloseTo(0.033, 3); // 2.799999952316284 / 8370.2099609375 * 100
+        expect(this.garminRoute.metaPoints[607].percentage).toBe(100);
     });
 
     it("should calculate correct climb", function() {
-        expect(this.route.trackPoints[3].climb).toBe(0);
-        expect(this.route.trackPoints[8].climb).toBe(3.9);
-        expect(this.garminRoute.trackPoints[0].climb).toBe(0);
-        expect(this.garminRoute.trackPoints[33].climb).toBeCloseTo(0.4, 4);
+        expect(this.route.metaPoints[3].climb).toBe(0);
+        expect(this.route.metaPoints[8].climb).toBe(3.9);
+        expect(this.garminRoute.metaPoints[0].climb).toBe(0);
+        expect(this.garminRoute.metaPoints[33].climb).toBeCloseTo(0.4, 4);
     });    
     
 });

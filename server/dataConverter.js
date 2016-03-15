@@ -6,10 +6,10 @@ exports.createConverter = function (data) {
         this.convert = converterFunction;
     }
     
-    function route(startTime, device, trackPoints, duration, distance, climb, startLat, startLng, geoPoints) {
+    function route(startTime, device, metaPoints, duration, distance, climb, startLat, startLng, geoPoints) {
         this.startTime = startTime;
         this.device = device;
-        this.trackPoints = trackPoints;
+        this.metaPoints = metaPoints;
         this.duration = duration;
         this.distance = distance;
         this.climb = climb;
@@ -55,7 +55,7 @@ exports.createConverter = function (data) {
         return totalClimb;
     }
     
-    var createDataPoint = function(tcxPoint, startTime, totalClimb, totalDistance) {
+    var createMetaPoint = function(tcxPoint, startTime, totalClimb) {
         if (tcxPoint.Position === undefined) {
             // Only create a data point if there is lat/lon information for it available
             return null;
@@ -68,7 +68,7 @@ exports.createConverter = function (data) {
             duration: runTime(startTime, tcxPoint.Time),
             climb: totalClimb,
             heartRate: heartRateAtTrackPoint(tcxPoint),
-            percentage: percentageRun(tcxPoint.DistanceMeters, totalDistance)
+            percentage: 0
             };
         return point;
     }
@@ -90,6 +90,14 @@ exports.createConverter = function (data) {
         return null;
     }
     
+    var furnishMetaPoints = function (metaPoints, totalDistance) {
+        // Do a second pass sweep over meta data. Augment missing data.
+        metaPoints.forEach(function(metaPoint) {
+            metaPoint.percentage = percentageRun(metaPoint.distance, totalDistance);
+        });
+        return metaPoints;
+    }
+    
     var tcx2ConverterFn = function(data) {
         var text = parser.toJson(data);
         var json = JSON.parse(text);
@@ -97,7 +105,7 @@ exports.createConverter = function (data) {
         var totalClimb = 0;
         
         var startTime;
-        var trackPoints = [];
+        var metaPoints = [];
         var geoPoints = [];
 
         json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
@@ -109,9 +117,9 @@ exports.createConverter = function (data) {
                 
                 totalClimb = calculateClimb(trackPoint, lastAltitudeReading, totalClimb);
 
-                var point = createDataPoint(trackPoint, startTime, totalClimb, 0);
+                var point = createMetaPoint(trackPoint, startTime, totalClimb);
                 if (point != null) {
-                    trackPoints.push(point);
+                    metaPoints.push(point);
                     lastAltitudeReading = parseFloat(point.altitude);
                 }
                 var geoPoint = createGeoPoint(trackPoint);
@@ -121,14 +129,16 @@ exports.createConverter = function (data) {
             });
         });            
         
-        var totalDuration = runTime(startTime, trackPoints[trackPoints.length-1].timeStamp);
+        var totalDuration = runTime(startTime, metaPoints[metaPoints.length-1].timeStamp);
+        var totalDistance = metaPoints[metaPoints.length-1].distance;
+        metaPoints = furnishMetaPoints(metaPoints, totalDistance);
         
         return new route(
             startTime,
             json.TrainingCenterDatabase.Activities.Activity.Creator.Name,
-            trackPoints,
+            metaPoints,
             totalDuration,
-            trackPoints[trackPoints.length-1].distance,
+            metaPoints[metaPoints.length-1].distance,
             totalClimb,
             geoPoints[0].lat,
             geoPoints[0].lng,
@@ -136,6 +146,8 @@ exports.createConverter = function (data) {
         );
     }   
 
+    
+    // TODO: refactor below
     var tcx2Converter = new converter("tcx2", tcx2ConverterFn);
     var gpxConverter = new converter("gpx", gpxConverterFn);
 
