@@ -55,6 +55,14 @@ exports.createConverter = function (data) {
         return totalClimb;
     }
     
+    var secondsToNextPoint = function(currentTimeStamp, nextTimeStamp) {
+        var startDate = new Date(currentTimeStamp);
+        var endDate = new Date(nextTimeStamp);
+        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+        var diffInSeconds = diffInMilliseconds / 1000;
+        return diffInSeconds | 0; // round down
+    }
+    
     var createMetaPoint = function(tcxPoint, startTime, totalClimb) {
         if (tcxPoint.Position === undefined) {
             // Only create a data point if there is lat/lon information for it available
@@ -71,6 +79,27 @@ exports.createConverter = function (data) {
             percentage: 0
             };
         return point;
+    }
+    
+    var createAuxiliaryMetaPoint = function(index, steps, currentMetaPoint, nextMetaPoint, totalDistance) {
+        
+        var basePercentage = currentMetaPoint.percentage;
+        var futurePercentage = percentageRun(nextMetaPoint.distance, totalDistance);
+        var auxPercentageAddition = (futurePercentage - basePercentage) / steps * index;
+        console.log("base % " + basePercentage);
+        console.log("target % " + futurePercentage);
+        
+        var point = {
+            timeStamp: currentMetaPoint.timeStamp,
+            altitude: currentMetaPoint.altitude,
+            distance: currentMetaPoint.distance, // todo
+            duration: currentMetaPoint.duration, // todo?
+            climb: currentMetaPoint.climb,
+            heartRate: currentMetaPoint.heartRate,
+            percentage: basePercentage + auxPercentageAddition
+            };
+        console.log("aux % " + point.percentage);
+        return point;        
     }
 
     var createGeoPoint = function(tcxPoint) {
@@ -91,11 +120,26 @@ exports.createConverter = function (data) {
     }
     
     var furnishMetaPoints = function (metaPoints, totalDistance) {
+        var i = 0;
+        var metaPointCount = metaPoints.length;
+        var furnishedMetaPoints = [];
+        
         // Do a second pass sweep over meta data. Augment missing data.
         metaPoints.forEach(function(metaPoint) {
             metaPoint.percentage = percentageRun(metaPoint.distance, totalDistance);
+            furnishedMetaPoints.push(metaPoint);
+            
+            if (i < metaPointCount-1) {
+                var secondsToNext = secondsToNextPoint(metaPoints[i].timeStamp, metaPoints[i+1].timeStamp);
+                var amountOfAuxPointsNeeded = secondsToNext - 1;
+                for (j = 0; j < amountOfAuxPointsNeeded; j++) { 
+                    var auxPoint = createAuxiliaryMetaPoint(j+1, amountOfAuxPointsNeeded, metaPoints[i], metaPoints[i+1], totalDistance);
+                    furnishedMetaPoints.push(auxPoint);
+                }
+            }
+            i++;
         });
-        return metaPoints;
+        return furnishedMetaPoints;
     }
     
     var tcx2ConverterFn = function(data) {
