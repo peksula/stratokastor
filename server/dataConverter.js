@@ -86,11 +86,14 @@ exports.createConverter = function (data) {
         var basePercentage = currentMetaPoint.percentage;
         var futurePercentage = percentageRun(nextMetaPoint.distance, totalDistance);
         var auxPercentageAddition = (futurePercentage - basePercentage) / steps * index;
-        console.log("base % " + basePercentage);
-        console.log("target % " + futurePercentage);
+        //console.log("base % " + basePercentage);
+        //console.log("target % " + futurePercentage);
+        
+        var auxDate = new Date(currentMetaPoint.timeStamp);
+        auxDate.setSeconds(auxDate.getSeconds() + index);
         
         var point = {
-            timeStamp: currentMetaPoint.timeStamp,
+            timeStamp: auxDate.toString(),
             altitude: currentMetaPoint.altitude,
             distance: currentMetaPoint.distance, // todo
             duration: currentMetaPoint.duration, // todo?
@@ -98,7 +101,7 @@ exports.createConverter = function (data) {
             heartRate: currentMetaPoint.heartRate,
             percentage: basePercentage + auxPercentageAddition
             };
-        console.log("aux % " + point.percentage);
+        //console.log("aux % " + point.percentage);
         return point;        
     }
 
