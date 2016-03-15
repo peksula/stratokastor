@@ -1,4 +1,5 @@
 var parser = require('xml2json');
+var interpolator = require('./interpolator');
 
 exports.createConverter = function (data) {
     function converter(name, converterFunction) {
@@ -83,25 +84,22 @@ exports.createConverter = function (data) {
     
     var createAuxiliaryMetaPoint = function(index, steps, currentMetaPoint, nextMetaPoint, totalDistance) {
         
-        var basePercentage = currentMetaPoint.percentage;
+        // Todo: move this out of this function for performance reasons
         var futurePercentage = percentageRun(nextMetaPoint.distance, totalDistance);
-        var auxPercentageAddition = (futurePercentage - basePercentage) / steps * index;
-        //console.log("base % " + basePercentage);
-        //console.log("target % " + futurePercentage);
-        
-        var auxDate = new Date(currentMetaPoint.timeStamp);
-        auxDate.setSeconds(auxDate.getSeconds() + index);
+        var percentages = interpolator.interpolateNumber(currentMetaPoint.percentage, futurePercentage, steps);
+        var distances = interpolator.interpolateNumber(currentMetaPoint.distance, nextMetaPoint.distance, steps);
+        var timeStamps = interpolator.interpolateDate(currentMetaPoint.timeStamp, nextMetaPoint.timeStamp, steps);
         
         var point = {
-            timeStamp: auxDate.toString(),
+            timeStamp: timeStamps[index],
             altitude: currentMetaPoint.altitude,
-            distance: currentMetaPoint.distance, // todo
+            distance: distances[index],
             duration: currentMetaPoint.duration, // todo?
             climb: currentMetaPoint.climb,
             heartRate: currentMetaPoint.heartRate,
-            percentage: basePercentage + auxPercentageAddition
+            percentage: percentages[index]
             };
-        //console.log("aux % " + point.percentage);
+
         return point;        
     }
 
@@ -136,7 +134,7 @@ exports.createConverter = function (data) {
                 var secondsToNext = secondsToNextPoint(metaPoints[i].timeStamp, metaPoints[i+1].timeStamp);
                 var amountOfAuxPointsNeeded = secondsToNext - 1;
                 for (j = 0; j < amountOfAuxPointsNeeded; j++) { 
-                    var auxPoint = createAuxiliaryMetaPoint(j+1, amountOfAuxPointsNeeded, metaPoints[i], metaPoints[i+1], totalDistance);
+                    var auxPoint = createAuxiliaryMetaPoint(j, amountOfAuxPointsNeeded, metaPoints[i], metaPoints[i+1], totalDistance);
                     furnishedMetaPoints.push(auxPoint);
                 }
             }
