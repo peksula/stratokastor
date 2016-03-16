@@ -82,14 +82,7 @@ exports.createConverter = function (data) {
         return point;
     }
     
-    var createAuxiliaryMetaPoint = function(index, steps, currentMetaPoint, nextMetaPoint, totalDistance) {
-        
-        // Todo: move this out of this function for performance reasons
-        var futurePercentage = percentageRun(nextMetaPoint.distance, totalDistance);
-        var percentages = interpolator.interpolateNumber(currentMetaPoint.percentage, futurePercentage, steps);
-        var distances = interpolator.interpolateNumber(currentMetaPoint.distance, nextMetaPoint.distance, steps);
-        var timeStamps = interpolator.interpolateDate(currentMetaPoint.timeStamp, nextMetaPoint.timeStamp, steps);
-        
+    var createAuxiliaryMetaPoint = function(index, currentMetaPoint, timeStamps, distances, percentages) {
         var point = {
             timeStamp: timeStamps[index],
             altitude: currentMetaPoint.altitude,
@@ -120,6 +113,20 @@ exports.createConverter = function (data) {
         return null;
     }
     
+    var createAuxiliaryMetaPointsIfNeeded = function(amountOfAuxPointsNeeded, currentMetaPoint, nextMetaPoint, totalDistance, furnishedMetaPoints) {
+        if (amountOfAuxPointsNeeded > 0) {
+            var futurePercentage = percentageRun(nextMetaPoint.distance, totalDistance);
+            var percentages = interpolator.interpolateNumber(currentMetaPoint.percentage, futurePercentage, amountOfAuxPointsNeeded);
+            var distances = interpolator.interpolateNumber(currentMetaPoint.distance, nextMetaPoint.distance, amountOfAuxPointsNeeded);
+            var timeStamps = interpolator.interpolateDate(currentMetaPoint.timeStamp, nextMetaPoint.timeStamp, amountOfAuxPointsNeeded);
+                
+            for (i = 0; i < amountOfAuxPointsNeeded; i++) { 
+                var auxPoint = createAuxiliaryMetaPoint(i, currentMetaPoint, timeStamps, distances, percentages);
+                furnishedMetaPoints.push(auxPoint);
+            }
+        }
+    }
+    
     var furnishMetaPoints = function (metaPoints, totalDistance) {
         var i = 0;
         var metaPointCount = metaPoints.length;
@@ -132,11 +139,7 @@ exports.createConverter = function (data) {
             
             if (i < metaPointCount-1) {
                 var secondsToNext = secondsToNextPoint(metaPoints[i].timeStamp, metaPoints[i+1].timeStamp);
-                var amountOfAuxPointsNeeded = secondsToNext - 1;
-                for (j = 0; j < amountOfAuxPointsNeeded; j++) { 
-                    var auxPoint = createAuxiliaryMetaPoint(j, amountOfAuxPointsNeeded, metaPoints[i], metaPoints[i+1], totalDistance);
-                    furnishedMetaPoints.push(auxPoint);
-                }
+                createAuxiliaryMetaPointsIfNeeded(secondsToNext - 1, metaPoints[i], metaPoints[i+1], totalDistance, furnishedMetaPoints);
             }
             i++;
         });
@@ -191,28 +194,26 @@ exports.createConverter = function (data) {
         );
     }   
 
-    
-    // TODO: refactor below
-    var tcx2Converter = new converter("tcx2", tcx2ConverterFn);
-    var gpxConverter = new converter("gpx", gpxConverterFn);
-
-    var tcx2Pattern = "TrainingCenterDatabase/v2";
-    var gpxPattern = "GPX/1/1";
-    
-    var isMatch = function(data, pattern) {
-        var n = data.search(pattern);
-        if (n > -1) {
-            return true;
+    var converters = [
+        {
+            pattern: "TrainingCenterDatabase/v2",
+            name: "tcx2",
+            converterFunction: tcx2ConverterFn
+        }, 
+        {
+            pattern: "GPX/1/1",
+            name: "gpx",
+            converterFunction: gpxConverterFn
         }
-        return false;
-    }
+    ];
     
-    if (isMatch(data, tcx2Pattern)) {
-        return tcx2Converter;
-    }
-    if (isMatch(data, gpxPattern)) {
-        return gpxConverter;
-    }
-    
+    for (i=0; i<converters.length; i++) {
+        var n = data.search(converters[i].pattern);
+        if (n > -1) {
+            var dataConverter = new converter(converters[i].name, converters[i].converterFunction);
+            return dataConverter;
+        }
+    };
+
     return undefined;
 };

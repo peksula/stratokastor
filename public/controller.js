@@ -220,7 +220,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         reset();
         $scope.$parent.playbackToggled = true;
 
-        var trackpointCount = $scope.route.data.metaPoints.length;
+        var metaPointCount = $scope.route.data.metaPoints.length;
         var i = 0;
         
         var step = function() {
@@ -231,11 +231,11 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 var currentTimeStamp = $scope.route.data.metaPoints[i].timeStamp;
                 var previousDistance = $scope.route.data.metaPoints[i-1].distance;
                 var currentDistance = $scope.route.data.metaPoints[i].distance;
-                var timeInHours = TimeAndSpace.runTimeInHours(previousTimeStamp, currentTimeStamp);
+                var timeInHours = TimeAndSpace.runTimeInHours(previousTimeStamp, currentTimeStamp); 
                 var kilometersSinceLastPoint = TimeAndSpace.lengthInKilometers(currentDistance - previousDistance);
-                currentVelocity = kilometersSinceLastPoint / timeInHours;
+                currentVelocity = kilometersSinceLastPoint / timeInHours; // todo move to server
                 var timeInMins = TimeAndSpace.runTimeInMins(previousTimeStamp, currentTimeStamp);
-                currentSpeed = timeInMins / TimeAndSpace.lengthInKilometers(currentDistance - previousDistance);
+                currentSpeed = timeInMins / TimeAndSpace.lengthInKilometers(currentDistance - previousDistance); // todo move to server
             }
             $scope.cursor = {
                 duration: $scope.route.data.metaPoints[i].duration,
@@ -251,7 +251,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             stepMap($scope.route.data.metaPoints[i].percentage);
             
             i++;
-            if (i < trackpointCount) {
+            if (i < metaPointCount) {
                 var currentTimeStamp = $scope.route.data.metaPoints[i-1].timeStamp;
                 var nextTimeStamp = $scope.route.data.metaPoints[i].timeStamp;
                 var delay = TimeAndSpace.millisecondsToNextPoint(currentTimeStamp, nextTimeStamp);

@@ -41,35 +41,60 @@ describe("Tcx2Converter", function() {
     it("should convert fitbit tcx data correctly", function() {
         var relativePathFitbitSurge = 'data/993568829.tcx';
         var fitbitBuffer = readFileAsString(relativePathFitbitSurge);
-        this.route = converter.createConverter(fitbitBuffer).convert(fitbitBuffer);
+        var route = converter.createConverter(fitbitBuffer).convert(fitbitBuffer);
 
-        expect(this.route.startTime).toBe("2015-11-30T21:51:29.000+02:00");
-        expect(this.route.device).toBe("Fitbit Surge");
-        expect(this.route.geoPoints.length).toBe(2502);
-        var metaPointCount = this.route.metaPoints.length;
-        expect(this.route.metaPoints[metaPointCount-1].distance).toBe("5438.1");
-        expect(this.route.geoPoints[2498].lat).toBe(60.18599021434784);
-        expect(this.route.geoPoints[2498].lng).toBe(25.05650023619334);
-        expect(this.route.startLat).toBe(60.18615917364756);
-        expect(this.route.startLng).toBe(25.056412513057392);
-        expect(this.route.duration).toBe("41:42"); // 22:33:11 - 21:51:29
+        expect(route.startTime).toBe("2015-11-30T21:51:29.000+02:00");
+        expect(route.device).toBe("Fitbit Surge");
+        expect(route.geoPoints.length).toBe(2502);
+        var metaPointCount = route.metaPoints.length;
+        expect(route.metaPoints[metaPointCount-1].distance).toBe("5438.1");
+        expect(route.geoPoints[2498].lat).toBe(60.18599021434784);
+        expect(route.geoPoints[2498].lng).toBe(25.05650023619334);
+        expect(route.startLat).toBe(60.18615917364756);
+        expect(route.startLng).toBe(25.056412513057392);
+        expect(route.duration).toBe("41:42"); // 22:33:11 - 21:51:29
+        
+        for (i=1; i < metaPointCount; i++) {
+            expect(route.metaPoints[i].percentage).not.toBeLessThan(route.metaPoints[i-1].percentage);
+            expect(route.metaPoints[i].duration).not.toBe("");
+            expect(route.metaPoints[i].distance).not.toBe("");
+            expect(route.metaPoints[i].altitude).not.toBe("");
+            expect(route.metaPoints[i].heartRate).not.toBe("");
+            var currentDate = new Date(route.metaPoints[i].timeStamp);
+            var previousDate = new Date(route.metaPoints[i-1].timeStamp);
+            expect(currentDate).not.toBeLessThan(previousDate);
+            expect(currentDate.getTime() - previousDate.getTime()).toBeLessThan(1001); // points are maximum one second apart
+        }
+        
     });
 
     it("should convert garmin tcx data correctly", function() {
         var relativePathGarminForerunner210 = 'data/activity_986153810.tcx';
         var garminBuffer = readFileAsString(relativePathGarminForerunner210);
-        this.garminRoute = converter.createConverter(garminBuffer).convert(garminBuffer);
+        garminRoute = converter.createConverter(garminBuffer).convert(garminBuffer);
 
-        expect(this.garminRoute.startTime).toBe("2015-12-10T18:03:58.000Z");
-        expect(this.garminRoute.device).toBe("Garmin Forerunner 210");
-        expect(this.garminRoute.geoPoints.length).toBe(608);
-        var garminMetaPointCount = this.garminRoute.metaPoints.length;
-        expect(this.garminRoute.metaPoints[garminMetaPointCount-1].distance).toBe("8370.2099609375");
-        expect(this.garminRoute.geoPoints[607].lat).toBe(60.991019094362855);
-        expect(this.garminRoute.geoPoints[607].lng).toBe(25.475816605612636);
-        expect(this.garminRoute.startLat).toBe(60.99109562113881);
-        expect(this.garminRoute.startLng).toBe(25.475734379142523);
-        expect(this.garminRoute.duration).toBe("52:21"); // 18:56:19 - 18:03:58
+        expect(garminRoute.startTime).toBe("2015-12-10T18:03:58.000Z");
+        expect(garminRoute.device).toBe("Garmin Forerunner 210");
+        expect(garminRoute.geoPoints.length).toBe(608);
+        var garminMetaPointCount = garminRoute.metaPoints.length;
+        expect(garminRoute.metaPoints[garminMetaPointCount-1].distance).toBe("8370.2099609375");
+        expect(garminRoute.geoPoints[607].lat).toBe(60.991019094362855);
+        expect(garminRoute.geoPoints[607].lng).toBe(25.475816605612636);
+        expect(garminRoute.startLat).toBe(60.99109562113881);
+        expect(garminRoute.startLng).toBe(25.475734379142523);
+        expect(garminRoute.duration).toBe("52:21"); // 18:56:19 - 18:03:58
+
+        for (i=1; i < garminMetaPointCount; i++) {
+            expect(garminRoute.metaPoints[i].percentage).not.toBeLessThan(garminRoute.metaPoints[i-1].percentage);
+            expect(garminRoute.metaPoints[i].duration).not.toBe("");
+            expect(garminRoute.metaPoints[i].distance).not.toBe("");
+            expect(garminRoute.metaPoints[i].altitude).not.toBe("");
+            expect(garminRoute.metaPoints[i].heartRate).toBe("");
+            var currentDate = new Date(garminRoute.metaPoints[i].timeStamp);
+            var previousDate = new Date(garminRoute.metaPoints[i-1].timeStamp);
+            expect(currentDate).not.toBeLessThan(previousDate);
+            expect(currentDate.getTime() - previousDate.getTime()).toBeLessThan(1001); // points are maximum one second apart
+        }
     });
     
 /*    
