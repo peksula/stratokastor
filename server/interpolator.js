@@ -3,13 +3,11 @@ exports.interpolateNumber = function (startValue, endValue, steps) {
     startValue = parseFloat(startValue);
     endValue = parseFloat(endValue);
     var diff = endValue - startValue;
-    if (diff > 0) {
-        var stepSize = diff / (steps + 1);
-        for (i=1; i <= steps; i++) {
-            var step = startValue + i*stepSize;
-            step = Math.round(step * 1000) / 1000;
-            result.push(step);
-        }
+    var stepSize = diff / (steps + 1);
+    for (i=1; i <= steps; i++) {
+        var step = startValue + i*stepSize;
+        step = Math.round(step * 1000) / 1000;
+        result.push(step);
     }
     return result;
 };

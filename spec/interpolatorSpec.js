@@ -1,8 +1,8 @@
 var interpolator = require('../server/interpolator');
 
 describe("Number interpolator", function() {
-    it("should work correctly with invalid input", function() {
-        expect(interpolator.interpolateNumber(0, 0, 3)).toEqual([]);
+    it("should return zero in between zeros", function() {
+        expect(interpolator.interpolateNumber(0, 0, 3)).toEqual([0, 0, 0]);
     });
 
     it("should return empty with zero steps", function() {
