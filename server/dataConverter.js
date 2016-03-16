@@ -36,6 +36,8 @@ exports.createConverter = function (data) {
     }
     
     var percentageRun = function (currentDistance, totalDistance) {
+        totalDistance = parseFloat(totalDistance);
+        currentDistance = parseFloat(currentDistance);
         if (totalDistance === 0) {
             return 0;
         }
