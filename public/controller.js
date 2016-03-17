@@ -89,8 +89,8 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
             zoom: 16
         };
         
-        var firstTimeStamp = $scope.route.data.metaPoints[0].timeStamp;
-        var lastTimeStamp = $scope.route.data.metaPoints[$scope.route.data.metaPoints.length-1].timeStamp;
+        var firstTimeStamp = $scope.route.data.dataPoints[0].timeStamp;
+        var lastTimeStamp = $scope.route.data.dataPoints[$scope.route.data.dataPoints.length-1].timeStamp;
         var totalTimeInHours = TimeAndSpace.runTimeInHours(firstTimeStamp, lastTimeStamp);
         var totalTimeInMins = TimeAndSpace.runTimeInMins(firstTimeStamp, lastTimeStamp);
         $scope.totalVelocity = TimeAndSpace.lengthInKilometers($scope.route.data.distance) / totalTimeInHours;
@@ -219,18 +219,16 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     $scope.playRoute = function() {
         reset();
         $scope.$parent.playbackToggled = true;
-
-        var metaPointCount = $scope.route.data.metaPoints.length;
         var i = 0;
         
         var step = function() {
             var currentVelocity = 0;
             var currentSpeed = 0;
             if (i > 0) {
-                var previousTimeStamp = $scope.route.data.metaPoints[i-1].timeStamp;
-                var currentTimeStamp = $scope.route.data.metaPoints[i].timeStamp;
-                var previousDistance = $scope.route.data.metaPoints[i-1].distance;
-                var currentDistance = $scope.route.data.metaPoints[i].distance;
+                var previousTimeStamp = $scope.route.data.dataPoints[i-1].timeStamp;
+                var currentTimeStamp = $scope.route.data.dataPoints[i].timeStamp;
+                var previousDistance = $scope.route.data.dataPoints[i-1].distance;
+                var currentDistance = $scope.route.data.dataPoints[i].distance;
                 var timeInHours = TimeAndSpace.runTimeInHours(previousTimeStamp, currentTimeStamp); 
                 var kilometersSinceLastPoint = TimeAndSpace.lengthInKilometers(currentDistance - previousDistance);
                 currentVelocity = kilometersSinceLastPoint / timeInHours; // todo move to server
@@ -238,22 +236,22 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 currentSpeed = timeInMins / TimeAndSpace.lengthInKilometers(currentDistance - previousDistance); // todo move to server
             }
             $scope.cursor = {
-                duration: $scope.route.data.metaPoints[i].duration,
-                distance: $scope.route.data.metaPoints[i].distance,
+                duration: $scope.route.data.dataPoints[i].duration,
+                distance: $scope.route.data.dataPoints[i].distance,
                 velocity: currentVelocity,
                 speed: currentSpeed,
-                climb: $scope.route.data.metaPoints[i].climb,
-                altitude: $scope.route.data.metaPoints[i].altitude,
-                bpm: $scope.route.data.metaPoints[i].heartRate,
-                percentage: $scope.route.data.metaPoints[i].percentage
+                climb: $scope.route.data.dataPoints[i].climb,
+                altitude: $scope.route.data.dataPoints[i].altitude,
+                bpm: $scope.route.data.dataPoints[i].heartRate,
+                percentage: $scope.route.data.dataPoints[i].percentage
             };
             
-            stepMap($scope.route.data.metaPoints[i].percentage);
+            stepMap($scope.route.data.dataPoints[i].percentage);
             
             i++;
-            if (i < metaPointCount) {
-                var currentTimeStamp = $scope.route.data.metaPoints[i-1].timeStamp;
-                var nextTimeStamp = $scope.route.data.metaPoints[i].timeStamp;
+            if (i < $scope.route.data.dataPoints.length) {
+                var currentTimeStamp = $scope.route.data.dataPoints[i-1].timeStamp;
+                var nextTimeStamp = $scope.route.data.dataPoints[i].timeStamp;
                 var delay = TimeAndSpace.millisecondsToNextPoint(currentTimeStamp, nextTimeStamp);
                 delay = delay / $scope.$parent.playbackMultiplier;
                 timer = $timeout(step, delay);
