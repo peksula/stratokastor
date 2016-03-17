@@ -57,73 +57,23 @@
 }
 #route-data-dynamic {
     float: right;
-    width: 480px;
+    width: 640px;
     height: 240px;
 }
-#route-data-altitude {
+#route-data-item {
     float: right;
     width: 160px;
     height: 100px;
     background-color: #FFFFFF;
     font: 16px verdana, sans-serif;
 }
-#route-data-hr {
-    float: right;
-    width: 160px;
-    height: 100px;
-    background-color: #FFFFFF;
-    font: 16px verdana, sans-serif;
-}
-#route-data-speed {
-    float: right;
-    width: 160px;
-    height: 100px;
-    background-color: #FFFFFF;
-    font: 16px verdana, sans-serif;
-}
-#route-data-climb {
-    float: right;
-    width: 160px;
-    height: 100px;
-    background-color: #FFFFFF;
-    font: 16px verdana, sans-serif;
-}
-#route-data-duration {
-    float: right;
-    width: 160px;
-    height: 100px;
-    background-color: #FFFFFF;
-    font: 16px verdana, sans-serif;
-}
-#route-data-velocity {
-    float: right;
-    width: 160px;
-    height: 100px;
-    background-color: #FFFFFF;
-    font: 16px verdana, sans-serif;
+#route-data-item-value {
+    font: 36px verdana, sans-serif;
 }
 #route-playback-controls {
     width: 480px;
     height: 20px;
     vertical-align: middle;
-}
-#speed {
-    font: 36px verdana, sans-serif;
-}
-#bpm {
-    font: 36px verdana, sans-serif;
-}
-#duration {
-    font: 36px verdana, sans-serif;
-}
-#climb {
-    font: 36px verdana, sans-serif;
-}
-#distance {
-    font: 36px verdana, sans-serif;
-}
-#velocity {
-    font: 36px verdana, sans-serif;
 }
 #edit-button {
     background-color: #4CAF50;
