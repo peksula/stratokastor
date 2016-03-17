@@ -1,5 +1,6 @@
 var parser = require('xml2json');
 var interpolator = require('./interpolator');
+var utils = require('./utils');
 
 exports.createConverter = function (data) {
     function converter(name, converterFunction) {
@@ -33,18 +34,7 @@ exports.createConverter = function (data) {
             return "";
         }
         return trackPoint.HeartRateBpm.Value;
-    }
-    
-    var percentageRun = function (currentDistance, totalDistance) {
-        totalDistance = parseFloat(totalDistance);
-        currentDistance = parseFloat(currentDistance);
-        if (totalDistance === 0) {
-            return 0;
-        }
-        var percentage = currentDistance/totalDistance*100;
-        return percentage;
-    }
-    
+    }    
     
     var calculateClimb = function(tcxPoint, lastAltitudeReading, totalClimb) {
         if (lastAltitudeReading !== undefined) {
@@ -56,14 +46,6 @@ exports.createConverter = function (data) {
             //console.log("Altitude " + currentAltitude + ". Climb " + totalClimb);                        
         }
         return totalClimb;
-    }
-    
-    var secondsToNextPoint = function(currentTimeStamp, nextTimeStamp) {
-        var startDate = new Date(currentTimeStamp);
-        var endDate = new Date(nextTimeStamp);
-        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
-        var diffInSeconds = diffInMilliseconds / 1000;
-        return diffInSeconds | 0; // round down
     }
     
     var createDataPoint = function(tcxPoint, startTime, totalClimb) {
@@ -117,7 +99,7 @@ exports.createConverter = function (data) {
     
     var createAuxiliaryDataPointsIfNeeded = function(amountOfAuxPointsNeeded, currentPoint, nextPoint, totalDistance, furnished) {
         if (amountOfAuxPointsNeeded > 0) {
-            var futurePercentage = percentageRun(nextPoint.distance, totalDistance);
+            var futurePercentage = utils.percentageRun(nextPoint.distance, totalDistance);
             var percentages = interpolator.interpolateNumber(currentPoint.percentage, futurePercentage, amountOfAuxPointsNeeded);
             var distances = interpolator.interpolateNumber(currentPoint.distance, nextPoint.distance, amountOfAuxPointsNeeded);
             var timeStamps = interpolator.interpolateDate(currentPoint.timeStamp, nextPoint.timeStamp, amountOfAuxPointsNeeded);
@@ -135,11 +117,11 @@ exports.createConverter = function (data) {
         
         // Do a second pass sweep over data. Augment missing data.
         dataPoints.forEach(function(dataPoint) {
-            dataPoint.percentage = percentageRun(dataPoint.distance, totalDistance);
+            dataPoint.percentage = utils.percentageRun(dataPoint.distance, totalDistance);
             furnished.push(dataPoint);
             
             if (i < dataPoints.length - 1) {
-                var secondsToNext = secondsToNextPoint(dataPoints[i].timeStamp, dataPoints[i+1].timeStamp);
+                var secondsToNext = utils.secondsToNextPoint(dataPoints[i].timeStamp, dataPoints[i+1].timeStamp);
                 createAuxiliaryDataPointsIfNeeded(secondsToNext - 1, dataPoints[i], dataPoints[i+1], totalDistance, furnished);
             }
             i++;
