@@ -138,11 +138,5 @@ describe("Tcx2Converter", function() {
         expect(this.garminRoute.dataPoints[607].percentage).toBe(100);
     });
 
-    it("should calculate correct climb", function() {
-        expect(this.route.dataPoints[3].climb).toBe(0);
-        expect(this.route.dataPoints[8].climb).toBe(3.9);
-        expect(this.garminRoute.dataPoints[0].climb).toBe(0);
-        expect(this.garminRoute.dataPoints[33].climb).toBeCloseTo(0.4, 4);
-    });    
 */  
 });

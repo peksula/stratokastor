@@ -19,34 +19,13 @@ exports.createConverter = function (data) {
         this.startLng = startLng;
         this.geoPoints = geoPoints;
     }
-    
-    var runTime = function(startTime, endTime) {
-        var startDate = new Date(startTime);
-        var endDate = new Date(endTime);
-        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
-        var minutes = Math.floor(diffInMilliseconds / 60000);
-        var seconds = ((diffInMilliseconds % 60000) / 1000).toFixed(0);
-        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-    }
-    
+ 
     var heartRateAtTrackPoint = function(trackPoint) {
         if (trackPoint.HeartRateBpm === undefined) {
             return "";
         }
         return trackPoint.HeartRateBpm.Value;
     }    
-    
-    var calculateClimb = function(tcxPoint, lastAltitudeReading, totalClimb) {
-        if (lastAltitudeReading !== undefined) {
-            currentAltitude = parseFloat(tcxPoint.AltitudeMeters);
-            
-            if (currentAltitude > lastAltitudeReading) {
-                totalClimb += currentAltitude - lastAltitudeReading;
-            }
-            //console.log("Altitude " + currentAltitude + ". Climb " + totalClimb);                        
-        }
-        return totalClimb;
-    }
     
     var createDataPoint = function(tcxPoint, startTime, totalClimb) {
         if (tcxPoint.Position === undefined) {
@@ -58,7 +37,7 @@ exports.createConverter = function (data) {
             timeStamp: tcxPoint.Time,
             altitude: tcxPoint.AltitudeMeters,
             distance: tcxPoint.DistanceMeters,
-            duration: runTime(startTime, tcxPoint.Time),
+            duration: utils.runTimeAsString(startTime, tcxPoint.Time),
             climb: totalClimb,
             heartRate: heartRateAtTrackPoint(tcxPoint),
             percentage: 0
@@ -146,7 +125,7 @@ exports.createConverter = function (data) {
                     startTime = trackPoint.Time;
                 }
                 
-                totalClimb = calculateClimb(trackPoint, lastAltitudeReading, totalClimb);
+                totalClimb += utils.climbSinceLastPoint(trackPoint.AltitudeMeters, lastAltitudeReading);
 
                 var point = createDataPoint(trackPoint, startTime, totalClimb);
                 if (point != null) {
@@ -160,7 +139,7 @@ exports.createConverter = function (data) {
             });
         });            
         
-        var totalDuration = runTime(startTime, dataPoints[dataPoints.length-1].timeStamp);
+        var totalDuration = utils.runTimeAsString(startTime, dataPoints[dataPoints.length-1].timeStamp);
         var totalDistance = dataPoints[dataPoints.length-1].distance;
         dataPoints = furnishDataPoints(dataPoints, totalDistance);
         
