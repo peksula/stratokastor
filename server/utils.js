@@ -38,4 +38,28 @@ exports.runTimeAsString = function(startTime, endTime) {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
 };
     
+exports.durationInMinutes = function(startTime, endTime) {
+    var startDate = new Date(startTime);
+    var endDate = new Date(endTime);
+    var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+    var diffInMins = diffInMilliseconds / 60000;
+    return Math.round(diffInMins * 1000) / 1000;
+};
 
+ exports.durationInHours = function(startTime, endTime) {
+    var startDate = new Date(startTime);
+    var endDate = new Date(endTime);
+    var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+    var diffInHours = diffInMilliseconds / 3600000;
+    return Math.round(diffInHours * 1000) / 1000;
+};
+
+exports.kmh = function(distanceInMeters, runtimeInHours) {
+    runtimeInHours = parseFloat(runtimeInHours);
+    if (runtimeInHours === 0) {
+        return 0;
+    }
+    var distanceInKm = parseFloat(distanceInMeters)/1000;
+    var kmh = distanceInKm / runtimeInHours;
+    return Math.round(kmh * 10) / 10;
+};

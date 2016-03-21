@@ -8,7 +8,7 @@ exports.createConverter = function (data) {
         this.convert = converterFunction;
     }
     
-    function route(startTime, device, dataPoints, duration, distance, climb, startLat, startLng, geoPoints) {
+    function route(startTime, device, dataPoints, duration, distance, climb, startLat, startLng, kmh, minkm, geoPoints) {
         this.startTime = startTime;
         this.device = device;
         this.dataPoints = dataPoints;
@@ -17,6 +17,8 @@ exports.createConverter = function (data) {
         this.climb = climb;
         this.startLat = startLat;
         this.startLng = startLng;
+        this.kmh = kmh;
+        this.minkm = minkm;
         this.geoPoints = geoPoints;
     }
  
@@ -139,6 +141,7 @@ exports.createConverter = function (data) {
             });
         });            
         
+        
         var totalDuration = utils.runTimeAsString(startTime, dataPoints[dataPoints.length-1].timeStamp);
         var totalDistance = dataPoints[dataPoints.length-1].distance;
         dataPoints = furnishDataPoints(dataPoints, totalDistance);
@@ -152,6 +155,8 @@ exports.createConverter = function (data) {
             totalClimb,
             geoPoints[0].lat,
             geoPoints[0].lng,
+            0,  //kmh
+            0, // min/km
             geoPoints
         );
     }   

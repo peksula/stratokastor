@@ -109,3 +109,58 @@ describe("Run time as string", function() {
     });
 });
 
+describe("Duration in minutes", function() {
+    it("Zero case", function() {
+        expect(utils.durationInMinutes("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:05:49.000+02:00")).toEqual(0);
+    });
+
+    it("One second", function() {
+        expect(utils.durationInMinutes("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:05:50.000+02:00")).toEqual(0.017);
+    });
+
+    it("Less than minute but over thirty seconds", function() {
+        expect(utils.durationInMinutes("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:06:20.000+02:00")).toEqual(0.517);
+    });
+
+    it("One minute", function() {
+        expect(utils.durationInMinutes("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:06:49.000+02:00")).toEqual(1);
+    });
+
+    it("Over minute", function() {
+        expect(utils.durationInMinutes("2016-02-24T22:05:49.000+02:00", "2016-02-24T23:06:49.000+02:00")).toEqual(61);
+    });
+});
+
+describe("Duration in hours", function() {
+    it("Zero case", function() {
+        expect(utils.durationInHours("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:05:49.000+02:00")).toEqual(0);
+    });
+
+    it("One minute", function() {
+        expect(utils.durationInHours("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:06:49.000+02:00")).toEqual(0.017);
+    });
+
+    it("Over hour", function() {
+        expect(utils.durationInHours("2016-02-24T22:05:49.000+02:00", "2016-02-24T23:15:49.000+02:00")).toEqual(1.167);
+    });
+});
+
+
+describe("Kilometers per hour", function() {
+    it("Zero distance", function() {
+        expect(utils.kmh(0, 1)).toEqual(0);
+    });
+
+    it("Zero time", function() {
+        expect(utils.kmh(1, 0)).toEqual(0);
+    });
+
+    it("Slow running", function() {
+        expect(utils.kmh(3500, 1.5)).toEqual(2.3);
+    });
+
+    it("Handles string input correctly", function() {
+        expect(utils.kmh("3500", "1.5")).toEqual(2.3);
+    });
+});
+
