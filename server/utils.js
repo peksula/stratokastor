@@ -46,7 +46,7 @@ exports.durationInMinutes = function(startTime, endTime) {
     return Math.round(diffInMins * 1000) / 1000;
 };
 
- exports.durationInHours = function(startTime, endTime) {
+exports.durationInHours = function(startTime, endTime) {
     var startDate = new Date(startTime);
     var endDate = new Date(endTime);
     var diffInMilliseconds = endDate.getTime() - startDate.getTime();

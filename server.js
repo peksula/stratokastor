@@ -1,7 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var uploader  = require('./server/uploader');
-var dataConverter = require ('./server/dataConverter');
+var dataConverterFactory = require ('./server/dataConverterFactory');
+var filler = require('./filler');
 require( './server/db' );
 var route = require( './server/routeModel' );
 
@@ -87,7 +88,7 @@ var Kastor = function() {
     };
     
     self.database_save = function(req, res, next) {
-        var converter = dataConverter.createConverter(res.locals.original_data);
+        var converter = dataConverterFactory.createConverter(res.locals.original_data);
         var data = converter.convert(res.locals.original_data);
         var dateExecuted = new Date();
         if (data.startTime !== undefined) {
