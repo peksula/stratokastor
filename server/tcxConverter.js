@@ -1,5 +1,4 @@
 var parser = require('xml2json');
-var interpolator = require('./interpolator');
 var utils = require('./utils');
 
 exports.convert = function (data) {

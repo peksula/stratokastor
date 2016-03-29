@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var uploader  = require('./server/uploader');
 var dataConverterFactory = require ('./server/dataConverterFactory');
-//var filler = require('./server/filler');
+//var augmenter = require('./server/augmenter');
 require( './server/db' );
 var route = require( './server/routeModel' );
 
@@ -149,7 +149,7 @@ var Kastor = function() {
                 console.log('Error occurred when getting a detailed route from database %s', err);
 				res.send(err);
             }
-            var converter = dataConverter.createConverter(route.original_data);
+            var converter = dataConverterFactory.createConverter(route.original_data);
             var response = {
                 _id: route._id,
                 title: route.title,
