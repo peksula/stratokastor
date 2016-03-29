@@ -174,7 +174,7 @@ var Kastor = function() {
 	};
     
     self.get_route_data = function(data) {
-        //var converter = dataConverterFactory.createConverter(data);
+        var converter = dataConverterFactory.createConverter(data);
         //return converter.convert(data);
         return undefined;
     };
