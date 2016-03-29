@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var uploader  = require('./server/uploader');
-var dataConverterFactory = require ('./server/dataConverterFactory');
+//var dataConverterFactory = require('./server/dataConverterFactory');
 //var augmenter = require('./server/augmenter');
 require( './server/db' );
 var route = require( './server/routeModel' );
@@ -88,7 +88,7 @@ var Kastor = function() {
     };
     
     self.database_save = function(req, res, next) {
-        var route_data = self.getRouteData(res.locals.original_data);
+        var route_data = self.get_route_data(res.locals.original_data);
         var dateExecuted = new Date();
         if (route_data.startTime !== undefined) {
             dateExecuted = new Date(route_data.startTime);
@@ -149,7 +149,7 @@ var Kastor = function() {
 				res.send(err);
             }
             else {
-                var route_data = self.getRouteData(route.original_data);
+                var route_data = self.get_route_data(route.original_data);
                 var response = {
                     _id: route._id,
                     title: route.title,
@@ -173,9 +173,10 @@ var Kastor = function() {
 		});
 	};
     
-    self.getRouteData = function(data) {
-        var converter = dataConverterFactory.createConverter(data);
-        return converter.convert(data);
+    self.get_route_data = function(data) {
+        //var converter = dataConverterFactory.createConverter(data);
+        //return converter.convert(data);
+        return undefined;
     };
 
     /**
