@@ -88,13 +88,6 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
             lng: $scope.route.data.startLng,
             zoom: 16
         };
-        
-        var firstTimeStamp = $scope.route.data.dataPoints[0].timeStamp;
-        var lastTimeStamp = $scope.route.data.dataPoints[$scope.route.data.dataPoints.length-1].timeStamp;
-        var totalTimeInHours = TimeAndSpace.runTimeInHours(firstTimeStamp, lastTimeStamp);
-        var totalTimeInMins = TimeAndSpace.runTimeInMins(firstTimeStamp, lastTimeStamp);
-        $scope.totalVelocity = TimeAndSpace.lengthInKilometers($scope.route.data.distance) / totalTimeInHours;
-        $scope.totalSpeed = totalTimeInMins / TimeAndSpace.lengthInKilometers($scope.route.data.distance);
         console.log($scope.route);
     }
 

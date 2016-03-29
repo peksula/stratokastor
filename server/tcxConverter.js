@@ -108,7 +108,7 @@ exports.convert = function (data) {
         geoPoints[0].lat,
         geoPoints[0].lng,
         utils.kmh(totalDistance, utils.durationInHours(startTime, endTime(dataPoints))),  //kmh
-        0, // min/km
+        utils.minkm(totalDistance, utils.durationInMinutes(startTime, endTime(dataPoints))), // min/km
         geoPoints
     );
 };

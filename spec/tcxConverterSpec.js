@@ -18,12 +18,14 @@ describe("Tcx2Converter", function() {
         expect(route.dataPoints.length).toBe(2502);
         expect(route.geoPoints.length).toBe(2502);
         var dataPointCount = route.dataPoints.length;
-        expect(route.dataPoints[dataPointCount-1].distance).toBe("5438.1");
+        expect(route.distance).toBe("5438.1");
         expect(route.geoPoints[2498].lat).toBe(60.18599021434784);
         expect(route.geoPoints[2498].lng).toBe(25.05650023619334);
         expect(route.startLat).toBe(60.18615917364756);
         expect(route.startLng).toBe(25.056412513057392);
         expect(route.duration).toBe("41:42"); // 22:33:11 - 21:51:29
+        expect(route.kmh).toBe(7.8);
+        expect(route.minkm).toBe(7.7);
         expect(route.dataPoints[4].timeStamp).toBe("2015-11-30T21:51:43.000+02:00");
         expect(route.dataPoints[10].altitude).toBe("8.1");
         expect(route.dataPoints[2499].heartRate).toBe("137");
@@ -55,12 +57,14 @@ describe("Tcx2Converter", function() {
         expect(route.dataPoints.length).toBe(608);
         expect(route.geoPoints.length).toBe(608);
         var dataPointCount = route.dataPoints.length;
-        expect(route.dataPoints[dataPointCount-1].distance).toBe("8370.2099609375");
+        expect(route.distance).toBe("8370.2099609375");
         expect(route.geoPoints[607].lat).toBe(60.991019094362855);
         expect(route.geoPoints[607].lng).toBe(25.475816605612636);
         expect(route.startLat).toBe(60.99109562113881);
         expect(route.startLng).toBe(25.475734379142523);
         expect(route.duration).toBe("52:21"); // 18:56:19 - 18:03:58
+        expect(route.kmh).toBe(9.6);
+        expect(route.minkm).toBe(6.3);
         expect(route.dataPoints[4].timeStamp).toBe("2015-12-10T18:04:26.000Z");
         expect(route.dataPoints[10].altitude).toBe("148.8000030517578");
         expect(route.dataPoints[607].heartRate).toBe("");

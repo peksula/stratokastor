@@ -164,3 +164,21 @@ describe("Kilometers per hour", function() {
     });
 });
 
+describe("Minutes per kilometer", function() {
+    it("Zero distance", function() {
+        expect(utils.minkm(0, 1)).toEqual(0);
+    });
+
+    it("Zero time", function() {
+        expect(utils.minkm(1, 0)).toEqual(0);
+    });
+
+    it("Slow running", function() {
+        expect(utils.minkm(500, 3)).toEqual(6);
+    });
+
+    it("Handles string input correctly", function() {
+        expect(utils.minkm("500", "3")).toEqual(6);
+    });
+});
+

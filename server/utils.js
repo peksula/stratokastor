@@ -63,3 +63,13 @@ exports.kmh = function(distanceInMeters, runtimeInHours) {
     var kmh = distanceInKm / runtimeInHours;
     return Math.round(kmh * 10) / 10;
 };
+
+exports.minkm = function(distanceInMeters, runtimeInMinutes) {
+    if (distanceInMeters === 0) {
+        return 0;
+    }
+    runtimeInMinutes = parseFloat(runtimeInMinutes);
+    var distanceInKm = parseFloat(distanceInMeters)/1000;
+    var minkm = runtimeInMinutes / distanceInKm;
+    return Math.round(minkm * 10) / 10;
+};
