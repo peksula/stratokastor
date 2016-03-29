@@ -1,5 +1,5 @@
 var parser = require('xml2json');
-var tcxConverter = require('./tcxconverter');
+var tcxConverter = require('./tcxConverter');
 
 exports.createConverter = function (data) {
 

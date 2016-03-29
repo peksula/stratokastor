@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var uploader  = require('./server/uploader');
-//var dataConverterFactory = require('./server/dataConverterFactory');
+var dataConverterFactory = require('./server/dataConverterFactory');
 //var augmenter = require('./server/augmenter');
 require( './server/db' );
 var route = require( './server/routeModel' );
