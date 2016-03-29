@@ -88,11 +88,10 @@ var Kastor = function() {
     };
     
     self.database_save = function(req, res, next) {
-        var converter = dataConverterFactory.createConverter(res.locals.original_data);
-        var data = converter.convert(res.locals.original_data);
+        var route_data = self.getRouteData(res.locals.original_data);
         var dateExecuted = new Date();
-        if (data.startTime !== undefined) {
-            dateExecuted = new Date(data.startTime);
+        if (route_data.startTime !== undefined) {
+            dateExecuted = new Date(route_data.startTime);
         }
         route.create({
             title: res.locals.title,
@@ -149,16 +148,18 @@ var Kastor = function() {
                 console.log('Error occurred when getting a detailed route from database %s', err);
 				res.send(err);
             }
-            var converter = dataConverterFactory.createConverter(route.original_data);
-            var response = {
-                _id: route._id,
-                title: route.title,
-                comment: route.comment,
-                weather: route.weather,
-                updated: route.updated_at,
-                data: converter.convert(route.original_data)
-            };
-			res.json(response);
+            else {
+                var route_data = self.getRouteData(route.original_data);
+                var response = {
+                    _id: route._id,
+                    title: route.title,
+                    comment: route.comment,
+                    weather: route.weather,
+                    updated: route.updated_at,
+                    data: route_data
+                };
+                res.json(response);
+            }
 		});
 	};
     
@@ -172,6 +173,10 @@ var Kastor = function() {
 		});
 	};
     
+    self.getRouteData = function(data) {
+        var converter = dataConverterFactory.createConverter(data);
+        return converter.convert(data);
+    };
 
     /**
      *  Initialize the server (express) and create the routes.
