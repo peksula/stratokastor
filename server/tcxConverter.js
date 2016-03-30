@@ -33,11 +33,6 @@ exports.convert = function (data) {
     }
 
     var createDataPoint = function(tcxPoint, startTime, totalClimb) {
-        if (tcxPoint.Position === undefined) {
-            // Only create a data point if there is lat/lon information for it available
-            return null;
-        }
-
         var point = {
             timeStamp: tcxPoint.Time,
             altitude: tcxPoint.AltitudeMeters,
@@ -51,11 +46,6 @@ exports.convert = function (data) {
     }
 
     var createGeoPoint = function(tcxPoint) {
-        if (tcxPoint.Position === undefined) {
-            // Only create a geo point if there is lat/lon information for it available
-            return null;
-        }
-
         var geoPoint = {
             lat: parseFloat(tcxPoint.Position.LatitudeDegrees),
             lng: parseFloat(tcxPoint.Position.LongitudeDegrees)
@@ -80,15 +70,14 @@ exports.convert = function (data) {
                 startTime = trackPoint.Time;
             }
             
-            totalClimb += utils.climbSinceLastPoint(trackPoint.AltitudeMeters, lastAltitudeReading);
+            if (trackPoint.Position !== undefined) {
+                // Only create data points if there is lat/lon information available
+                totalClimb += utils.climbSinceLastPoint(trackPoint.AltitudeMeters, lastAltitudeReading);
+                lastAltitudeReading = parseFloat(trackPoint.AltitudeMeters);
 
-            var point = createDataPoint(trackPoint, startTime, totalClimb, totalDistance);
-            if (point != null) {
+                var point = createDataPoint(trackPoint, startTime, totalClimb, totalDistance);
                 dataPoints.push(point);
-                lastAltitudeReading = parseFloat(point.altitude);
-            }
-            var geoPoint = createGeoPoint(trackPoint);
-            if (geoPoint != null) {
+                var geoPoint = createGeoPoint(trackPoint);
                 geoPoints.push(geoPoint);
             }
         });
@@ -107,8 +96,8 @@ exports.convert = function (data) {
         totalClimb,
         geoPoints[0].lat,
         geoPoints[0].lng,
-        utils.kmh(totalDistance, utils.durationInHours(startTime, endTime(dataPoints))),  //kmh
-        utils.minkm(totalDistance, utils.durationInMinutes(startTime, endTime(dataPoints))), // min/km
+        utils.kmh(totalDistance, utils.durationInHours(startTime, endTime(dataPoints))),
+        utils.minkm(totalDistance, utils.durationInMinutes(startTime, endTime(dataPoints))),
         geoPoints
     );
 };
