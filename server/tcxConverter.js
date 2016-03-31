@@ -24,15 +24,34 @@ exports.convert = function (data) {
         return trackPoint.HeartRateBpm.Value;
     }
     
+    var startTime = function(json) {
+        for (i=0; i < json.TrainingCenterDatabase.Activities.Activity.Lap.length; i++) {
+            var lap = json.TrainingCenterDatabase.Activities.Activity.Lap[i];
+            for (j=0; j < lap.Track.Trackpoint.length; j++) {
+                var trackPoint = lap.Track.Trackpoint[j];
+                return trackPoint.Time;
+            }
+        }
+    }
+
     var endTime = function(dataPoints) {
         return dataPoints[dataPoints.length-1].timeStamp;
     }
 
-    var totalDistance = function(dataPoints) {
-        return dataPoints[dataPoints.length-1].distance;
+    var totalDistance = function(json) {
+        for (i=json.TrainingCenterDatabase.Activities.Activity.Lap.length; i > 0; i--) {
+            var lap = json.TrainingCenterDatabase.Activities.Activity.Lap[i-1];
+            for (j=lap.Track.Trackpoint.length; j > 0; j--) {
+                var trackPoint = lap.Track.Trackpoint[j-1];
+                if (parseFloat(trackPoint.DistanceMeters) > 0) {
+                    return trackPoint.DistanceMeters;
+                }
+            }
+        }
+        return 0;
     }
 
-    var createDataPoint = function(tcxPoint, startTime, totalClimb) {
+    var createDataPoint = function(tcxPoint, startTime, totalClimb, totalDistance) {
         var point = {
             timeStamp: tcxPoint.Time,
             altitude: tcxPoint.AltitudeMeters,
@@ -40,7 +59,7 @@ exports.convert = function (data) {
             duration: utils.runTimeAsString(startTime, tcxPoint.Time),
             climb: totalClimb,
             heartRate: heartRateAtTrackPoint(tcxPoint),
-            percentage: 0 // not calculated here
+            percentage: utils.percentageRun(tcxPoint.DistanceMeters, totalDistance)
             };
         return point;
     }
@@ -56,9 +75,10 @@ exports.convert = function (data) {
     var text = parser.toJson(data);
     var json = JSON.parse(text);
     var lastAltitudeReading;
-    var totalClimb = 0;
-    
-    var startTime;
+    var totalClimb = 0;    
+    var totalDistance = totalDistance(json);
+    var startTime = startTime(json);
+
     var dataPoints = [];
     var geoPoints = [];
 
@@ -66,11 +86,8 @@ exports.convert = function (data) {
     json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
         elem.Track.Trackpoint.forEach(function(trackPoint) {
             
-            if (startTime === undefined) {
-                startTime = trackPoint.Time;
-            }
-            
             if (trackPoint.Position !== undefined) {
+                
                 // Only create data points if there is lat/lon information available
                 totalClimb += utils.climbSinceLastPoint(trackPoint.AltitudeMeters, lastAltitudeReading);
                 lastAltitudeReading = parseFloat(trackPoint.AltitudeMeters);
@@ -84,20 +101,19 @@ exports.convert = function (data) {
     });            
         
         
-    var totalDuration = utils.runTimeAsString(startTime, endTime(dataPoints));
-    var totalDistance = totalDistance(dataPoints);
-    
+    var endTime = endTime(dataPoints);
+
     return new route(
         startTime,
         json.TrainingCenterDatabase.Activities.Activity.Creator.Name,
         dataPoints,
-        totalDuration,
+        utils.runTimeAsString(startTime, endTime),
         totalDistance,
         totalClimb,
         geoPoints[0].lat,
         geoPoints[0].lng,
-        utils.kmh(totalDistance, utils.durationInHours(startTime, endTime(dataPoints))),
-        utils.minkm(totalDistance, utils.durationInMinutes(startTime, endTime(dataPoints))),
+        utils.kmh(totalDistance, utils.durationInHours(startTime, endTime)),
+        utils.minkm(totalDistance, utils.durationInMinutes(startTime, endTime)),
         geoPoints
     );
 };
