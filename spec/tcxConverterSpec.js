@@ -7,7 +7,6 @@ var readFileAsString = function (relPath) {
 }
 
 describe("Tcx2Converter", function() {
-
     it("should convert fitbit tcx data correctly", function() {
         var relativePathFitbitSurge = 'data/993568829.tcx';
         var fitbitBuffer = readFileAsString(relativePathFitbitSurge);
@@ -43,8 +42,7 @@ describe("Tcx2Converter", function() {
             var currentDate = new Date(route.dataPoints[i].timeStamp);
             var previousDate = new Date(route.dataPoints[i-1].timeStamp);
             expect(currentDate).not.toBeLessThan(previousDate);
-        }
-        
+        }        
     });
 
     it("should convert garmin tcx data correctly", function() {
@@ -83,5 +81,12 @@ describe("Tcx2Converter", function() {
             expect(currentDate).not.toBeLessThan(previousDate);
         }
     });
+    
+    it("should convert tcx data with only one lap correctly", function() {
+        var relativePathFitbitSurge = 'data/1998685994.tcx';
+        var fitbitBuffer = readFileAsString(relativePathFitbitSurge);
+        var route = converter.convert(fitbitBuffer);
 
+        expect(route.device).toBe("Fitbit Surge");
+    });
 });

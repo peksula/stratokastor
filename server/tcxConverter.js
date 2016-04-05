@@ -72,6 +72,15 @@ exports.convert = function (data) {
         return geoPoint;
     }
     
+    var objectToArray = function(object) {
+        if (!Array.isArray(object)) {
+            var array = [];
+            array.push(object);
+            return array;
+        }
+        return object;
+    }
+    
     var text = parser.toJson(data);
     var json = JSON.parse(text);
     var lastAltitudeReading;
@@ -81,11 +90,10 @@ exports.convert = function (data) {
 
     var dataPoints = [];
     var geoPoints = [];
-
-    // Idea: possible to loop backwards? Would get total distance easily
-    json.TrainingCenterDatabase.Activities.Activity.Lap.forEach(function(elem) {
-        elem.Track.Trackpoint.forEach(function(trackPoint) {
-            
+    var laps = objectToArray(json.TrainingCenterDatabase.Activities.Activity.Lap);
+    laps.forEach(function(lap) {
+        var trackPoints = objectToArray(lap.Track.Trackpoint);
+        trackPoints.forEach(function(trackPoint) {
             if (trackPoint.Position !== undefined) {
                 
                 // Only create data points if there is lat/lon information available
