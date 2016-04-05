@@ -17,7 +17,7 @@ describe("Tcx2Converter", function() {
         expect(route.dataPoints.length).toBe(2502);
         expect(route.geoPoints.length).toBe(2502);
         var dataPointCount = route.dataPoints.length;
-        expect(route.distance).toBe("5438.1");
+        expect(route.distance).toBe(5438.1);
         expect(route.geoPoints[2498].lat).toBe(60.18599021434784);
         expect(route.geoPoints[2498].lng).toBe(25.05650023619334);
         expect(route.startLat).toBe(60.18615917364756);
@@ -55,7 +55,7 @@ describe("Tcx2Converter", function() {
         expect(route.dataPoints.length).toBe(608);
         expect(route.geoPoints.length).toBe(608);
         var dataPointCount = route.dataPoints.length;
-        expect(route.distance).toBe("8370.2099609375");
+        expect(route.distance).toBe(8370.21);
         expect(route.geoPoints[607].lat).toBe(60.991019094362855);
         expect(route.geoPoints[607].lng).toBe(25.475816605612636);
         expect(route.startLat).toBe(60.99109562113881);
@@ -88,5 +88,7 @@ describe("Tcx2Converter", function() {
         var route = converter.convert(fitbitBuffer);
 
         expect(route.device).toBe("Fitbit Surge");
+        expect(route.distance).toBe(4780.29);
+        expect(route.startTime).toBe("2016-03-20T21:30:36.000+02:00");
     });
 });

@@ -24,9 +24,9 @@ exports.convert = function (data) {
         return trackPoint.HeartRateBpm.Value;
     }
     
-    var startTime = function(json) {
-        for (i=0; i < json.TrainingCenterDatabase.Activities.Activity.Lap.length; i++) {
-            var lap = json.TrainingCenterDatabase.Activities.Activity.Lap[i];
+    var startTime = function(laps) {
+        for (i=0; i < laps.length; i++) {
+            var lap = laps[i];
             for (j=0; j < lap.Track.Trackpoint.length; j++) {
                 var trackPoint = lap.Track.Trackpoint[j];
                 return trackPoint.Time;
@@ -38,13 +38,13 @@ exports.convert = function (data) {
         return dataPoints[dataPoints.length-1].timeStamp;
     }
 
-    var totalDistance = function(json) {
-        for (i=json.TrainingCenterDatabase.Activities.Activity.Lap.length; i > 0; i--) {
-            var lap = json.TrainingCenterDatabase.Activities.Activity.Lap[i-1];
+    var totalDistance = function(laps) {
+        for (i=laps.length; i > 0; i--) {
+            var lap = laps[i-1];
             for (j=lap.Track.Trackpoint.length; j > 0; j--) {
                 var trackPoint = lap.Track.Trackpoint[j-1];
                 if (parseFloat(trackPoint.DistanceMeters) > 0) {
-                    return trackPoint.DistanceMeters;
+                    return Math.round(trackPoint.DistanceMeters * 100) / 100;
                 }
             }
         }
@@ -83,14 +83,16 @@ exports.convert = function (data) {
     
     var text = parser.toJson(data);
     var json = JSON.parse(text);
-    var lastAltitudeReading;
-    var totalClimb = 0;    
-    var totalDistance = totalDistance(json);
-    var startTime = startTime(json);
+    var laps = objectToArray(json.TrainingCenterDatabase.Activities.Activity.Lap);
 
     var dataPoints = [];
     var geoPoints = [];
-    var laps = objectToArray(json.TrainingCenterDatabase.Activities.Activity.Lap);
+    var lastAltitudeReading;
+    var totalClimb = 0;    
+    var totalDistance = totalDistance(laps);
+    var startTime = startTime(laps);
+
+
     laps.forEach(function(lap) {
         var trackPoints = objectToArray(lap.Track.Trackpoint);
         trackPoints.forEach(function(trackPoint) {
