@@ -115,11 +115,11 @@ describe("Duration in minutes", function() {
     });
 
     it("One second", function() {
-        expect(utils.durationInMinutes("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:05:50.000+02:00")).toEqual(0.017);
+        expect(utils.durationInMinutes("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:05:50.000+02:00")).toEqual(0.01667);
     });
 
     it("Less than minute but over thirty seconds", function() {
-        expect(utils.durationInMinutes("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:06:20.000+02:00")).toEqual(0.517);
+        expect(utils.durationInMinutes("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:06:20.000+02:00")).toEqual(0.51667);
     });
 
     it("One minute", function() {
@@ -136,12 +136,16 @@ describe("Duration in hours", function() {
         expect(utils.durationInHours("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:05:49.000+02:00")).toEqual(0);
     });
 
+    it("One second", function() {
+        expect(utils.durationInHours("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:05:50.000+02:00")).toEqual(0.00028);
+    });
+
     it("One minute", function() {
-        expect(utils.durationInHours("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:06:49.000+02:00")).toEqual(0.017);
+        expect(utils.durationInHours("2016-02-24T22:05:49.000+02:00", "2016-02-24T22:06:49.000+02:00")).toEqual(0.01667);
     });
 
     it("Over hour", function() {
-        expect(utils.durationInHours("2016-02-24T22:05:49.000+02:00", "2016-02-24T23:15:49.000+02:00")).toEqual(1.167);
+        expect(utils.durationInHours("2016-02-24T22:05:49.000+02:00", "2016-02-24T23:15:49.000+02:00")).toEqual(1.16667);
     });
 });
 

@@ -27,6 +27,8 @@ describe("Tcx2Converter", function() {
         expect(route.minkm).toBe(7.7);
         expect(route.dataPoints[4].timeStamp).toBe("2015-11-30T21:51:43.000+02:00");
         expect(route.dataPoints[10].altitude).toBe("8.1");
+        expect(route.dataPoints[10].kmh).toBe(4.5);
+        expect(route.dataPoints[10].minkm).toBe(13.3);
         expect(route.dataPoints[2499].heartRate).toBe("137");
         expect(route.dataPoints[3].duration).toBe("0:13"); // 21:51:29 - 21:51:42
         expect(route.dataPoints[0].percentage).toBe(0);
@@ -65,6 +67,8 @@ describe("Tcx2Converter", function() {
         expect(route.minkm).toBe(6.3);
         expect(route.dataPoints[4].timeStamp).toBe("2015-12-10T18:04:26.000Z");
         expect(route.dataPoints[10].altitude).toBe("148.8000030517578");
+        expect(route.dataPoints[10].kmh).toBe(9.5);
+        expect(route.dataPoints[10].minkm).toBe(6.3);
         expect(route.dataPoints[607].heartRate).toBe("");
         expect(route.dataPoints[3].duration).toBe("0:14"); // 18:04:12 - 18:03:58        
         expect(route.dataPoints[0].percentage).toBeCloseTo(0.033, 3); // 2.799999952316284 / 8370.2099609375 * 100
@@ -81,7 +85,7 @@ describe("Tcx2Converter", function() {
             expect(currentDate).not.toBeLessThan(previousDate);
         }
     });
-    
+
     it("should convert tcx data with only one lap correctly", function() {
         var relativePathFitbitSurge = 'data/1998685994.tcx';
         var fitbitBuffer = readFileAsString(relativePathFitbitSurge);
@@ -91,4 +95,5 @@ describe("Tcx2Converter", function() {
         expect(route.distance).toBe(4780.29);
         expect(route.startTime).toBe("2016-03-20T21:30:36.000+02:00");
     });
+
 });

@@ -40,32 +40,13 @@ kastor.service('RouteService', ['$http', function($http){
 
 kastor.service('TimeAndSpace', [function(){
 
-    this.lengthInKilometers = function(lengthInMeters) {
-        return lengthInMeters/1000;
-    }    
-
     this.millisecondsToNextPoint = function (currentTimestamp, nextTimestamp) {
         var startDate = new Date(currentTimestamp);
         var endDate = new Date(nextTimestamp);
         var diffInMilliseconds = endDate.getTime() - startDate.getTime();
         return diffInMilliseconds;
     }
-    
-    this.runTimeInHours = function(startTime, endTime) {
-        var startDate = new Date(startTime);
-        var endDate = new Date(endTime);
-        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
-        var diffInHours = diffInMilliseconds / 3600000;
-        return diffInHours;
-    }
-    
-    this.runTimeInMins = function(startTime, endTime) {
-        var startDate = new Date(startTime);
-        var endDate = new Date(endTime);
-        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
-        var diffInMins = diffInMilliseconds / 60000;
-        return diffInMins;
-    }    
+
 
 }]);
     
@@ -216,24 +197,11 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         var i = 0;
         
         var step = function() {
-            var currentVelocity = 0;
-            var currentSpeed = 0;
-            if (i > 0) {
-                var previousTimeStamp = $scope.route.data.dataPoints[i-1].timeStamp;
-                var currentTimeStamp = $scope.route.data.dataPoints[i].timeStamp;
-                var previousDistance = $scope.route.data.dataPoints[i-1].distance;
-                var currentDistance = $scope.route.data.dataPoints[i].distance;
-                var timeInHours = TimeAndSpace.runTimeInHours(previousTimeStamp, currentTimeStamp); 
-                var kilometersSinceLastPoint = TimeAndSpace.lengthInKilometers(currentDistance - previousDistance);
-                currentVelocity = kilometersSinceLastPoint / timeInHours; // todo move to server
-                var timeInMins = TimeAndSpace.runTimeInMins(previousTimeStamp, currentTimeStamp);
-                currentSpeed = timeInMins / TimeAndSpace.lengthInKilometers(currentDistance - previousDistance); // todo move to server
-            }
             $scope.cursor = {
                 duration: $scope.route.data.dataPoints[i].duration,
                 distance: $scope.route.data.dataPoints[i].distance,
-                velocity: currentVelocity,
-                speed: currentSpeed,
+                kmh: $scope.route.data.dataPoints[i].kmh,
+                minkm: $scope.route.data.dataPoints[i].minkm,
                 climb: $scope.route.data.dataPoints[i].climb,
                 altitude: $scope.route.data.dataPoints[i].altitude,
                 bpm: $scope.route.data.dataPoints[i].heartRate,

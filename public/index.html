@@ -71,11 +71,11 @@
                 </div>
                 <div id="route-data-item">
                     Min/km<br>
-                    <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.speed | number:1 }}</span>
+                    <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.minkm | number:1 }}</span>
                 </div>
                 <div id="route-data-item">
                     Km/h<br>
-                    <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.velocity | number:1 }}</span>
+                    <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.kmh | number:1 }}</span>
                 </div>
                 <div id="route-playback-controls">
                     <button id="play-button" ng-click="playRoute()" ng-hide="playbackToggled"><span>Play</span></button>

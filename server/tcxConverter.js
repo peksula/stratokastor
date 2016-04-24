@@ -51,16 +51,24 @@ exports.convert = function (data) {
         return 0;
     }
 
-    var createDataPoint = function(tcxPoint, startTime, totalClimb, totalDistance) {
+    var createDataPoint = function(tcxPoint, startTime, totalClimb, totalDistance, previousPoint) {
         var point = {
             timeStamp: tcxPoint.Time,
             altitude: tcxPoint.AltitudeMeters,
             distance: tcxPoint.DistanceMeters,
             duration: utils.runTimeAsString(startTime, tcxPoint.Time),
+            kmh: 0,
+            minkm: 0,
             climb: totalClimb,
             heartRate: heartRateAtTrackPoint(tcxPoint),
             percentage: utils.percentageRun(tcxPoint.DistanceMeters, totalDistance)
-            };
+        };
+        if (previousPoint !== undefined) {
+            distanceSinceLastPoint = parseFloat(point.distance) - parseFloat(previousPoint.distance);
+            point.kmh = utils.kmh(distanceSinceLastPoint, utils.durationInHours(previousPoint.timeStamp, point.timeStamp));
+            point.minkm = utils.minkm(distanceSinceLastPoint, utils.durationInMinutes(previousPoint.timeStamp, point.timeStamp));
+        }
+
         return point;
     }
 
@@ -88,6 +96,7 @@ exports.convert = function (data) {
     var dataPoints = [];
     var geoPoints = [];
     var lastAltitudeReading;
+    var previousPoint;
     var totalClimb = 0;    
     var totalDistance = totalDistance(laps);
     var startTime = startTime(laps);
@@ -102,10 +111,11 @@ exports.convert = function (data) {
                 totalClimb += utils.climbSinceLastPoint(trackPoint.AltitudeMeters, lastAltitudeReading);
                 lastAltitudeReading = parseFloat(trackPoint.AltitudeMeters);
 
-                var point = createDataPoint(trackPoint, startTime, totalClimb, totalDistance);
+                var point = createDataPoint(trackPoint, startTime, totalClimb, totalDistance, previousPoint);
                 dataPoints.push(point);
                 var geoPoint = createGeoPoint(trackPoint);
                 geoPoints.push(geoPoint);
+                previousPoint = point;
             }
         });
     });            

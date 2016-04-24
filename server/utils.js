@@ -43,7 +43,7 @@ exports.durationInMinutes = function(startTime, endTime) {
     var endDate = new Date(endTime);
     var diffInMilliseconds = endDate.getTime() - startDate.getTime();
     var diffInMins = diffInMilliseconds / 60000;
-    return Math.round(diffInMins * 1000) / 1000;
+    return Math.round(diffInMins * 100000) / 100000;
 };
 
 exports.durationInHours = function(startTime, endTime) {
@@ -51,7 +51,7 @@ exports.durationInHours = function(startTime, endTime) {
     var endDate = new Date(endTime);
     var diffInMilliseconds = endDate.getTime() - startDate.getTime();
     var diffInHours = diffInMilliseconds / 3600000;
-    return Math.round(diffInHours * 1000) / 1000;
+    return Math.round(diffInHours * 100000) / 100000;
 };
 
 exports.kmh = function(distanceInMeters, runtimeInHours) {
