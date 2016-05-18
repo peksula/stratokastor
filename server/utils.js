@@ -8,6 +8,16 @@ exports.percentageRun = function (currentDistance, totalDistance) {
     return Math.round(percentage * 1000) / 1000;
 };
 
+exports.visualPercentage = function (percentageRun, startLatLon, currentLatLon) {
+    if (percentageRun === 0) {
+        return 0;
+    }
+    if ((startLatLon.lng === currentLatLon.lng) && (startLatLon.lat === currentLatLon.lat)) {
+        return 0;
+    }
+    return percentageRun;
+};
+
 exports.secondsToNextPoint = function(currentTimeStamp, nextTimeStamp) {
     var startDate = new Date(currentTimeStamp);
     var endDate = new Date(nextTimeStamp);

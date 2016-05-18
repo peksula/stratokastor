@@ -33,6 +33,16 @@ exports.convert = function (data) {
             }
         }
     }
+    
+    var startLatLon = function(laps) {
+        var lap = laps[0];
+        var firstTrackPoint = lap.Track.Trackpoint[0];
+        return {
+            lat: parseFloat(firstTrackPoint.Position.LatitudeDegrees),
+            lng: parseFloat(firstTrackPoint.Position.LongitudeDegrees)
+        };
+    }
+    
 
     var endTime = function(dataPoints) {
         return dataPoints[dataPoints.length-1].timeStamp;
@@ -51,7 +61,11 @@ exports.convert = function (data) {
         return 0;
     }
 
-    var createDataPoint = function(tcxPoint, startTime, totalClimb, totalDistance, previousPoint) {
+    var createDataPoint = function(tcxPoint, startTime, startLatLon, totalClimb, totalDistance, previousPoint) {
+        var currentLatLon = {
+            lat: tcxPoint.Position.LatitudeDegrees,
+            lng: tcxPoint.Position.LongitudeDegrees
+       };
         var point = {
             timeStamp: tcxPoint.Time,
             altitude: tcxPoint.AltitudeMeters,
@@ -61,7 +75,8 @@ exports.convert = function (data) {
             minkm: 0,
             climb: totalClimb,
             heartRate: heartRateAtTrackPoint(tcxPoint),
-            percentage: utils.percentageRun(tcxPoint.DistanceMeters, totalDistance)
+            percentage: utils.percentageRun(tcxPoint.DistanceMeters, totalDistance),
+            visualPercentage: utils.visualPercentage(utils.percentageRun(tcxPoint.DistanceMeters, totalDistance), startLatLon, currentLatLon)
         };
         if (previousPoint !== undefined) {
             distanceSinceLastPoint = parseFloat(point.distance) - parseFloat(previousPoint.distance);
@@ -100,6 +115,7 @@ exports.convert = function (data) {
     var totalClimb = 0;    
     var totalDistance = totalDistance(laps);
     var startTime = startTime(laps);
+    var startLatLon = startLatLon(laps);
 
 
     laps.forEach(function(lap) {
@@ -111,7 +127,7 @@ exports.convert = function (data) {
                 totalClimb += utils.climbSinceLastPoint(trackPoint.AltitudeMeters, lastAltitudeReading);
                 lastAltitudeReading = parseFloat(trackPoint.AltitudeMeters);
 
-                var point = createDataPoint(trackPoint, startTime, totalClimb, totalDistance, previousPoint);
+                var point = createDataPoint(trackPoint, startTime, startLatLon, totalClimb, totalDistance, previousPoint);
                 dataPoints.push(point);
                 var geoPoint = createGeoPoint(trackPoint);
                 geoPoints.push(geoPoint);
@@ -130,8 +146,8 @@ exports.convert = function (data) {
         utils.runTimeAsString(startTime, endTime),
         totalDistance,
         totalClimb,
-        geoPoints[0].lat,
-        geoPoints[0].lng,
+        startLatLon.lat,
+        startLatLon.lng,
         utils.kmh(totalDistance, utils.durationInHours(startTime, endTime)),
         utils.minkm(totalDistance, utils.durationInMinutes(startTime, endTime)),
         geoPoints

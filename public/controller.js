@@ -208,7 +208,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 percentage: $scope.route.data.dataPoints[i].percentage
             };
             
-            stepMap($scope.route.data.dataPoints[i].percentage);
+            stepMap($scope.route.data.dataPoints[i].visualPercentage);
             
             i++;
             if (i < $scope.route.data.dataPoints.length) {

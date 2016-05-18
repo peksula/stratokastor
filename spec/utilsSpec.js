@@ -26,6 +26,53 @@ describe("Percentage run", function() {
     });    
 });
 
+describe("Visual percentage", function() {
+    it("zero percentage if no distance covered", function() {
+        var startLatLon = {
+            lat: 60.177499890327454,
+            lng: 25.056729912757874
+        };
+        
+        var currentLatLon = {
+            lat: 60.177499890327454,
+            lng: 25.056729912757874
+        };
+        
+        expect(utils.visualPercentage(0, startLatLon, currentLatLon)).toEqual(0);
+    });
+    
+    it("zero percentage if current location equals start location", function() {
+        var startLatLon = {
+            lat: 60.177499890327454,
+            lng: 25.056729912757874
+        };
+        
+        var currentLatLon = {
+            lat: 60.177499890327454,
+            lng: 25.056729912757874
+        };
+        
+        expect(utils.visualPercentage(50, startLatLon, currentLatLon)).toEqual(0);
+    });
+
+    it("executed percentage if current location does not equal start location", function() {
+        var startLatLon = {
+            lat: 60.177499890327454,
+            lng: 25.056729912757874
+        };
+        
+        var currentLatLon = {
+            lat: 61.177499890327454,
+            lng: 25.056729912757874
+        };
+        
+        expect(utils.visualPercentage(50, startLatLon, currentLatLon)).toEqual(50);
+    });
+    
+
+});
+
+
 describe("Seconds to next point", function() {
     it("detects one second difference", function() {
         expect(utils.secondsToNextPoint("2016-02-24T21:38:40.000+02:00", "2016-02-24T21:38:41.000+02:00")).toEqual(1);
