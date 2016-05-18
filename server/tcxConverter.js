@@ -63,8 +63,8 @@ exports.convert = function (data) {
 
     var createDataPoint = function(tcxPoint, startTime, startLatLon, totalClimb, totalDistance, previousPoint) {
         var currentLatLon = {
-            lat: tcxPoint.Position.LatitudeDegrees,
-            lng: tcxPoint.Position.LongitudeDegrees
+            lat: parseFloat(tcxPoint.Position.LatitudeDegrees),
+            lng: parseFloat(tcxPoint.Position.LongitudeDegrees)
        };
         var point = {
             timeStamp: tcxPoint.Time,
@@ -76,7 +76,7 @@ exports.convert = function (data) {
             climb: totalClimb,
             heartRate: heartRateAtTrackPoint(tcxPoint),
             percentage: utils.percentageRun(tcxPoint.DistanceMeters, totalDistance),
-            visualPercentage: utils.visualPercentage(utils.percentageRun(tcxPoint.DistanceMeters, totalDistance), startLatLon, currentLatLon)
+            visualPercentage: utils.visualPercentage(utils.percentageRun(tcxPoint.DistanceMeters, totalDistance), startLatLon, currentLatLon) // todo unit test this
         };
         if (previousPoint !== undefined) {
             distanceSinceLastPoint = parseFloat(point.distance) - parseFloat(previousPoint.distance);
