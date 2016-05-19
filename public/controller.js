@@ -210,12 +210,12 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             
             stepMap($scope.route.data.dataPoints[i].visualPercentage);
             
-            i++;
+            i = i + $scope.$parent.playbackMultiplier;
             if (i < $scope.route.data.dataPoints.length) {
                 var currentTimeStamp = $scope.route.data.dataPoints[i-1].timeStamp;
                 var nextTimeStamp = $scope.route.data.dataPoints[i].timeStamp;
                 var delay = TimeAndSpace.millisecondsToNextPoint(currentTimeStamp, nextTimeStamp);
-                delay = delay / $scope.$parent.playbackMultiplier;
+                //delay = delay / $scope.$parent.playbackMultiplier;
                 timer = $timeout(step, delay);
             }
         }
