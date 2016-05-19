@@ -214,8 +214,9 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             if (i < $scope.route.data.dataPoints.length) {
                 var currentTimeStamp = $scope.route.data.dataPoints[i-1].timeStamp;
                 var nextTimeStamp = $scope.route.data.dataPoints[i].timeStamp;
-                var delay = TimeAndSpace.millisecondsToNextPoint(currentTimeStamp, nextTimeStamp);
+                //var delay = TimeAndSpace.millisecondsToNextPoint(currentTimeStamp, nextTimeStamp);
                 // delay = delay / $scope.$parent.playbackMultiplier;
+                var delay = 1000;
                 timer = $timeout(step, delay);
             }
         }
