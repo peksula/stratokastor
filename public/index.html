@@ -15,7 +15,7 @@
         <div id="right-panel">
             <div id="route-list" class="row">
                 <div id= "route-list-element-new">
-                    <b>Lisää uusi reitti tcx- tai gpx- tiedostosta.</b>
+                    <b>Lisää uusi reitti tcx-tiedostosta.</b>
                     <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
                         <span id="add-route-plus-sign">+</span> <input type="file" name="route_file">
                         <input type="submit" value="Lataa tiedosto palvelimelle">    
@@ -86,6 +86,8 @@
                     <button id="speed-button" ng-click="setAnimationSpeed(2)" ng-show="playbackToggled" ng-if="playbackMultiplier!=2">2x</button>
                     <button id="speed-button-pressed" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier==5">5x</button>
                     <button id="speed-button" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier!=5">5x</button>
+                    <button id="speed-button-pressed" ng-click="setAnimationSpeed(10)" ng-show="playbackToggled" ng-if="playbackMultiplier==10">10x</button>
+                    <button id="speed-button" ng-click="setAnimationSpeed(10)" ng-show="playbackToggled" ng-if="playbackMultiplier!=10">10x</button>
                 </div>
             </div>
             <table>
