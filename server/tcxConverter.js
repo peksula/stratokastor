@@ -76,7 +76,7 @@ exports.convert = function (data) {
             climb: totalClimb,
             heartRate: heartRateAtTrackPoint(tcxPoint),
             percentage: utils.percentageRun(tcxPoint.DistanceMeters, totalDistance),
-            visualPercentage: utils.visualPercentage(utils.percentageRun(tcxPoint.DistanceMeters, totalDistance), startLatLon, currentLatLon) // todo unit test this
+            visualPercentage: utils.visualPercentage(utils.percentageRun(tcxPoint.DistanceMeters, totalDistance), startLatLon, currentLatLon)
         };
         if (previousPoint !== undefined) {
             distanceSinceLastPoint = parseFloat(point.distance) - parseFloat(previousPoint.distance);
