@@ -164,9 +164,9 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         });
     };
 
-    var stepMap = function(percentage) {
+    var stepMap = function() {
         var icons = shape.get('icons');
-        icons[0].offset = percentage + '%';
+        icons[0].offset = 0;
         shape.set('icons', icons);
     }
     
@@ -208,7 +208,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 percentage: $scope.route.data.dataPoints[i].percentage
             };
             
-            stepMap($scope.route.data.dataPoints[i].visualPercentage);
+            stepMap();
             
             i++;
             if (i < $scope.route.data.dataPoints.length) {

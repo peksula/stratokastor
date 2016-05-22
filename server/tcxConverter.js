@@ -61,7 +61,7 @@ exports.convert = function (data) {
         return 0;
     }
 
-    var createDataPoint = function(tcxPoint, startTime, startLatLon, totalClimb, totalDistance, previousPoint) {
+    var createDataPoint = function(tcxPoint, startTime, totalClimb, totalDistance, previousPoint) {
         var currentLatLon = {
             lat: parseFloat(tcxPoint.Position.LatitudeDegrees),
             lng: parseFloat(tcxPoint.Position.LongitudeDegrees)
@@ -76,7 +76,6 @@ exports.convert = function (data) {
             climb: totalClimb,
             heartRate: heartRateAtTrackPoint(tcxPoint),
             percentage: utils.percentageRun(tcxPoint.DistanceMeters, totalDistance),
-            visualPercentage: utils.visualPercentage(utils.percentageRun(tcxPoint.DistanceMeters, totalDistance), startLatLon, currentLatLon)
         };
         if (previousPoint !== undefined) {
             distanceSinceLastPoint = parseFloat(point.distance) - parseFloat(previousPoint.distance);
@@ -127,7 +126,7 @@ exports.convert = function (data) {
                 totalClimb += utils.climbSinceLastPoint(trackPoint.AltitudeMeters, lastAltitudeReading);
                 lastAltitudeReading = parseFloat(trackPoint.AltitudeMeters);
 
-                var point = createDataPoint(trackPoint, startTime, startLatLon, totalClimb, totalDistance, previousPoint);
+                var point = createDataPoint(trackPoint, startTime, totalClimb, totalDistance, previousPoint);
                 dataPoints.push(point);
                 var geoPoint = createGeoPoint(trackPoint);
                 geoPoints.push(geoPoint);

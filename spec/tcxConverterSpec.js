@@ -33,11 +33,7 @@ describe("Tcx2Converter", function() {
         expect(route.dataPoints[3].duration).toBe("0:13"); // 21:51:29 - 21:51:42
         expect(route.dataPoints[0].percentage).toBe(0);
         expect(route.dataPoints[1].percentage).toBeCloseTo(0.064, 3); // 3.5 / 5438.1 * 100
-        expect(route.dataPoints[1].visualPercentage).toBe(0);
-        expect(route.dataPoints[2].visualPercentage).toBe(0);
-        expect(route.dataPoints[3].visualPercentage).not.toBe(0);
         expect(route.dataPoints[2501].percentage).toBe(100);
-        expect(route.dataPoints[2501].visualPercentage).toBe(100);
         
         for (i=1; i < dataPointCount; i++) {
             expect(route.dataPoints[i].percentage).not.toBeLessThan(route.dataPoints[i-1].percentage);
@@ -76,9 +72,7 @@ describe("Tcx2Converter", function() {
         expect(route.dataPoints[607].heartRate).toBe("");
         expect(route.dataPoints[3].duration).toBe("0:14"); // 18:04:12 - 18:03:58        
         expect(route.dataPoints[0].percentage).toBeCloseTo(0.033, 3); // 2.799999952316284 / 8370.2099609375 * 100
-        expect(route.dataPoints[0].visualPercentage).toBe(0);
         expect(route.dataPoints[607].percentage).toBe(100);
-        expect(route.dataPoints[607].visualPercentage).toBe(100);
 
         for (i=1; i < dataPointCount; i++) {
             expect(route.dataPoints[i].percentage).not.toBeLessThan(route.dataPoints[i-1].percentage);
