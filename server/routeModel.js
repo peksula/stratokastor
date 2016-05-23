@@ -8,5 +8,6 @@ var RouteSchema = new mongoose.Schema({
     updated_at      : { type: Date, default: Date.now },
     original_data   : String
 });
+RouteSchema.index({ "date": 1 });
  
 module.exports = mongoose.model('Route', RouteSchema);
