@@ -157,6 +157,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout, TimeAndSpace) {
     var vc = this;
     var shape;
+    var market;
     
     $scope.initMap = function() {
         NgMap.getMap().then(function(map) {

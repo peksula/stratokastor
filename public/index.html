@@ -44,6 +44,9 @@
                 stroke-opacity = "0.2"
                 stroke-weight = "5">
             </shape>
+            <marker id= "curPos" position="{{ route.data.geoPoints[0].lat }}, {{ route.data.geoPoints[0].lng }}"
+                icon="{path:'CIRCLE', scale: 6, strokeOpacity: 0.8, strokeColor: '#393'}">
+            </marker>            
         </ng-map>
         <div id="route-data">
             <div id="route-data-dynamic">
