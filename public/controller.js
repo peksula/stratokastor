@@ -167,7 +167,8 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     };
 
     var stepMap = function(lat, lng) {
-        marker.setPosition(lat, lng);
+        var pos = new google.maps.LatLng(lat, lng);
+        marker.setPosition(pos);
     }
     
     var reset = function() {
