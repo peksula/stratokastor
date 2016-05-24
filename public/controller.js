@@ -166,10 +166,8 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         });
     };
 
-    var stepMap = function() {
-        var icons = shape.get('icons');
-        icons[0].offset = 0;
-        shape.set('icons', icons);
+    var stepMap = function(lat, lng) {
+        marker.setPosition(lat, lng);
     }
     
     var reset = function() {
@@ -210,7 +208,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 percentage: $scope.route.data.dataPoints[i].percentage
             };
             
-            stepMap();
+            stepMap($scope.route.data.geoPoints[i].lat, $scope.route.data.geoPoints[i].lng);
             
             i++;
             if (i < $scope.route.data.dataPoints.length) {
