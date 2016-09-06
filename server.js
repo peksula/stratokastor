@@ -110,7 +110,7 @@ var Kastor = function() {
     };
 
     self.database_delete = function(req, res, next) {
-		route.remove({
+        route.remove({
 			_id : req.params.id
 		}, function(err, route) {
 			if (err) {
@@ -125,7 +125,7 @@ var Kastor = function() {
         var comment = req.body.comment;
         var weather = req.body.weather;        
         console.log('Updating %s %s %s.', title, comment, weather);
-		route.findByIdAndUpdate(
+        route.findByIdAndUpdate(
             req.params.id,
             {
                 title: title,
@@ -175,7 +175,13 @@ var Kastor = function() {
     
     self.get_route_data = function(data) {
         var converter = dataConverterFactory.createConverter(data);
-        return converter.convert(data);
+        //return converter.convert(data);
+        converter.convert(data).then(function(route) {
+            return route;
+        })
+        .catch(function() {
+            return null;
+        )};
     };
 
     /**
