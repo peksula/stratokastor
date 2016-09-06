@@ -181,7 +181,7 @@ var Kastor = function() {
         })
         .catch(function() {
             return null;
-        )};
+        });
     };
 
     /**
