@@ -83,7 +83,7 @@ var Kastor = function() {
         self.app.delete('/routes/:id', responser.delete_route, self.database_get_list);
     };
     
-    self.upload_file = function(req, res, next) {
+    self.upload_file = function(req, res, next) { // needed? can one call directly uploader.process_form from createRoutes?
         uploader.process_form(req, res, next);
     };
 
