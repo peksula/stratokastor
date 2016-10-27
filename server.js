@@ -2,9 +2,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var uploader  = require('./server/uploader');
 var dataConverterFactory = require('./server/dataConverterFactory');
-//var augmenter = require('./server/augmenter');
 require( './server/db' );
 var route = require( './server/routeModel' );
+var responser = require('./server/responser')
 
 
 /**
@@ -76,49 +76,16 @@ var Kastor = function() {
         self.app.get('/', function(req, res) {
             res.sendfile('./public/index.html');
         });
-        self.app.post('/routes', self.upload_file, self.database_save);
+        self.app.post('/routes', self.upload_file, responser.save_route);
         self.app.post('/routes/:id', self.database_update, self.database_get_list);
         self.app.get('/routes', self.database_get_list);
         self.app.get('/routes/:id', self.database_get_details);
-        self.app.delete('/routes/:id', self.database_delete, self.database_get_list);
+        self.app.delete('/routes/:id', responser.delete_route, self.database_get_list);
     };
     
     self.upload_file = function(req, res, next) {
         uploader.process_form(req, res, next);
     };
-    
-    self.database_save = function(req, res, next) {
-        var route_data = self.get_route_data(res.locals.original_data);
-        var dateExecuted = new Date();
-        if (route_data.startTime !== undefined) {
-            dateExecuted = new Date(route_data.startTime);
-        }
-        route.create({
-            title: res.locals.title,
-            comment: res.locals.comment,
-            weather: res.locals.weather,
-            date: dateExecuted,
-            original_data: res.locals.original_data
-        }, function(err, _route) {
-            if (err) {
-                console.log('Error creating database entry %s', err);
-                res.send(err);
-            }
-        });
-        
-        res.redirect('/');
-    };
-
-    self.database_delete = function(req, res, next) {
-        route.remove({
-			_id : req.params.id
-		}, function(err, route) {
-			if (err) {
-				res.send(err);
-            }
-		});
-        next();
-	};
 
     self.database_update = function(req, res, next) {
         var title = req.body.title;

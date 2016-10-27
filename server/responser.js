@@ -14,7 +14,7 @@ get_route_data = function(data) {
 };
 
 
-exports.save = function (res, route) {
+exports.save_route = function (res, route) {
 
     return new Promise(function(resolve, reject) {
         get_route_data(res.locals.original_data).then(function(route_data) {
@@ -31,14 +31,26 @@ exports.save = function (res, route) {
             }, function(err, _route) {
                 if (err) {
                     console.log('Error creating database entry %s', err);
-                    res.send(err);
+                    return reject(err)
                 }
             });
             res.redirect('/');
             return resolve();
         }).
-        catch(function() {
+        catch(function(err) {
+            res.send(err);
             return reject();
         });
     });
 };
+
+exports.delete_route = function(req, res, next, route) {
+    route.remove({
+        _id : req.params.id
+    }, function(err, route) {
+        if (err) {
+            res.send(err)
+        }
+    })
+    next()
+}
