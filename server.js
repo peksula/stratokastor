@@ -1,10 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var uploader  = require('./server/uploader');
-var dataConverterFactory = require('./server/dataConverterFactory');
 require( './server/db' );
 var route = require( './server/routeModel' );
-var responser = require('./server/responser')
+var dataAccess = require('./server/dataAccess')
 
 
 /**
@@ -76,86 +75,42 @@ var Kastor = function() {
         self.app.get('/', function(req, res) {
             res.sendfile('./public/index.html');
         });
-        self.app.post('/routes', self.upload_file, responser.save_route);
-        self.app.post('/routes/:id', self.database_update, self.database_get_list);
-        self.app.get('/routes', self.database_get_list);
-        self.app.get('/routes/:id', self.database_get_details);
-        self.app.delete('/routes/:id', responser.delete_route, self.database_get_list);
+        self.app.post('/routes', self.upload_file, self.database_save_route)
+        self.app.post('/routes/:id', self.database_update, self.database_get_list)
+        self.app.get('/routes', self.database_get_list)
+        self.app.get('/routes/:id', self.database_get_details)
+        self.app.delete('/routes/:id', self.database_delete_route, self.database_get_list)
     };
     
     self.upload_file = function(req, res, next) { // needed? can one call directly uploader.process_form from createRoutes?
         uploader.process_form(req, res, next);
-    };
+    }
 
     self.database_update = function(req, res, next) {
-        var title = req.body.title;
-        var comment = req.body.comment;
-        var weather = req.body.weather;        
-        console.log('Updating %s %s %s.', title, comment, weather);
-        route.findByIdAndUpdate(
-            req.params.id,
-            {
-                title: title,
-                comment: comment,
-                weather: weather,
-                updated_at: new Date()
-            },
-            function(err, route) {
-			if (err) {
-                console.log('Error updating database entry %s', err);
-				res.send(err);
-            }
-		});
-        next();
-	};
-     
+        dataAccess.update_route(req, res, next, route)
+	}
+
     self.database_get_details = function(req, res, next) {
-		route.findById(req.params.id, function(err, route) {
-			if (err) {
-                console.log('Error occurred when getting a detailed route from database %s', err);
-				res.send(err);
-            }
-            else {
-                var route_data = self.get_route_data(route.original_data);
-                var response = {
-                    _id: route._id,
-                    title: route.title,
-                    comment: route.comment,
-                    weather: route.weather,
-                    updated: route.updated_at,
-                    data: route_data
-                };
-                res.json(response);
-            }
-		});
-	};
-    
+        dataAccess.get_route(req, res, next, route)
+	}
+
+    self.database_save_route = function(req, res, next) {
+        dataAccess.save_route(res, route)
+    }
+
+    self.database_delete_route = function(req, res, next) {
+        dataAccess.delete_route(req, rest, next, route)
+    }
+
     self.database_get_list = function(req, res, next) {
-		route.find({}, 'title date comment', {sort: '-date'}, function(err, routes) {
-			if (err) {
-                console.log('Error occurred when getting list from database %s', err);
-				res.send(err);
-            }
-			res.json(routes);
-		});
-	};
-    
-    self.get_route_data = function(data) {
-        var converter = dataConverterFactory.createConverter(data);
-        //return converter.convert(data);
-        converter.convert(data).then(function(route) {
-            return route;
-        })
-        .catch(function() {
-            return null;
-        });
-    };
+        dataAccess.get_list_of_routes(res, route)
+	}
 
     /**
      *  Initialize the server (express) and create the routes.
      */
     self.initializeServer = function() {
-        self.app = express();
+        self.app = express()
         self.app.use(express.static('public'));
         self.app.use(express.static('bower_components'));
         self.app.use(bodyParser.json());
