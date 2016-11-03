@@ -91,7 +91,7 @@ var Kastor = function() {
 	}
 
     self.database_get_details = function(req, res, next) {
-        dataAccess.get_route(req, res, next, route)
+        dataAccess.get_route(req, res, route)
 	}
 
     self.database_save_route = function(req, res, next) {
