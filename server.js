@@ -1,10 +1,9 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var uploader  = require('./server/uploader');
-require( './server/db' );
-var route = require( './server/routeModel' );
+var express = require('express')
+var bodyParser = require('body-parser')
+var uploader  = require('./server/uploader')
+require( './server/db' )
+var route = require( './server/routeModel' )
 var dataAccess = require('./server/dataAccess')
-
 
 /**
  *  Define the application.
@@ -12,8 +11,7 @@ var dataAccess = require('./server/dataAccess')
 var Kastor = function() {
 
     //  Scope.
-    var self = this;
-
+    var self = this
 
     /*  ================================================================  */
     /*  Helper functions.                                                 */
@@ -33,7 +31,7 @@ var Kastor = function() {
             console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
             self.ipaddress = "127.0.0.1";
         };
-    };
+    }
 
     /**
      *  Terminate server on receipt of the specified signal.
@@ -82,8 +80,8 @@ var Kastor = function() {
         self.app.delete('/routes/:id', self.database_delete_route, self.database_get_list)
     };
     
-    self.upload_file = function(req, res, next) { // needed? can one call directly uploader.process_form from createRoutes?
-        uploader.process_form(req, res, next);
+    self.upload_file = function(req, res, next) {
+        uploader.process_form(req, res, next)
     }
 
     self.database_update = function(req, res, next) {
