@@ -99,7 +99,7 @@ var Kastor = function() {
     }
 
     self.database_delete_route = function(req, res, next) {
-        dataAccess.delete_route(req, rest, next, route)
+        dataAccess.delete_route(req, res, next, route)
     }
 
     self.database_get_list = function(req, res, next) {
