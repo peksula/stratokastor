@@ -1,36 +1,27 @@
+require( './server/db' )
 var express = require('express')
 var bodyParser = require('body-parser')
 var uploader  = require('./server/uploader')
-require( './server/db' )
 var route = require( './server/routeModel' )
 var dataAccess = require('./server/dataAccess')
 
-/**
- *  Define the application.
- */
 var Kastor = function() {
 
-    //  Scope.
     var self = this
-
-    /*  ================================================================  */
-    /*  Helper functions.                                                 */
-    /*  ================================================================  */
 
     /**
      *  Set up server IP address and port # using env variables/defaults.
      */
     self.setupVariables = function() {
-        //  Set the environment variables we need.
-        self.ipaddress = process.env.OPENSHIFT_NODEJS_IP;
-        self.port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+        self.ipaddress = process.env.OPENSHIFT_NODEJS_IP
+        self.port      = process.env.OPENSHIFT_NODEJS_PORT || 8080
 
         if (typeof self.ipaddress === "undefined") {
             //  Log errors on OpenShift but continue w/ 127.0.0.1 - this
             //  allows us to run/test the app locally.
-            console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
-            self.ipaddress = "127.0.0.1";
-        };
+            console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1')
+            self.ipaddress = "127.0.0.1"
+        }
     }
 
     /**
@@ -39,11 +30,11 @@ var Kastor = function() {
      */
     self.terminator = function(sig){
         if (typeof sig === "string") {
-           console.log('Received %s - terminating application.', sig);
-           process.exit(1);
+           console.log('Received %s - terminating application.', sig)
+           process.exit(1)
         }
-        console.log('Node server stopped.');
-    };
+        console.log('Node server stopped.')
+    }
 
 
     /**
@@ -51,46 +42,44 @@ var Kastor = function() {
      */
     self.setupTerminationHandlers = function(){
         //  Process on exit and signals.
-        process.on('exit', function() { self.terminator(); });
+        process.on('exit', function() {
+            self.terminator()
+        });
 
-        // Removed 'SIGPIPE' from the list - bugz 852598.
         ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
          'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
         ].forEach(function(element, index, array) {
-            process.on(element, function() { self.terminator(element); });
-        });
-    };
-
-
-    /*  ================================================================  */
-    /*  App server functions (main app logic here).                       */
-    /*  ================================================================  */
+            process.on(element, function() {
+                self.terminator(element)
+            })
+        })
+    }
 
     /**
      *  Create the routing table entries.
      */
     self.createRoutes = function() {
         self.app.get('/', function(req, res) {
-            res.sendfile('./public/index.html');
-        });
+            res.sendfile('./public/index.html')
+        })
         self.app.post('/routes', self.upload_file, self.database_save_route)
         self.app.post('/routes/:id', self.database_update, self.database_get_list)
         self.app.get('/routes', self.database_get_list)
         self.app.get('/routes/:id', self.database_get_details)
         self.app.delete('/routes/:id', self.database_delete_route, self.database_get_list)
-    };
-    
+    }
+
     self.upload_file = function(req, res, next) {
         uploader.process_form(req, res, next)
     }
 
     self.database_update = function(req, res, next) {
         dataAccess.update_route(req, res, next, route)
-	}
+    }
 
     self.database_get_details = function(req, res, next) {
         dataAccess.get_route(req, res, route)
-	}
+    }
 
     self.database_save_route = function(req, res, next) {
         dataAccess.save_route(res, route)
@@ -102,46 +91,40 @@ var Kastor = function() {
 
     self.database_get_list = function(req, res, next) {
         dataAccess.get_list_of_routes(res, route)
-	}
+    }
 
     /**
      *  Initialize the server (express) and create the routes.
      */
     self.initializeServer = function() {
         self.app = express()
-        self.app.use(express.static('public'));
-        self.app.use(express.static('bower_components'));
-        self.app.use(bodyParser.json());
-        self.app.use(bodyParser.urlencoded({ extended: true }));
+        self.app.use(express.static('public'))
+        self.app.use(express.static('bower_components'))
+        self.app.use(bodyParser.json())
+        self.app.use(bodyParser.urlencoded({ extended: true }))
         
-        self.createRoutes();
-    };
-    
+        self.createRoutes()
+    }
+
     /**
      *  Initializes the application.
      */
     self.initialize = function() {
-        self.setupVariables();
-        self.setupTerminationHandlers();
+        self.setupVariables()
+        self.setupTerminationHandlers()
+        self.initializeServer()
+    }
 
-        // Create the express server and routes.
-        self.initializeServer();
-    };
-    
     /**
      *  Start the server.
      */
     self.start = function() {
         self.app.listen(self.port, self.ipaddress, function() {
-            console.log('Node server started on %s:%d', self.ipaddress, self.port);
-        });
-    };
+            console.log('Node server started on %s:%d', self.ipaddress, self.port)
+        })
+    }
+}
 
-};   /*  Application.  */
-
-/**
- *  main():  Main code.
- */
-var app = new Kastor();
-app.initialize();
-app.start();
+var app = new Kastor()
+app.initialize()
+app.start()
