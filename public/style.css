@@ -4,7 +4,7 @@
 }
 #main-div {
 }
-#map-canvas {
+#left-panel {
     width: 70%;
 }
 #right-panel {
@@ -31,7 +31,7 @@
     color: white;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
-#route-list-element-new {
+#route-list-element-add-new-route {
     border-style: ridge;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -74,26 +74,6 @@
     width: 600px;
     height: 20px;
     vertical-align: middle;
-}
-#edit-button {
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 4px;
-}
-#save-changes-button {
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 4px;
-}
-#cancel-button {
-    background-color: #A5A500;
-    color: white;
-    border-radius: 4px;
-}
-#delete-button {
-    background-color: #f44336;
-    color: white;
-    border-radius: 4px;
 }
 #play-button {
   display: inline-block;
@@ -168,4 +148,24 @@
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
+}
+#edit-button {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+}
+#save-changes-button {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+}
+#cancel-button {
+    background-color: #A5A500;
+    color: white;
+    border-radius: 4px;
+}
+#delete-button {
+    background-color: #f44336;
+    color: white;
+    border-radius: 4px;
 }
