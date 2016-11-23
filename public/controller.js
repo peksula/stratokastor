@@ -155,24 +155,24 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     var vc = this
     var shape
     var marker
-    
+
     $scope.initMap = function() {
         NgMap.getMap().then(function(map) {
-            shape = map.shapes.routeShape;
-            marker = map.markers.curPos;
-        });
-    };
+            shape = map.shapes.routeShape
+            marker = map.markers.curPos
+        })
+    }
 
     var stepMap = function(lat, lng) {
-        var pos = new google.maps.LatLng(lat, lng);
-        marker.setPosition(pos);
+        var pos = new google.maps.LatLng(lat, lng)
+        marker.setPosition(pos)
     }
-    
+
     var reset = function() {
         if (timer !== undefined) {
-            $timeout.cancel(timer);
+            $timeout.cancel(timer)
         }
-        $scope.$parent.playbackToggled = false;
+        $scope.$parent.playbackToggled = false
         $scope.cursor = {
             duration: "",
             distance: "",
@@ -182,18 +182,18 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             altitude: "",
             bpm: "",
             percentage: ""
-        };
+        }
     }
-    
+
     $scope.setAnimationSpeed = function(speed) {
-        $scope.$parent.playbackMultiplier = speed;
+        $scope.$parent.playbackMultiplier = speed
     }
 
     $scope.playRoute = function() {
-        reset();
-        $scope.$parent.playbackToggled = true;
-        var i = 0;
-        
+        reset()
+        $scope.$parent.playbackToggled = true
+        var i = 0
+
         var step = function() {
             $scope.cursor = {
                 duration: $scope.route.data.dataPoints[i].duration,
@@ -204,25 +204,24 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
                 altitude: $scope.route.data.dataPoints[i].altitude,
                 bpm: $scope.route.data.dataPoints[i].heartRate,
                 percentage: $scope.route.data.dataPoints[i].percentage
-            };
-            
-            stepMap($scope.route.data.geoPoints[i].lat, $scope.route.data.geoPoints[i].lng);
-            
-            i++;
+            }
+
+            stepMap($scope.route.data.geoPoints[i].lat, $scope.route.data.geoPoints[i].lng)
+
+            i++
             if (i < $scope.route.data.dataPoints.length) {
-                var currentTimeStamp = $scope.route.data.dataPoints[i-1].timeStamp;
-                var nextTimeStamp = $scope.route.data.dataPoints[i].timeStamp;
-                var delay = TimeUtils.millisecondsToNextPoint(currentTimeStamp, nextTimeStamp);
-                delay = delay / $scope.$parent.playbackMultiplier;
-                timer = $timeout(step, delay);
+                var currentTimeStamp = $scope.route.data.dataPoints[i-1].timeStamp
+                var nextTimeStamp = $scope.route.data.dataPoints[i].timeStamp
+                var delay = TimeUtils.millisecondsToNextPoint(currentTimeStamp, nextTimeStamp)
+                delay = delay / $scope.$parent.playbackMultiplier
+                timer = $timeout(step, delay)
             }
         }
-        
-        timer = $timeout(step, 250);
-    };
-    
-    $scope.stopRoute = function() {
-        reset();
-    };
 
-});
+        timer = $timeout(step, 250)
+    }
+
+    $scope.stopRoute = function() {
+        reset()
+    }
+})
