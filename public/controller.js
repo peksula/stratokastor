@@ -35,6 +35,16 @@ kastor.service('RouteService', ['$http', function($http){
             url: '/routes/' + id,
         }).then(successCallback, errorCallback)
     }
+
+}])
+
+kastor.service('TimeAndSpace', [function(){
+    this.millisecondsToNextPoint = function (currentTimestamp, nextTimestamp) {
+        var startDate = new Date(currentTimestamp);
+        var endDate = new Date(nextTimestamp);
+        var diffInMilliseconds = endDate.getTime() - startDate.getTime();
+        return diffInMilliseconds;
+    }
 }])
 
 kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'TimeAndSpace', function($scope, $timeout, RouteService, TimeAndSpace){
