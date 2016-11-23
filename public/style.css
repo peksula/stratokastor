@@ -12,7 +12,7 @@
     float: right;
 }
 #route-list {
-    height: 850px;
+    height: 750px;
     overflow-y: scroll;
 }
 #route-list-element {
