@@ -2,6 +2,10 @@ var tcxConverter = require('./tcxConverter');
 
 exports.createConverter = function (data) {
 
+    if (typeof data === "undefined") {
+        return null
+    }
+
     function converter(name, converterFunction) {
         this.name = name
         this.convert = converterFunction
@@ -19,7 +23,7 @@ exports.createConverter = function (data) {
             converterFunction: undefined // not supported at the moment
         }
     ]
-    
+
     for (i = 0; i < converters.length; i++) {
         var n = data.search(converters[i].pattern)
         if (n > -1) {
@@ -28,5 +32,5 @@ exports.createConverter = function (data) {
         }
     }
 
-    return undefined
+    return null
 }

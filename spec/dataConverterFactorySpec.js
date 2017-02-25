@@ -7,20 +7,24 @@ var readFileAsString = function (relPath) {
 }
 
 describe("DataConverterFactory", function() {
-    it("should return undefined for empty data", function() {
-        expect(factory.createConverter("")).toBe(undefined)
+    it("should return null for empty data", function() {
+        expect(factory.createConverter("")).toBeNull()
     })
 
-    it("should return undefined for non-supported data", function() {
+    it("should return null for undefined", function() {
+        expect(factory.createConverter(undefined)).toBeNull()
+    })
+
+    it("should return null for non-supported data", function() {
         var relativePath = 'data/invalid.txt'
         var buffer = readFileAsString(relativePath)
-        expect(factory.createConverter(buffer)).toBe(undefined)
+        expect(factory.createConverter(buffer)).toBeNull()
     })
 
-    it("should return undefined for Training Center XML v1 data", function() {
+    it("should return null for Training Center XML v1 data", function() {
         var relativePath = 'data/993568829_mockv1.tcx'
         var buffer = readFileAsString(relativePath)
-        expect(factory.createConverter(buffer)).toBe(undefined)
+        expect(factory.createConverter(buffer)).toBeNull()
     })
 
     it("should return tcxConverter2 for Training Center XML v2 data", function() {
