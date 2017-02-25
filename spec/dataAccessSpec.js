@@ -51,7 +51,7 @@ describe("DataAccess", function() {
             done()
         });
     });
-    
+
     it("route save fails gracefully if data conversion fails", function(done) {
         
         var reslocals = {
@@ -81,11 +81,11 @@ describe("DataAccess", function() {
             done();
         }).
         catch(function(err) {
-            expect(res.send).toHaveBeenCalledWith(jasmine.any(Object));
+            expect(res.send).toHaveBeenCalledWith("No converter available.");
             done()
         });
     })
-    
+
     it("route save fails gracefully if database fails", function(done) {
 
         var relativePathFitbitSurge = 'data/993568829.tcx'
@@ -245,7 +245,7 @@ describe("DataAccess", function() {
         expect(res.send).toHaveBeenCalledWith(404)
         done()
     })    
-    
+
     it("gets a route", function(done) {
         
         var relativePathFitbitSurge = 'data/993568829.tcx';
@@ -271,17 +271,17 @@ describe("DataAccess", function() {
         dataAccess.get_route(req, res, route).then(function(){
             var expected_id = {
                 id : params.id
-            }        
+            }
             expect(route.findById).toHaveBeenCalledWith(params.id, jasmine.any(Function));
             expect(res.json).toHaveBeenCalledWith(jasmine.any(Object))
             done()
         })
-        .catch(function() {
-            fail("Failed to get a route.")
+        .catch(function(err) {
+            fail("Failed to get a route " + err)
             done()
         })
     })
-    
+
     it("route get fails gracefully in case of db error", function(done) {
         var params = {
           id: 301
@@ -313,7 +313,7 @@ describe("DataAccess", function() {
         })
     })
     
-    it("route get fails gracefully in case data conversion error", function(done) {
+    it("route get fails gracefully in data conversion error", function(done) {
         var params = {
           id: 301
         }
@@ -328,7 +328,7 @@ describe("DataAccess", function() {
         spyOn(res, 'send')
 
         route.findById = jasmine.createSpy("findById() spy").and.callFake(function() {
-            route.findById.calls.mostRecent().args[1](null, route) // call the function that was supplied as second argument, simulate data conversion error
+            route.findById.calls.mostRecent().args[1](404, route) // call the function that was supplied as second argument, simulate data conversion error
         })
         dataAccess.get_route(req, res, route).then(function(){
             fail("Route get data conversion error not handled correctly.")
@@ -339,7 +339,8 @@ describe("DataAccess", function() {
                 id : params.id
             }        
             expect(route.findById).toHaveBeenCalledWith(params.id, jasmine.any(Function))
-            expect(res.send).toHaveBeenCalledWith(jasmine.any(Object))
+            //expect(res.send).toHaveBeenCalledWith(jasmine.any(Object))
+            expect(res.send).toHaveBeenCalledWith(404)
             done()
         })
     })
@@ -382,5 +383,5 @@ describe("DataAccess", function() {
         expect(res.send).toHaveBeenCalled()
         done()
     })
-    
+
 })
