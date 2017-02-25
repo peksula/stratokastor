@@ -3,7 +3,6 @@ var Promise = require("bluebird")
 var xml2js = Promise.promisifyAll(require('xml2js'))
 
 exports.convert = function (data) {
-
     function route(startTime, device, dataPoints, duration, distance, climb, startLat, startLng, kmh, minkm, geoPoints) {
         this.startTime = startTime
         this.device = device
