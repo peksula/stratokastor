@@ -64,7 +64,7 @@ exports.update_route = function(req, res, next, route) {
         },
         function(err, route) {
         if (err) {
-            res.send(err)
+            res.send(err);
         }
     })
     next()
