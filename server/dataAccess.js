@@ -100,10 +100,10 @@ exports.get_route = function(req, res, route) {
 }
 
 exports.get_list_of_routes = function(res, route) {
-    route.find({}, 'title date comment', {sort: '-date'}, function(err, routes) {
-        if (err) {
-            res.send(err)
-        }
+    route.find({}, 'title date comment', {sort: '-date'}).then(function(routes) {
         res.json(routes)
+    })
+    .catch(function(err) {
+        res.send(err)
     })
 }

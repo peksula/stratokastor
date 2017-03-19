@@ -33,7 +33,8 @@ describe("DataAccess", function() {
     })
 
     beforeEach(function(){
-        route = {}
+        route = {
+        }
         reslocals = {
           original_data: xml_route,
           title: 'test run',
@@ -46,8 +47,8 @@ describe("DataAccess", function() {
             json: function(data) {},
             redirect: function(address) {}
         }
-        spyOn(res, 'json')
         spyOn(next, 'callback')
+        spyOn(res, 'json')
         spyOn(res, 'redirect')
         spyOn(res, 'send')
     })
@@ -183,23 +184,18 @@ describe("DataAccess", function() {
     })
 
     it("gets a list of routes", function(done) {
-        var routes = {}
-        route.find = jasmine.createSpy("find() spy").and.callFake(function() {
-            route.find.calls.mostRecent().args[3](null, routes)
-        })
+        route.find = jasmine.createSpy("find spy").and.returnValue(Promise.resolve("routes"));
         dataAccess.get_list_of_routes(res, route)
-        expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment', jasmine.any(Object), jasmine.any(Function))
-        expect(res.json).toHaveBeenCalledWith(routes)
+        expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment', jasmine.any(Object))
         done()
+        expect(res.json).toHaveBeenCalledWith("routes")
     })
 
     it("fails gracefully if cannot get a list of routes", function(done) {
-        route.find = jasmine.createSpy("find() spy").and.callFake(function() {
-            route.find.calls.mostRecent().args[3](404, null)
-        })
+        route.find = jasmine.createSpy("find spy").and.returnValue(Promise.resolve("routes"));
         dataAccess.get_list_of_routes(res, route)
-        expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment', jasmine.any(Object), jasmine.any(Function))
-        expect(res.send).toHaveBeenCalled()
+        expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment', jasmine.any(Object))
         done()
+        expect(res.send).toHaveBeenCalledWith("error")
     })
 })
