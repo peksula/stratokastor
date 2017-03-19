@@ -71,31 +71,21 @@ exports.update_route = function(req, res, next, route) {
 }
 
 exports.get_route = function(req, res, route) {
-    return new Promise(function(resolve, reject) {
-        route.findById(req.params.id, function(err, foundRoute) {
-            if (err) {
-                res.send(err)
-                return reject()
+    route.findById(req.params.id).then(function(route) {
+        get_route_data(route.original_data).then(function(route_data) {
+            var response = {
+                _id: route._id,
+                title: route.title,
+                comment: route.comment,
+                weather: route.weather,
+                updated: route.updated_at,
+                data: route_data
             }
-            else {
-                get_route_data(foundRoute.original_data).then(function(route_data) {
-                    var response = {
-                        _id: foundRoute._id,
-                        title: foundRoute.title,
-                        comment: foundRoute.comment,
-                        weather: foundRoute.weather,
-                        updated: foundRoute.updated_at,
-                        data: route_data
-                    }
-                    res.json(response)
-                    return resolve()
-                })
-                .catch(function(err) {
-                    res.send(err)
-                    return reject()
-                })
-            }
+            res.json(response)
         })
+    })
+    .catch(function(err) {
+        res.send(err)
     })
 }
 
