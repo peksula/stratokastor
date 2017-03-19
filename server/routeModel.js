@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+mongoose.Promise = require('bluebird')
 
 var RouteSchema = new mongoose.Schema({
     title           : String,
