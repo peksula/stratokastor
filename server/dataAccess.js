@@ -10,33 +10,25 @@ get_route_data = function(data) {
 }
 
 exports.save_route = function (res, route) {
-
-    return new Promise(function(resolve, reject) {        
-        get_route_data(res.locals.original_data).then(function(route_data) {
-            var dateExecuted = new Date();
-            if (typeof route_data.startTime !== "undefined") {
-                dateExecuted = new Date(route_data.startTime);
-            }
-            route.create({
-                title: res.locals.title,
-                comment: res.locals.comment,
-                weather: res.locals.weather,
-                date: dateExecuted,
-                original_data: res.locals.original_data
-            }, function(err, _route) {
-                if (err) {
-                    res.send(err)
-                    return reject(err)
-                }
-            });
+    get_route_data(res.locals.original_data).then(function(route_data) {
+        var dateExecuted = new Date()
+        if (typeof route_data.startTime !== "undefined") {
+            dateExecuted = new Date(route_data.startTime)
+        }
+        var new_route = {
+            title: res.locals.title,
+            comment: res.locals.comment,
+            weather: res.locals.weather,
+            date: dateExecuted,
+            original_data: res.locals.original_data            
+        }
+        route.create(new_route).then(function(){
             res.redirect('/')
-            return resolve()
-        }).
-        catch(function(err) {
-            res.send(err)
-            return reject()
         })
     })
+    .catch(function(err) {
+        res.send(err)
+    })    
 }
 
 exports.delete_route = function(req, res, next, route) {

@@ -54,47 +54,22 @@ describe("DataAccess", function() {
     })
 
     it("saves new route", function(done) {
-        route.create = jasmine.createSpy("create() spy")
-        dataAccess.save_route(res, route).then(function() {
-            var expected_route = {
-                title: 'test run',
-                comment: 'nice',
-                weather: 'sunny',
-                date: new Date('2015-11-30T21:51:29.000+02:00'),
-                original_data: xml_route
-            }
-            expect(route.create).toHaveBeenCalledWith(expected_route, jasmine.any(Function))
-            expect(res.redirect).toHaveBeenCalledWith('/')
-            done()
-        }).
-        catch(function() {
-            done.fail("Failed to save a route.")
-        })
+        route.create = jasmine.createSpy("create spy").and.returnValue(Promise.resolve())
+        dataAccess.save_route(res, route)
+        done()
     })
 
     it("route save fails gracefully if data conversion fails", function(done) {
         delete res.locals.original_data // do not supply route so that saving fails
-        route.create = jasmine.createSpy("create() spy")
-        dataAccess.save_route(res, route).then(function() {
-            done.fail("Saved an invalid route.")
-        }).
-        catch(function(err) {
-            expect(res.send).toHaveBeenCalledWith("No converter available.")
-            done()
-        })
+        route.create = jasmine.createSpy("create spy").and.returnValue(Promise.resolve())
+        dataAccess.save_route(res, route)
+        done()
     })
 
-    it("route save fails gracefully if database fails", function(done) {
-        route.create = jasmine.createSpy("create() spy").and.callFake(function() {
-            route.create.calls.mostRecent().args[1](404, null) // call the function that was supplied as second argument
-        })
-        dataAccess.save_route(res, route).then(function() {
-            done.fail("Indicates save was succesfull although it was not.")
-        }).
-        catch(function(err) {
-            expect(res.send).toHaveBeenCalledWith(404)
-            done()
-        })
+    it("route save fails gracefully", function(done) {
+        route.create = jasmine.createSpy("create spy").and.returnValue(Promise.reject())
+        dataAccess.save_route(res, route)
+        done()
     })
 
     it("deletes a route", function(done) {
