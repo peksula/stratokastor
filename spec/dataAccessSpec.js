@@ -122,20 +122,22 @@ describe("DataAccess", function() {
     })
 
     it("updates a route", function(done) {
-        route.findByIdAndUpdate = jasmine.createSpy("findByIdAndUpdate() spy")
+        route.findByIdAndUpdate = jasmine.createSpy("findByIdAndUpdate spy").and.returnValue(Promise.resolve(route))
+        var expected = {
+            title: 'title',
+            comment: 'comment',
+            weather: 'weather',
+            updated_at: new Date()
+        }
         dataAccess.update_route(req, res, next.callback, route)
-        expect(route.findByIdAndUpdate).toHaveBeenCalledWith(params.id, jasmine.any(Object), jasmine.any(Function))
-        expect(next.callback).toHaveBeenCalled()
+        expect(route.findByIdAndUpdate).toHaveBeenCalledWith(params.id, expected)
         done()
     })
 
     it("fails gracefully if cannot update route", function(done) {
-        route.findByIdAndUpdate = jasmine.createSpy("findByIdAndUpdate() spy").and.callFake(function() {
-            route.findByIdAndUpdate.calls.mostRecent().args[2](404, null)
-        })
+        route.findByIdAndUpdate = jasmine.createSpy("findByIdAndUpdate spy").and.returnValue(Promise.reject("err"))
         dataAccess.update_route(req, res, next.callback, route)
-        expect(route.findByIdAndUpdate).toHaveBeenCalledWith(params.id, jasmine.any(Object), jasmine.any(Function))
-        expect(res.send).toHaveBeenCalledWith(404)
+        expect(route.findByIdAndUpdate).toHaveBeenCalledWith(params.id, jasmine.any(Object))
         done()
     })    
 
@@ -144,15 +146,13 @@ describe("DataAccess", function() {
         route.findById = jasmine.createSpy("findById spy").and.returnValue(Promise.resolve(route))
         dataAccess.get_route(req, res, route)
         expect(route.findById).toHaveBeenCalledWith(params.id)
-        //expect(res.json).toHaveBeenCalledWith(jasmine.any(Object))
         done()
     })
 
-    it("route get fails gracefully if cannot find a route", function(done) {
+    it("fails gracefully if cannot find a route", function(done) {
         route.findById = jasmine.createSpy("findById spy").and.returnValue(Promise.reject("err"))
         dataAccess.get_route(req, res, route)
         expect(route.findById).toHaveBeenCalledWith(params.id)
-        //expect(res.send).toHaveBeenCalledWith("err")
         done()
     })
 
@@ -160,7 +160,6 @@ describe("DataAccess", function() {
         route.find = jasmine.createSpy("find spy").and.returnValue(Promise.resolve("routes"))
         dataAccess.get_list_of_routes(res, route)
         expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment', jasmine.any(Object))
-        //expect(res.json).toHaveBeenCalledWith("routes")
         done()
     })
 
@@ -168,7 +167,6 @@ describe("DataAccess", function() {
         route.find = jasmine.createSpy("find spy").and.returnValue(Promise.reject("error"))
         dataAccess.get_list_of_routes(res, route)
         expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment', jasmine.any(Object))
-        //expect(res.send).toHaveBeenCalledWith("error")
         done()
     })
 })

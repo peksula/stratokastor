@@ -51,23 +51,18 @@ exports.delete_route = function(req, res, next, route) {
 }
 
 exports.update_route = function(req, res, next, route) {
-    var title = req.body.title
-    var comment = req.body.comment
-    var weather = req.body.weather
-    route.findByIdAndUpdate(
-        req.params.id,
-        {
-            title: title,
-            comment: comment,
-            weather: weather,
-            updated_at: new Date()
-        },
-        function(err, route) {
-        if (err) {
-            res.send(err);
-        }
+    var updated_route = {
+        title: req.body.title,
+        comment: req.body.comment,
+        weather: req.body.weather,
+        updated_at: new Date()
+    }
+    route.findByIdAndUpdate(req.params.id, updated_route).then(function(route){
+        next()
     })
-    next()
+    .catch(function(err) {
+        res.send(err)
+    })
 }
 
 exports.get_route = function(req, res, route) {
