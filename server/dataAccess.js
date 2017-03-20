@@ -40,14 +40,12 @@ exports.save_route = function (res, route) {
 }
 
 exports.delete_route = function(req, res, next, route) {
-    route.remove({
-        _id : req.params.id
-    }, function(err, route) {
-        if (err) {
-            res.send(err)
-        }
+    route.remove({_id : req.params.id}).then(function(){
+        next()
     })
-    next()
+    .catch(function(err) {
+        res.send(err)
+    })
 }
 
 exports.update_route = function(req, res, next, route) {

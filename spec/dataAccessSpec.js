@@ -98,26 +98,19 @@ describe("DataAccess", function() {
     })
 
     it("deletes a route", function(done) {
-        route.remove = jasmine.createSpy("remove() spy")
-        dataAccess.delete_route(req, res, next.callback, route)        
-        var expected = {
-            _id : params.id
-        }
-        expect(route.remove).toHaveBeenCalledWith(expected, jasmine.any(Function))
-        expect(next.callback).toHaveBeenCalled()
-        done()
-    })
-
-    it("fails gracefully if cannot delete route", function(done) {
-        route.remove = jasmine.createSpy("remove() spy").and.callFake(function() {
-            route.remove.calls.mostRecent().args[1](404, null)
-        })
+        route.remove = jasmine.createSpy("remove spy").and.returnValue(Promise.resolve())
         dataAccess.delete_route(req, res, next.callback, route)
         var expected = {
             _id : params.id
         }
-        expect(route.remove).toHaveBeenCalledWith(expected, jasmine.any(Function))
-        expect(res.send).toHaveBeenCalledWith(404)
+        expect(route.remove).toHaveBeenCalledWith(expected)
+        done()
+    })
+
+    it("fails gracefully if cannot delete route", function(done) {
+        route.remove = jasmine.createSpy("remove spy").and.returnValue(Promise.reject())
+        dataAccess.delete_route(req, res, next.callback, route)
+        expect(route.remove).toHaveBeenCalledWith(jasmine.any(Object))
         done()
     })
 
