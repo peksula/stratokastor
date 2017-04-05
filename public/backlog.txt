@@ -1,5 +1,4 @@
 [ ] MAASTOKARTTA-tabi karttaan. Iso työ?
-[ ] Autentikointi ("login with google")
 [ ] Private- ja public reitit
 [ ] Reittien kommentointi
 [ ] Reittien geo-annotointi
