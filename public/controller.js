@@ -157,33 +157,19 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     var shape
     var marker    
 
-    /**
-     * @constructor
-     * @implements {google.maps.MapType}
-     */
-    function MmlMapType() {
-    }
-
-    MmlMapType.prototype.tileSize = new google.maps.Size(256,256);
-    MmlMapType.prototype.maxZoom = 19;
-
-    MmlMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
-      var div = ownerDocument.createElement('div');
-      div.innerHTML = coord;
-      div.style.width = this.tileSize.width + 'px';
-      div.style.height = this.tileSize.height + 'px';
-      div.style.fontSize = '10';
-      div.style.borderStyle = 'solid';
-      div.style.borderWidth = '1px';
-      div.style.borderColor = '#AAAAAA';
-      div.style.backgroundColor = '#E5E3DF';
-      return div;
+    var mmlTypeOptions = {
+      getTileUrl: function(coord, zoom) {
+          //return 'https://mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw' +
+          return 'http://tiles.kartat.kapsi.fi/peruskartta' +
+              '/' + zoom + '/' + coord.x + '/' + coord.y + '.jpg';
+      },
+      tileSize: new google.maps.Size(256, 256),
+      maxZoom: 20,
+      minZoom: 0,
+      name: 'Maasto'
     };
 
-    MmlMapType.prototype.name = 'Tile #s';
-    MmlMapType.prototype.alt = 'Tile Coordinate Map Type';    
-    
-    vc.mmlMapType = new MmlMapType()
+    vc.mmlMapType = new google.maps.ImageMapType(mmlTypeOptions);
     console.log(vc.mmlMapType)
 
     $scope.initMap = function() {
