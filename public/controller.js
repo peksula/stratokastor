@@ -152,6 +152,11 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
 }])
 
 kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeout, TimeUtils) {
+
+    var vc = this
+    var shape
+    var marker    
+
     /**
      * @constructor
      * @implements {google.maps.MapType}
@@ -178,11 +183,8 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
     MmlMapType.prototype.name = 'Tile #s';
     MmlMapType.prototype.alt = 'Tile Coordinate Map Type';    
     
-    var vc = this
-    var shape
-    var marker
-    
     vc.mmlMapType = new MmlMapType()
+    console.log(vc.mmlMapType)
 
     $scope.initMap = function() {
         NgMap.getMap().then(function(map) {

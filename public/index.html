@@ -29,15 +29,16 @@
             </div>
         </div>
 
-        <div ng-controller="routeVisualizationController as vc" id="left-panel" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIX3aIvnWjCp-MyU86k9xh-FavD4XzNUQ" ng-init="initMap()">
+        <div ng-controller="routeVisualizationController as vc" id="left-panel" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1I4OLuXBjqobZCOe2GSVlCHtZ8YfZKbg" ng-init="initMap()">
             <ng-map
                 zoom="{{ mapPosition.zoom }}"
                 center="[{{ mapPosition.lat }}, {{ mapPosition.lng }}]"
-                map-type-id="MML"
+                map-type-id="mml"
                 style="width:100%;height:450px;"
-                map-type-control-options="{mapTypeIds: ['MML', 'ROADMAP', TERRAIN'], style: 'DROPDOWN_MENU'}"                
-            >
-                <map-type name="MML" object="vc.mmlMapType"></map-type>
+                map-type-control-options="{mapTypeIds: ['mml', 'ROADMAP']}">
+
+                <map-type name="mml" object="vc.mmlMapType">
+                </map-type>
 
                 <shape name = "polyline" id = "routeShape"
                     path = "{{ route.data.geoPoints }}"
