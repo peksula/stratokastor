@@ -17,7 +17,7 @@
                 zoom="{{ mapPosition.zoom }}"
                 center="[{{ mapPosition.lat }}, {{ mapPosition.lng }}]"
                 map-type-id="mml"
-                style="width:100%;height:700px;"
+                style="width:100%;height:620px;"
                 map-type-control-options="{mapTypeIds: ['mml', 'TERRAIN', 'ROADMAP', 'SATELLITE']}">
 
                 <map-type name="mml" object="vc.mmlMapType"/>
@@ -32,7 +32,7 @@
                     icon="{path:'CIRCLE', scale: 6, strokeOpacity: 0.8, strokeColor: '#393'}">
                 </marker>            
             </ng-map>
-
+            
             <div id="route-playback-controls">
                 <button id="play-button" ng-click="playRoute()" ng-hide="playbackToggled"><span>Play</span></button>
                 <button id="stop-button" ng-click="stopRoute()" ng-show="playbackToggled">Stop</button>
@@ -45,27 +45,50 @@
                 <button id="speed-button-pressed" ng-click="setAnimationSpeed(10)" ng-show="playbackToggled" ng-if="playbackMultiplier==10">10x</button>
                 <button id="speed-button" ng-click="setAnimationSpeed(10)" ng-show="playbackToggled" ng-if="playbackMultiplier!=10">10x</button>
             </div>
-        </div> <!-- map -->
-        <div id="embedded-route-selection">
-            <div id= "route-list-element-add-new-route">
-                <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
-                    <span id="add-route-plus-sign">+</span> <input type="file" name="route_file" onchange="form.submit()">
-                </form>
+            <div id="route-selection">
+                <div id= "add-new-route">
+                    Lisää uusi reitti tcx-tiedostosta.
+                    <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
+                        <span id="add-route-plus-sign">+</span> <input type="file" name="route_file" onchange="form.submit()">
+                    </form>
+                </div>
+                <select ng-model="selectedRoute" ng-change="showRoute(selectedRoute)">
+                    <option ng-repeat="route in routes" value="{{ route._id }}">{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</option>
+                </select>
             </div>
-            <select ng-model="selectedRoute" ng-change="showRoute(selectedRoute)">
-                <option ng-repeat="route in routes" value="{{ route._id }}">{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</option>
-            </select>
-        </div>
+            <div id="disclaimer">
+                Sisältää Maanmittauslaitoksen Maastotietokannan 06/2016 aineistoa.<br>
+                Karttatiilinpalvelun toteutus Kapsi Internet-käyttäjät ry.
+            </div>
+            <div id="route-data">
+                <table>
+                    <tr>
+                        <td>Otsikko</td>
+                        <td><input type="text" name="saved-title" ng-model="route.title" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.title }}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Sää</td>
+                        <td><input type="text" name="saved-weather" ng-model="route.weather" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.weather }}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Kuvaus</td>
+                        <td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment" ng-show="editorEnabled"></textarea><span ng-hide="editorEnabled">{{ route.comment }}</span></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button id="edit-button" ng-click="enableEditor()" ng-hide="editorEnabled">Muokkaa tietoja</button>
+                            <button id="save-changes-button" ng-click="updateRoute(route._id)" ng-show="editorEnabled">Tallenna muutokset</button>
+                            <button id="cancel-button" ng-click="cancelEdit(route._id)" ng-show="editorEnabled">Kumoa muutokset</button>
+                            <button id="delete-button" ng-click="deleteRoute(route._id)" ng-show="editorEnabled">Poista reitti</button>
+                        </td>
+                    </tr>
+                </table>                
+            </div>            
+            
+        </div> <!-- map -->
         <div id="embedded-route-data">
             <table>
-                <tr>
-                    <td>Otsikko</td>
-                    <td><input type="text" name="saved-title" ng-model="route.title" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.title }}</span></td>
-                </tr>
-                <tr>
-                    <td>Aloitusaika</td>
-                    <td>{{ route.data.startTime | date:'dd.MM.yyyy HH:mm:ss'}}</td>
-                </tr>
                 <tr>
                     <td>Kesto [min]</td>
                     <td><span ng-show="playbackToggled">{{ cursor.duration }} /</span> {{ route.data.duration}}</td>
@@ -91,14 +114,6 @@
                     <td><span ng-show="playbackToggled">{{ cursor.minkm | number:1 }}</span> {{ route.data.minkm | number:1 }}</td>
                 </tr>
                 <tr>
-                    <td>Sää</td>
-                    <td><input type="text" name="saved-weather" ng-model="route.weather" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.weather }}</span></td>
-                </tr>
-                <tr>
-                    <td>Kuvaus</td>
-                    <td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment" ng-show="editorEnabled"></textarea><span ng-hide="editorEnabled">{{ route.comment }}</span></td>
-                </tr>
-                <tr>
                     <td>Laite</td>
                     <td>{{ route.data.device }}</td>
                     </tr>
@@ -106,22 +121,9 @@
                     <td>Päivitetty</td>
                     <td>{{ route.updated | date:'dd.MM.yyyy HH:mm'}}</td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button id="edit-button" ng-click="enableEditor()" ng-hide="editorEnabled">Muokkaa tietoja</button>
-                        <button id="save-changes-button" ng-click="updateRoute(route._id)" ng-show="editorEnabled">Tallenna muutokset</button>
-                        <button id="cancel-button" ng-click="cancelEdit(route._id)" ng-show="editorEnabled">Kumoa muutokset</button>
-                        <button id="delete-button" ng-click="deleteRoute(route._id)" ng-show="editorEnabled">Poista reitti</button>
-                    </td>
-                </tr>
             </table>
         </div>
         
         <br clear="both" />
-        <div id="disclaimer">
-            Sisältää Maanmittauslaitoksen Maastotietokannan 06/2016 aineistoa.<br>
-            Karttatiilinpalvelun toteutus Kapsi Internet-käyttäjät ry.
-        </div>
     </div> <!-- main-div -->
 </body>
