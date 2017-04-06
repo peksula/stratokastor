@@ -75,6 +75,14 @@
                         <td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment" ng-show="editorEnabled"></textarea><span ng-hide="editorEnabled">{{ route.comment }}</span></td>
                     </tr>
                     <tr>
+                        <td>Laite</td>
+                        <td>{{ route.data.device }}</td>
+                        </tr>
+                    <tr>
+                        <td>Päivitetty</td>
+                        <td>{{ route.updated | date:'dd.MM.yyyy HH:mm'}}</td>
+                    </tr>
+                    <tr>
                         <td></td>
                         <td>
                             <button id="edit-button" ng-click="enableEditor()" ng-hide="editorEnabled">Muokkaa tietoja</button>
@@ -95,31 +103,23 @@
                 </tr>
                 <tr>
                     <td>Pituus [m]</td>
-                    <td><span ng-show="playbackToggled">{{ cursor.distance | number:0 }} /</span> {{ route.data.distance | number:2 }} <span ng-show="playbackToggled">{{ cursor.percentage | number:2 }} %</span></td>
+                    <td><span ng-show="playbackToggled">{{ cursor.distance | number:0 }} /</span> {{ route.data.distance | number:2 }} <span ng-show="playbackToggled">[{{ cursor.percentage | number:2 }} %]</span></td>
                 </tr>
                 <tr>
                     <td>Nousu [m]</td>
                     <td><span ng-show="playbackToggled">{{ cursor.climb | number:1 }} /</span> {{ route.data.climb | number:1 }}</td>
                 </tr>
                 <tr>
-                    <td>Syke [bpm]</td>
+                    <td>Syke</td>
                     <td><span ng-show="playbackToggled">{{ cursor.bpm }}</span></td>
                 </tr>
                 <tr>
                     <td>Km/h</td>
-                    <td><span ng-show="playbackToggled">{{ cursor.kmh | number:1 }}</span> {{ route.data.kmh | number:1 }}</td>
+                    <td><span ng-show="playbackToggled">{{ cursor.kmh | number:1 }}, </span> ka. {{ route.data.kmh | number:1 }}</td>
                 </tr>
                 <tr>
                     <td>Min/km</td>
-                    <td><span ng-show="playbackToggled">{{ cursor.minkm | number:1 }}</span> {{ route.data.minkm | number:1 }}</td>
-                </tr>
-                <tr>
-                    <td>Laite</td>
-                    <td>{{ route.data.device }}</td>
-                    </tr>
-                <tr>
-                    <td>Päivitetty</td>
-                    <td>{{ route.updated | date:'dd.MM.yyyy HH:mm'}}</td>
+                    <td><span ng-show="playbackToggled">{{ cursor.minkm | number:1 }}, </span> ka. {{ route.data.minkm | number:1 }}</td>
                 </tr>
             </table>
         </div>
