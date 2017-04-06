@@ -5,17 +5,6 @@
 #main-div {
     position: relative;
 }
-#route-list-element {
-    border-style: ridge;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    font: 12px verdana, sans-serif;
-}
 #add-route-plus-sign {
     font: 36px verdana, sans-serif;
     color: white;
@@ -135,8 +124,7 @@
     color: white;
     border-radius: 4px;
 }
-#map {
-    
+#map {    
 }
 #embedded-route-data {
     position: absolute;
