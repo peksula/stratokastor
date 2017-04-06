@@ -98,6 +98,10 @@
         <div id="embedded-route-data">
             <table>
                 <tr>
+                    <td>Aloitusaika</td>
+                    <td>{{ route.data.startTime | date:'dd.MM.yyyy HH:mm:ss'}}</td>
+                </tr>
+                <tr>
                     <td>Kesto [min]</td>
                     <td><span ng-show="playbackToggled">{{ cursor.duration }} /</span> {{ route.data.duration}}</td>
                 </tr>
