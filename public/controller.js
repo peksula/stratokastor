@@ -50,7 +50,6 @@ kastor.service('TimeUtils', [function(){
 kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'TimeUtils', function($scope, $timeout, RouteService, TimeUtils){
     var refreshRoutes = function(response) {
         $scope.routes = response.data
-        console.log($scope.routes)
     }
 
     var refreshRoute = function(response) {
@@ -66,7 +65,6 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
             lng: $scope.route.data.startLng,
             zoom: 16
         }
-        console.log($scope.route)
     }
 
     $scope.init = function() {
