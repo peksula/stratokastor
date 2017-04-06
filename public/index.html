@@ -11,34 +11,16 @@
 
 <body ng-controller="mainController" ng-init="init()">
     <div id="main-div">
-
-        <div id="right-panel">
-            <div id="route-list" class="row">
-                <div id= "route-list-element-add-new-route">
-                    <b>Lisää uusi reitti tcx-tiedostosta.</b>
-                    <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
-                        <span id="add-route-plus-sign">+</span> <input type="file" name="route_file">
-                        <input type="submit" value="Lataa tiedosto palvelimelle">
-                    </form>
-                </div>
-                <div id= "route-list-element" ng-repeat="route in routes">
-                    <b>{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</b><br>
-                    {{ route.comment }}<br>
-                    <button id="view-details-button" ng-click="showRoute(route._id)">Näytä</button>
-                </div>
-            </div>
-        </div>
-
-        <div ng-controller="routeVisualizationController as vc" id="left-panel" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1I4OLuXBjqobZCOe2GSVlCHtZ8YfZKbg" ng-init="initMap()">
+        
+        <div ng-controller="routeVisualizationController as vc" id="map" map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1I4OLuXBjqobZCOe2GSVlCHtZ8YfZKbg" ng-init="initMap()">
             <ng-map
                 zoom="{{ mapPosition.zoom }}"
                 center="[{{ mapPosition.lat }}, {{ mapPosition.lng }}]"
                 map-type-id="mml"
-                style="width:100%;height:450px;"
-                map-type-control-options="{mapTypeIds: ['mml', 'ROADMAP']}">
+                style="width:100%;height:700px;"
+                map-type-control-options="{mapTypeIds: ['mml', 'TERRAIN', 'ROADMAP']}">
 
-                <map-type name="mml" object="vc.mmlMapType">
-                </map-type>
+                <map-type name="mml" object="vc.mmlMapType"/>
 
                 <shape name = "polyline" id = "routeShape"
                     path = "{{ route.data.geoPoints }}"
@@ -51,110 +33,95 @@
                 </marker>            
             </ng-map>
 
-            <div id="route-data">
-                <div id="route-data-dynamic">
-                    <div id="route-data-item">
-                        Nousu [m]<br>
-                        <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.climb | number:1 }}</span>
-                    </div>
-                    <div id="route-data-item">
-                        Pituus [m]<br>
-                        <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.distance | number:0 }}</span>
-                    </div>
-                    <div id="route-data-item">
-                        %<br>
-                        <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.percentage | number:2 }}</span>
-                    </div>
-                    <div id="route-data-item">
-                        Kesto<br>
-                        <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.duration }}</span>
-                    </div>
-                    <div id="route-data-item">
-                    </div>
-                    <div id="route-data-item">
-                        Syke<br>
-                        <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.bpm }}</span>
-                    </div>
-                    <div id="route-data-item">
-                        Min/km<br>
-                        <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.minkm | number:1 }}</span>
-                    </div>
-                    <div id="route-data-item">
-                        Km/h<br>
-                        <span id="route-data-item-value" ng-show="playbackToggled">{{ cursor.kmh | number:1 }}</span>
-                    </div>
-                    <div id="route-playback-controls">
-                        <button id="play-button" ng-click="playRoute()" ng-hide="playbackToggled"><span>Play</span></button>
-                        <button id="stop-button" ng-click="stopRoute()" ng-show="playbackToggled">Stop</button>
-                        <button id="speed-button-pressed" ng-click="setAnimationSpeed(1)" ng-show="playbackToggled" ng-if="playbackMultiplier==1">1x</button>
-                        <button id="speed-button" ng-click="setAnimationSpeed(1)" ng-show="playbackToggled" ng-if="playbackMultiplier!=1">1x</button>
-                        <button id="speed-button-pressed" ng-click="setAnimationSpeed(2)" ng-show="playbackToggled" ng-if="playbackMultiplier==2">2x</button>
-                        <button id="speed-button" ng-click="setAnimationSpeed(2)" ng-show="playbackToggled" ng-if="playbackMultiplier!=2">2x</button>
-                        <button id="speed-button-pressed" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier==5">5x</button>
-                        <button id="speed-button" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier!=5">5x</button>
-                        <button id="speed-button-pressed" ng-click="setAnimationSpeed(10)" ng-show="playbackToggled" ng-if="playbackMultiplier==10">10x</button>
-                        <button id="speed-button" ng-click="setAnimationSpeed(10)" ng-show="playbackToggled" ng-if="playbackMultiplier!=10">10x</button>
-                    </div>
-                </div>
-
-                <table>
-                    <tr>
-                        <td>Otsikko</td>
-                        <td><input type="text" name="saved-title" ng-model="route.title" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.title }}</span></td>
+            <div id="route-playback-controls">
+                <button id="play-button" ng-click="playRoute()" ng-hide="playbackToggled"><span>Play</span></button>
+                <button id="stop-button" ng-click="stopRoute()" ng-show="playbackToggled">Stop</button>
+                <button id="speed-button-pressed" ng-click="setAnimationSpeed(1)" ng-show="playbackToggled" ng-if="playbackMultiplier==1">1x</button>
+                <button id="speed-button" ng-click="setAnimationSpeed(1)" ng-show="playbackToggled" ng-if="playbackMultiplier!=1">1x</button>
+                <button id="speed-button-pressed" ng-click="setAnimationSpeed(2)" ng-show="playbackToggled" ng-if="playbackMultiplier==2">2x</button>
+                <button id="speed-button" ng-click="setAnimationSpeed(2)" ng-show="playbackToggled" ng-if="playbackMultiplier!=2">2x</button>
+                <button id="speed-button-pressed" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier==5">5x</button>
+                <button id="speed-button" ng-click="setAnimationSpeed(5)" ng-show="playbackToggled" ng-if="playbackMultiplier!=5">5x</button>
+                <button id="speed-button-pressed" ng-click="setAnimationSpeed(10)" ng-show="playbackToggled" ng-if="playbackMultiplier==10">10x</button>
+                <button id="speed-button" ng-click="setAnimationSpeed(10)" ng-show="playbackToggled" ng-if="playbackMultiplier!=10">10x</button>
+            </div>
+        </div> <!-- map -->
+        <div id="embedded-route-selection">
+            <div id= "route-list-element-add-new-route">
+                <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
+                    <span id="add-route-plus-sign">+</span> <input type="file" name="route_file" onchange="form.submit()">
+                </form>
+            </div>
+            <select>
+                <option ng-repeat="route in routes" onchange="showRoute(route._id)">{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</option>
+            </select>            
+        </div>
+        <div id="embedded-route-data">
+            <table>
+                <tr>
+                    <td>Otsikko</td>
+                    <td><input type="text" name="saved-title" ng-model="route.title" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.title }}</span></td>
+                </tr>
+                <tr>
+                    <td>Aloitusaika</td>
+                    <td>{{ route.data.startTime | date:'dd.MM.yyyy HH:mm:ss'}}</td>
+                </tr>
+                <tr>
+                    <td>Kesto [min]</td>
+                    <td><span ng-show="playbackToggled">{{ cursor.duration }} /</span> {{ route.data.duration}}</td>
+                </tr>
+                <tr>
+                    <td>Pituus [m]</td>
+                    <td><span ng-show="playbackToggled">{{ cursor.distance | number:0 }} /</span> {{ route.data.distance | number:2 }} <span ng-show="playbackToggled">{{ cursor.percentage | number:2 }} %</span></td>
+                </tr>
+                <tr>
+                    <td>Nousu [m]</td>
+                    <td><span ng-show="playbackToggled">{{ cursor.climb | number:1 }} /</span> {{ route.data.climb | number:1 }}</td>
+                </tr>
+                <tr>
+                    <td>Syke [bpm]</td>
+                    <td><span ng-show="playbackToggled">{{ cursor.bpm }}</span></td>
+                </tr>
+                <tr>
+                    <td>Km/h</td>
+                    <td><span ng-show="playbackToggled">{{ cursor.kmh | number:1 }}</span> {{ route.data.kmh | number:1 }}</td>
+                </tr>
+                <tr>
+                    <td>Min/km</td>
+                    <td><span ng-show="playbackToggled">{{ cursor.minkm | number:1 }}</span> {{ route.data.minkm | number:1 }}</td>
+                </tr>
+                <tr>
+                    <td>Sää</td>
+                    <td><input type="text" name="saved-weather" ng-model="route.weather" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.weather }}</span></td>
+                </tr>
+                <tr>
+                    <td>Kuvaus</td>
+                    <td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment" ng-show="editorEnabled"></textarea><span ng-hide="editorEnabled">{{ route.comment }}</span></td>
+                </tr>
+                <tr>
+                    <td>Laite</td>
+                    <td>{{ route.data.device }}</td>
                     </tr>
-                    <tr>
-                        <td>Aloitusaika</td>
-                        <td>{{ route.data.startTime | date:'dd.MM.yyyy HH:mm:ss'}}</td>
-                    </tr>
-                    <tr>
-                        <td>Kesto [min]</td>
-                        <td>{{ route.data.duration}}</td>
-                    </tr>
-                    <tr>
-                        <td>Pituus [m]</td>
-                        <td>{{ route.data.distance | number:2 }}</td>
-                    </tr>
-                    <tr>
-                        <td>Nousu [m]</td>
-                        <td>{{ route.data.climb | number:1 }}</td>
-                    </tr>
-                    <tr>
-                        <td>Km/h</td>
-                        <td>{{ route.data.kmh | number:1 }}</td>
-                    </tr>
-                    <tr>
-                        <td>Min/km</td>
-                        <td>{{ route.data.minkm | number:1 }}</td>
-                    </tr>
-                    <tr>
-                        <td>Sää</td>
-                        <td><input type="text" name="saved-weather" ng-model="route.weather" ng-show="editorEnabled"><span ng-hide="editorEnabled">{{ route.weather }}</span></td>
-                    </tr>
-                    <tr>
-                        <td>Kuvaus</td>
-                        <td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment" ng-show="editorEnabled"></textarea><span ng-hide="editorEnabled">{{ route.comment }}</span></td>
-                    </tr>
-                    <tr>
-                        <td>Laite</td>
-                        <td>{{ route.data.device }}</td>
-                        </tr>
-                    <tr>
-                        <td>Päivitetty</td>
-                        <td>{{ route.updated | date:'dd.MM.yyyy HH:mm'}}</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <button id="edit-button" ng-click="enableEditor()" ng-hide="editorEnabled">Muokkaa tietoja</button>
-                            <button id="save-changes-button" ng-click="updateRoute(route._id)" ng-show="editorEnabled">Tallenna muutokset</button>
-                            <button id="cancel-button" ng-click="cancelEdit(route._id)" ng-show="editorEnabled">Kumoa muutokset</button>
-                            <button id="delete-button" ng-click="deleteRoute(route._id)" ng-show="editorEnabled">Poista reitti</button>
-                        </td>
-                    </tr>
-                </table>
-
-            </div> <!-- route-data -->
-
-        </div> <!-- left panel -->
+                <tr>
+                    <td>Päivitetty</td>
+                    <td>{{ route.updated | date:'dd.MM.yyyy HH:mm'}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button id="edit-button" ng-click="enableEditor()" ng-hide="editorEnabled">Muokkaa tietoja</button>
+                        <button id="save-changes-button" ng-click="updateRoute(route._id)" ng-show="editorEnabled">Tallenna muutokset</button>
+                        <button id="cancel-button" ng-click="cancelEdit(route._id)" ng-show="editorEnabled">Kumoa muutokset</button>
+                        <button id="delete-button" ng-click="deleteRoute(route._id)" ng-show="editorEnabled">Poista reitti</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <br clear="both" />
+        <div id="disclaimer">
+            Sisältää Maanmittauslaitoksen Maastotietokannan 06/2016 aineistoa.<br>
+            Karttatiilinpalvelun toteutus Kapsi Internet-käyttäjät ry.
+        </div>
     </div> <!-- main-div -->
 </body>

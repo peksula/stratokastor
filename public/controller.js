@@ -159,18 +159,16 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
 
     var mmlTypeOptions = {
       getTileUrl: function(coord, zoom) {
-          //return 'https://mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw' +
           return 'http://tiles.kartat.kapsi.fi/peruskartta' +
-              '/' + zoom + '/' + coord.x + '/' + coord.y + '.jpg';
+              '/' + zoom + '/' + coord.x + '/' + coord.y + '.jpg'
       },
       tileSize: new google.maps.Size(256, 256),
-      maxZoom: 20,
-      minZoom: 0,
+      maxZoom: 19,
+      minZoom: 1,
       name: 'Maasto'
-    };
+    }
 
-    vc.mmlMapType = new google.maps.ImageMapType(mmlTypeOptions);
-    console.log(vc.mmlMapType)
+    vc.mmlMapType = new google.maps.ImageMapType(mmlTypeOptions)
 
     $scope.initMap = function() {
         NgMap.getMap().then(function(map) {
