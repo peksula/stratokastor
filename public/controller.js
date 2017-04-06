@@ -186,7 +186,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
             $timeout.cancel(timer)
         }
         $scope.$parent.playbackToggled = false
-        $scope.cursor = {
+        $scope.$parent.cursor = {
             duration: "",
             distance: "",
             velocity: "",
@@ -208,7 +208,7 @@ kastor.controller('routeVisualizationController', function(NgMap, $scope, $timeo
         var i = 0
 
         var step = function() {
-            $scope.cursor = {
+            $scope.$parent.cursor = {
                 duration: $scope.route.data.dataPoints[i].duration,
                 distance: $scope.route.data.dataPoints[i].distance,
                 kmh: $scope.route.data.dataPoints[i].kmh,
