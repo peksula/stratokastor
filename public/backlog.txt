@@ -1,6 +1,0 @@
-[ ] MAASTOKARTTA-tabi karttaan. Iso työ?
-[ ] Private- ja public reitit
-[ ] Reittien kommentointi
-[ ] Reittien geo-annotointi
-[ ] Suora synkronisointi fitbit palvelun kanssa (poistaa tarpeen uploadata reittejä)
-    - palvelu rikkoisi fitbitin apin käyttöehtoja?
