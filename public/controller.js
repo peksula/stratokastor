@@ -83,6 +83,7 @@ kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'Time
                 if ($scope.routes.length > 0) {
                     // Show the details of the first route
                     $scope.showRoute($scope.routes[0]._id)
+                    $scope.selectedRoute = $scope.routes[0]._id
                 }
              },
             function errorCallback(response) {
