@@ -52,8 +52,9 @@
                     <span id="add-route-plus-sign">+</span> <input type="file" name="route_file" onchange="form.submit()">
                 </form>
             </div>
-            <select>
-                <option ng-repeat="route in routes" onchange="showRoute(route._id)">{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</option>
+            <select ng-options="route in routes " 
+                ng-model="route.date" 
+                ng-change="showRoute(route._id)">
             </select>            
         </div>
         <div id="embedded-route-data">
