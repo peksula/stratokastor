@@ -52,13 +52,10 @@
                         <span id="add-route-plus-sign">+</span> <input type="file" name="route_file" onchange="form.submit()">
                     </form>
                 </div>
-                <select ng-model="selectedRoute" ng-change="showRoute(selectedRoute)">
-                    <option ng-repeat="route in routes" value="{{ route._id }}">{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</option>
-                </select>
-            </div>
-            <div id="disclaimer">
-                Sisältää Maanmittauslaitoksen Maastotietokannan 06/2016 aineistoa.<br>
-                Karttatiilinpalvelun toteutus Kapsi Internet-käyttäjät ry.
+                <div id="disclaimer">
+                    Sisältää Maanmittauslaitoksen Maastotietokannan 06/2016 aineistoa.<br>
+                    Karttatiilinpalvelun toteutus Kapsi Internet-käyttäjät ry.
+                </div>
             </div>
             <div id="route-data">
                 <table>
@@ -72,12 +69,8 @@
                     </tr>
                     <tr>
                         <td>Kuvaus</td>
-                        <td><textarea name="saved-comment" cols="40" rows="3" ng-model="route.comment" ng-show="editorEnabled"></textarea><span ng-hide="editorEnabled">{{ route.comment }}</span></td>
+                        <td><textarea name="saved-comment" cols="60" rows="2" ng-model="route.comment" ng-show="editorEnabled"></textarea><span ng-hide="editorEnabled">{{ route.comment }}</span></td>
                     </tr>
-                    <tr>
-                        <td>Laite</td>
-                        <td>{{ route.data.device }}</td>
-                        </tr>
                     <tr>
                         <td>Päivitetty</td>
                         <td>{{ route.updated | date:'dd.MM.yyyy HH:mm'}}</td>
@@ -92,10 +85,13 @@
                         </td>
                     </tr>
                 </table>                
-            </div>            
-            
+            </div>                 
         </div> <!-- map -->
+
         <div id="embedded-route-data">
+            <select ng-model="selectedRoute" ng-change="showRoute(selectedRoute)">
+                <option ng-repeat="route in routes" value="{{ route._id }}">{{ route.date | date:'dd.MM.yyyy'}} {{ route.title }}</option>
+            </select>
             <table>
                 <tr>
                     <td>Aloitusaika</td>
@@ -124,6 +120,10 @@
                 <tr>
                     <td>Min/km</td>
                     <td><span ng-show="playbackToggled">{{ cursor.minkm | number:1 }}, </span> ka. {{ route.data.minkm | number:1 }}</td>
+                </tr>
+                <tr>
+                    <td>Laite</td>
+                    <td>{{ route.data.device }}</td>
                 </tr>
             </table>
         </div>
