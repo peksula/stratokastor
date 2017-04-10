@@ -29,6 +29,9 @@
     "express": "^3.4.8",
     "mongodb": "^2.0.52",
     "mongoose": "^4.3.3",
+    "passport": "^0.3.2",
+    "passport-google-oauth": "^1.0.0",
+    "passport-google-oauth20": "^1.0.0",
     "xml2js": "^0.4.17"
   },
   "scripts": {
