@@ -75,7 +75,7 @@ var Kastor = function() {
         self.app.delete('/routes/:id', self.database_delete_route, self.database_get_list)
         self.app.get('/user', self.is_logged_in, self.user);
         self.app.get('/auth/google', passport.authenticate('google', { scope:  ['profile', 'email'] }))
-        self.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect : '/map', failureRedirect: '/' }))
+        self.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect : '/', failureRedirect: '/' }))
     }
     
     self.health = function(req, res, next) {
