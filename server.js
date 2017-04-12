@@ -68,11 +68,11 @@ var Kastor = function() {
             res.sendfile('./public/index.html')
         })
         self.app.get('/health', self.health);
-        self.app.post('/routes', self.upload_file, self.database_save_route)
-        self.app.post('/routes/:id', self.database_update, self.database_get_list)
+        self.app.post('/routes', self.is_logged_in, self.upload_file, self.database_save_route)
+        self.app.post('/routes/:id', self.is_logged_in, self.database_update, self.database_get_list)
         self.app.get('/routes', self.database_get_list)
         self.app.get('/routes/:id', self.database_get_details)
-        self.app.delete('/routes/:id', self.database_delete_route, self.database_get_list)
+        self.app.delete('/routes/:id', self.is_logged_in, self.database_delete_route, self.database_get_list)
         self.app.get('/user', self.is_logged_in, self.user);
         self.app.get('/auth/google', passport.authenticate('google', { scope:  ['profile', 'email'] }))
         self.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect : '/', failureRedirect: '/' }))
