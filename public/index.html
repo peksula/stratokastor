@@ -54,7 +54,7 @@
                     </span>
                 </div>
 
-                <div id= "add-new-route">
+                <div id="add-new-route" ng-show="user.user">
                     Lisää uusi reitti tcx-tiedostosta.
                     <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">
                         <span id="add-route-plus-sign">+</span> <input type="file" name="route_file" onchange="form.submit()">
@@ -83,7 +83,7 @@
                         <td>Päivitetty</td>
                         <td>{{ route.updated | date:'dd.MM.yyyy HH:mm'}}</td>
                     </tr>
-                    <tr>
+                    <tr ng-show="user.user">
                         <td></td>
                         <td>
                             <button id="edit-button" ng-click="enableEditor()" ng-hide="editorEnabled">Muokkaa tietoja</button>
