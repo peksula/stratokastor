@@ -9,7 +9,7 @@ get_route_data = function(data) {
     return Promise.reject("No converter available.")
 }
 
-exports.save_route = function (res, route) {
+exports.save_route = function (req, res, route) {
     get_route_data(res.locals.original_data).then(function(route_data) {
         var dateExecuted = new Date()
         if (typeof route_data.startTime !== "undefined") {

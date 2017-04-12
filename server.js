@@ -96,7 +96,7 @@ var Kastor = function() {
     }
 
     self.database_save_route = function(req, res, next) {
-        dataAccess.save_route(res, route)
+        dataAccess.save_route(req, res, route)
     }
 
     self.database_delete_route = function(req, res, next) {
