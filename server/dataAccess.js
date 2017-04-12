@@ -20,7 +20,8 @@ exports.save_route = function (res, route) {
             comment: res.locals.comment,
             weather: res.locals.weather,
             date: dateExecuted,
-            original_data: res.locals.original_data            
+            original_data: res.locals.original_data,
+            user_id: req.user._id
         }
         route.create(new_route).then(function(){
             res.redirect('/')
@@ -64,7 +65,8 @@ exports.get_route = function(req, res, route) {
                 comment: route.comment,
                 weather: route.weather,
                 updated: route.updated_at,
-                data: route_data
+                data: route_data,
+                user: route.user_id //todo: return user name also
             }
             res.json(response)
         })
@@ -75,7 +77,7 @@ exports.get_route = function(req, res, route) {
 }
 
 exports.get_list_of_routes = function(res, route) {
-    route.find({}, 'title date comment', {sort: '-date'}).then(function(routes) {
+    route.find({}, 'title date comment user_id', {sort: '-date'}).then(function(routes) {
         res.json(routes)
     })
     .catch(function(err) {

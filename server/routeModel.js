@@ -7,7 +7,8 @@ var RouteSchema = new mongoose.Schema({
     weather         : String,
     date            : { type: Date, default: Date.now },
     updated_at      : { type: Date, default: Date.now },
-    original_data   : String
+    original_data   : String,
+    user_id         : String
 })
 RouteSchema.index({ "date": 1 })
 
