@@ -6,6 +6,7 @@
     <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places"></script>
     <script src="controller.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 </head>
 
@@ -46,6 +47,13 @@
                 <button id="speed-button" ng-click="setAnimationSpeed(10)" ng-show="playbackToggled" ng-if="playbackMultiplier!=10">10x</button>
             </div>
             <div id="route-selection">
+                <div id="user-div">
+                    <span ng-show="user.user">Kirjautuneena {{ user.user.name }}.</span>
+                    <span ng-hide="user.user">
+                        <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span>Kirjaudu sisään</a>
+                    </span>
+                </div>
+
                 <div id= "add-new-route">
                     Lisää uusi reitti tcx-tiedostosta.
                     <form method="post" action="routes" enctype="multipart/form-data" id="upload_form">

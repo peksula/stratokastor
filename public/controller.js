@@ -36,6 +36,12 @@ kastor.service('RouteService', ['$http', function($http){
         }).then(successCallback, errorCallback)
     }
 
+    this.getUser = function(successCallback, errorCallback) {
+        $http({
+            method: 'GET',
+            url: '/user'
+        }).then(successCallback, errorCallback)
+    }
 }])
 
 kastor.service('TimeUtils', [function(){
@@ -48,6 +54,17 @@ kastor.service('TimeUtils', [function(){
 }])
 
 kastor.controller('mainController', ['$scope', '$timeout', 'RouteService', 'TimeUtils', function($scope, $timeout, RouteService, TimeUtils){
+
+    RouteService.getUser(
+        function successCallback(response) {
+            //console.log("Got user info. %s.", JSON.stringify(response.data))
+            $scope.user = response.data;
+         },
+        function errorCallback(response) {
+            console.log("Failed to get the user. %s.", response)
+        }
+    )
+
     var refreshRoutes = function(response) {
         $scope.routes = response.data
     }

@@ -27,6 +27,7 @@
     "body-parser": "^1.14.2",
     "busboy": "^0.2.12",
     "express": "^3.4.8",
+    "express-session": "^1.15.2",
     "mongodb": "^2.0.52",
     "mongoose": "^4.3.3",
     "passport": "^0.3.2",

@@ -1,9 +1,14 @@
 require( './server/db' )
 var express = require('express')
+var session = require('express-session')
 var bodyParser = require('body-parser')
+var passport = require('passport')
 var uploader  = require('./server/uploader')
 var route = require( './server/routeModel' )
 var dataAccess = require('./server/dataAccess')
+var authStrategy = require('./server/authStrategy')
+var user = require('./server/user')
+var userModel = require('./server/userModel')
 
 var Kastor = function() {
 
@@ -68,6 +73,9 @@ var Kastor = function() {
         self.app.get('/routes', self.database_get_list)
         self.app.get('/routes/:id', self.database_get_details)
         self.app.delete('/routes/:id', self.database_delete_route, self.database_get_list)
+        self.app.get('/user', self.is_logged_in, self.user);
+        self.app.get('/auth/google', passport.authenticate('google', { scope:  ['profile', 'email'] }))
+        self.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect : '/map', failureRedirect: '/' }))
     }
     
     self.health = function(req, res, next) {
@@ -99,6 +107,21 @@ var Kastor = function() {
         dataAccess.get_list_of_routes(res, route)
     }
 
+    self.user = function(req, res, next) {
+        var userInfo = {
+            user: req.user
+        }
+        res.json(userInfo)
+    }
+
+    self.is_logged_in = function (req, res, next) {
+        if (req.isAuthenticated()) {
+            return next() // if user is authenticated in the session, carry on
+        }
+
+        res.redirect('/') // if they aren't redirect them to the home page
+    }    
+
     /**
      *  Initialize the server (express) and create the routes.
      */
@@ -108,7 +131,10 @@ var Kastor = function() {
         self.app.use(express.static('bower_components'))
         self.app.use(bodyParser.json())
         self.app.use(bodyParser.urlencoded({ extended: true }))
-        
+        self.app.use(session({ secret: 'stratokastor', saveUninitialized: true, resave: true} ))
+        self.app.use(passport.initialize())
+        self.app.use(passport.session())
+        authStrategy.use(passport)
         self.createRoutes()
     }
 
