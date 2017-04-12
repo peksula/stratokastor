@@ -55,20 +55,20 @@ describe("DataAccess", function() {
 
     it("saves new route", function(done) {
         route.create = jasmine.createSpy("create spy").and.returnValue(Promise.resolve())
-        dataAccess.save_route(res, route)
+        dataAccess.save_route(req, res, route)
         done()
     })
 
     it("route save fails gracefully if data conversion fails", function(done) {
         delete res.locals.original_data // do not supply route so that saving fails
         route.create = jasmine.createSpy("create spy").and.returnValue(Promise.resolve())
-        dataAccess.save_route(res, route)
+        dataAccess.save_route(req, res, route)
         done()
     })
 
     it("route save fails gracefully", function(done) {
         route.create = jasmine.createSpy("create spy").and.returnValue(Promise.reject())
-        dataAccess.save_route(res, route)
+        dataAccess.save_route(req, res, route)
         done()
     })
 
@@ -127,14 +127,14 @@ describe("DataAccess", function() {
     it("gets a list of routes", function(done) {
         route.find = jasmine.createSpy("find spy").and.returnValue(Promise.resolve("routes"))
         dataAccess.get_list_of_routes(res, route)
-        expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment', jasmine.any(Object))
+        expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment user_id', jasmine.any(Object))
         done()
     })
 
     it("fails gracefully if cannot get a list of routes", function(done) {
         route.find = jasmine.createSpy("find spy").and.returnValue(Promise.reject("error"))
         dataAccess.get_list_of_routes(res, route)
-        expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment', jasmine.any(Object))
+        expect(route.find).toHaveBeenCalledWith(jasmine.any(Object), 'title date comment user_id', jasmine.any(Object))
         done()
     })
 })

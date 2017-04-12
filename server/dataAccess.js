@@ -66,7 +66,8 @@ exports.get_route = function(req, res, route) {
                 weather: route.weather,
                 updated: route.updated_at,
                 data: route_data,
-                user: route.user_id //todo: return user name also
+                user_id: route.user_id,
+                user_name: "peksula" // todo
             }
             res.json(response)
         })
