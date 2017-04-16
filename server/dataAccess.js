@@ -21,7 +21,8 @@ exports.save_route = function (req, res, route) {
             weather: res.locals.weather,
             date: dateExecuted,
             original_data: res.locals.original_data,
-            user_id: req.user._id
+            user_id: req.user._id,
+            user_name: req.user.name
         }
         route.create(new_route).then(function(){
             res.redirect('/')
@@ -67,7 +68,7 @@ exports.get_route = function(req, res, route) {
                 updated: route.updated_at,
                 data: route_data,
                 user_id: route.user_id,
-                user_name: "peksula" // todo
+                user_name: route.user_name
             }
             res.json(response)
         })

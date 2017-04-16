@@ -8,7 +8,8 @@ var RouteSchema = new mongoose.Schema({
     date            : { type: Date, default: Date.now },
     updated_at      : { type: Date, default: Date.now },
     original_data   : String,
-    user_id         : String
+    user_id         : String,
+    user_name       : String
 })
 RouteSchema.index({ "date": 1 })
 
