@@ -49,8 +49,15 @@ exports.update_route = function(req, res, next, route) {
         weather: req.body.weather,
         updated_at: new Date()
     }
-    route.findByIdAndUpdate(req.params.id, updated_route).then(function(route){
-        next()
+    route.findById(req.params.id).then(function(route) {
+        if (route.user_id === req.user._id) {
+            route.findByIdAndUpdate(req.params.id, updated_route).then(function(route){
+                next()
+            })            
+        }
+        else {
+            res.send("Cannot update route that is not your own.")
+        }
     })
     .catch(function(err) {
         res.send(err)

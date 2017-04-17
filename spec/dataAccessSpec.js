@@ -23,9 +23,14 @@ describe("DataAccess", function() {
         params = {
           id: 301
         }
+        user = {
+            _id: 112233,
+            name: 'peksula'
+        }
         req = {
           body: body,
-          params: params
+          params: params,
+          user: user
         }  
         next = {
             callback: function() {}
@@ -34,6 +39,8 @@ describe("DataAccess", function() {
 
     beforeEach(function(){
         route = {
+            user_id: 112233,
+            user_name: 'peksula'
         }
         reslocals = {
           original_data: xml_route,
@@ -90,22 +97,29 @@ describe("DataAccess", function() {
     })
 
     it("updates a route", function(done) {
+        route.findById = jasmine.createSpy("findById spy").and.returnValue(Promise.resolve(route))
         route.findByIdAndUpdate = jasmine.createSpy("findByIdAndUpdate spy").and.returnValue(Promise.resolve(route))
-        var expected = {
-            title: 'title',
-            comment: 'comment',
-            weather: 'weather',
-            updated_at: new Date()
-        }
         dataAccess.update_route(req, res, next.callback, route)
-        expect(route.findByIdAndUpdate).toHaveBeenCalledWith(params.id, expected)
+        expect(route.findById).toHaveBeenCalled()
+        done()
+    })
+
+    it("does not update a route beloning to different user", function(done) {
+        route.findById = jasmine.createSpy("findById spy").and.returnValue(Promise.resolve(route))
+        route.findByIdAndUpdate = jasmine.createSpy("findByIdAndUpdate spy").and.returnValue(Promise.resolve(route))
+        req.user._id = 998877
+        dataAccess.update_route(req, res, next.callback, route)
+        expect(route.findById).toHaveBeenCalled()
+        expect(route.findByIdAndUpdate).not.toHaveBeenCalled()
         done()
     })
 
     it("fails gracefully if cannot update route", function(done) {
+        route.findById = jasmine.createSpy("findByIdAndUpdate spy").and.returnValue(Promise.reject("err"))
         route.findByIdAndUpdate = jasmine.createSpy("findByIdAndUpdate spy").and.returnValue(Promise.reject("err"))
         dataAccess.update_route(req, res, next.callback, route)
-        expect(route.findByIdAndUpdate).toHaveBeenCalledWith(params.id, jasmine.any(Object))
+        expect(route.findById).toHaveBeenCalled()
+        expect(route.findByIdAndUpdate).not.toHaveBeenCalled()
         done()
     })    
 
