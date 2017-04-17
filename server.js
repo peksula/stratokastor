@@ -69,10 +69,10 @@ var Kastor = function() {
         })
         self.app.get('/health', self.health);
         self.app.post('/routes', self.is_logged_in, self.upload_file, self.database_save_route)
-        self.app.post('/routes/:id', self.is_logged_in, self.database_update, self.database_get_list)
+        self.app.post('/routes/:id', self.is_logged_in, self.check_access, self.database_update, self.database_get_list)
         self.app.get('/routes', self.database_get_list)
         self.app.get('/routes/:id', self.database_get_details)
-        self.app.delete('/routes/:id', self.is_logged_in, self.database_delete_route, self.database_get_list)
+        self.app.delete('/routes/:id', self.is_logged_in, self.check_access, self.database_delete_route, self.database_get_list)
         self.app.get('/user', self.is_logged_in, self.user);
         self.app.get('/auth/google', passport.authenticate('google', { scope:  ['profile', 'email'] }))
         self.app.get('/auth/google/callback', passport.authenticate('google', { successRedirect : '/', failureRedirect: '/' }))
@@ -85,6 +85,10 @@ var Kastor = function() {
 
     self.upload_file = function(req, res, next) {
         uploader.process_form(req, res, next)
+    }
+    
+    self.check_access = function(req, res, next, route) {
+        dataAccess.check_access_rights(req, res, next, route)
     }
 
     self.database_update = function(req, res, next) {

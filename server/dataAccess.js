@@ -9,6 +9,15 @@ get_route_data = function(data) {
     return Promise.reject("No converter available.")
 }
 
+exports.check_access_rights = function(req, res, next, route) {
+    if (route.user_id === req.user._id) {
+        next()
+    }
+    else {
+        res.send("Access denied.")
+    }
+}
+
 exports.save_route = function (req, res, route) {
     get_route_data(res.locals.original_data).then(function(route_data) {
         var dateExecuted = new Date()
@@ -49,15 +58,8 @@ exports.update_route = function(req, res, next, route) {
         weather: req.body.weather,
         updated_at: new Date()
     }
-    route.findById(req.params.id).then(function(route) {
-        if (route.user_id === req.user._id) {
-            route.findByIdAndUpdate(req.params.id, updated_route).then(function(route){
-                next()
-            })            
-        }
-        else {
-            res.send("Cannot update route that is not your own.")
-        }
+    route.findByIdAndUpdate(req.params.id, updated_route).then(function(route){
+        next()    
     })
     .catch(function(err) {
         res.send(err)
