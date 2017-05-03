@@ -3,6 +3,7 @@ var Promise = require("bluebird")
 var xml2js = Promise.promisifyAll(require('xml2js'))
 
 exports.convert = function (data) {
+    # todo: needs refactoring, ugly spagetti
     function route(startTime, device, dataPoints, duration, distance, climb, startLat, startLng, kmh, minkm, geoPoints) {
         this.startTime = startTime
         this.device = device
@@ -140,8 +141,7 @@ exports.convert = function (data) {
     return new Promise(function(resolve, reject) {
         xml2js.parseStringAsync(data, { explicitArray: false, ignoreAttrs: true })
             .then(function (result) {
-                var json = result
-                var route = processJson(json)
+                var route = processJson(result)
                 return resolve(route)
             })
             .catch(function (err) {
