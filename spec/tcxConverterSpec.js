@@ -7,9 +7,17 @@ var readFileAsString = function (relPath) {
 }
 
 describe("Tcx2Converter", function() {
-    it("should convert Fitbit tcx data correctly", function(done) {
+    
+    var fitbitBuffer, garminBuffer
+    
+    beforeAll(function(){
         var relativePathFitbitSurge = 'data/993568829.tcx'
-        var fitbitBuffer = readFileAsString(relativePathFitbitSurge)
+        fitbitBuffer = readFileAsString(relativePathFitbitSurge)
+        var relativePathGarminForerunner210 = 'data/activity_986153810.tcx'
+        garminBuffer = readFileAsString(relativePathGarminForerunner210)
+    })
+    
+    it("should convert Fitbit tcx data correctly", function(done) {
         converter.convert(fitbitBuffer).then(function(route) {
             expect(route.startTime).toBe("2015-11-30T21:51:29.000+02:00")
             expect(route.device).toBe("Fitbit Surge")
@@ -53,8 +61,6 @@ describe("Tcx2Converter", function() {
     })
 
     it("should convert Garmin tcx data correctly", function(done) {
-        var relativePathGarminForerunner210 = 'data/activity_986153810.tcx'
-        var garminBuffer = readFileAsString(relativePathGarminForerunner210)
         converter.convert(garminBuffer).then(function(route) {
             expect(route.startTime).toBe("2015-12-10T18:03:58.000Z")
             expect(route.device).toBe("Garmin Forerunner 210")

@@ -10,14 +10,10 @@ get_route_data = function(data) {
 }
 
 exports.check_access_rights = function(req, res, next, route) {
-    console.log(route.user_id)
-    console.log(req.user._id)
     if (route.user_id === req.user._id) {
-        console.log("access granted")
         next()
     }
     else {
-        console.log("access denied")
         res.send("Access denied.")
     }
 }
