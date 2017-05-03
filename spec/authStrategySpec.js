@@ -23,7 +23,7 @@ describe("AuthStrategy", function() {
         expect(passport.use).toHaveBeenCalledWith(jasmine.any(Object));
         expect(passport.use.calls.mostRecent().args[0].name).toEqual("google");
         expect(passport.use.calls.mostRecent().args[0]._oauth2._clientId).toEqual("918728042559-7vplh1m9qanjp7vpdj8ul58mqkqls837.apps.googleusercontent.com");
-        expect(passport.use.calls.mostRecent().args[0]._oauth2._clientSecret).toEqual("2nFXu4DGfzosbCtp2_NhQBji");
+        // not testing the client secret here
         expect(passport.use.calls.mostRecent().args[0]._callbackURL).toEqual("http://strato-kastor.rhcloud.com/auth/google/callback");
     })
 })
