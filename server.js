@@ -146,6 +146,7 @@ var Kastor = function() {
     }
 
     self.start = function() {
+        console.log("secret : " + process.env.CLIENT_SECRET)
         self.app.listen(self.port, self.ipaddress, function() {
             console.log('Node server started on %s:%d', self.ipaddress, self.port)
         })
