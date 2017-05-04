@@ -126,9 +126,6 @@ var Kastor = function() {
         res.redirect('/') // if they aren't redirect them to the home page
     }    
 
-    /**
-     *  Initialize the server (express) and create the routes.
-     */
     self.initializeServer = function() {
         self.app = express()
         self.app.use(express.static('public'))
@@ -142,18 +139,12 @@ var Kastor = function() {
         self.createRoutes()
     }
 
-    /**
-     *  Initializes the application.
-     */
     self.initialize = function() {
         self.setupVariables()
         self.setupTerminationHandlers()
         self.initializeServer()
     }
 
-    /**
-     *  Start the server.
-     */
     self.start = function() {
         self.app.listen(self.port, self.ipaddress, function() {
             console.log('Node server started on %s:%d', self.ipaddress, self.port)
