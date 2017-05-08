@@ -14,9 +14,6 @@ var Kastor = function() {
 
     var self = this
 
-    /**
-     *  Set up server IP address and port # using env variables/defaults.
-     */
     self.setupVariables = function() {
         self.ipaddress = process.env.OPENSHIFT_NODEJS_IP
         self.port      = process.env.OPENSHIFT_NODEJS_PORT || 8080
@@ -146,7 +143,6 @@ var Kastor = function() {
     }
 
     self.start = function() {
-        console.log("secret : " + process.env.CLIENT_SECRET)
         self.app.listen(self.port, self.ipaddress, function() {
             console.log('Node server started on %s:%d', self.ipaddress, self.port)
         })
